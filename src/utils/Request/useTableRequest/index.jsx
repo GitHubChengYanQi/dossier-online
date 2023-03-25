@@ -1,12 +1,10 @@
 import React from 'react';
-import {config as baseConfig} from 'ice';
 import {useAntdTable, useFusionTable} from 'ahooks';
-import Service from '@/utils/Service';
+import Service from '../../Service';
 
-const UseTableRequest = (config, options = {}) => {
+const Index = (config, options = {}) => {
 
   const {ajaxService} = Service();
-  const {component} = baseConfig;
 
   const requestService = (params, formData = {}) => {
     if (typeof params !== 'object') {
@@ -55,4 +53,4 @@ const UseTableRequest = (config, options = {}) => {
   });
 };
 
-export default UseTableRequest;
+export default Index;

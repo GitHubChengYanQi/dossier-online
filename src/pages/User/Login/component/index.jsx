@@ -2,9 +2,8 @@ import React from 'react';
 import { Form, Input, Button, Alert } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import cookie from 'js-cookie';
-import  useRequest from '@/utils/Request/useRequest';
-// import { login as loginUrl } from '@/Config/ApiUrl';
-import { useSearchParams,history  } from 'umi';
+import  {useRequest} from '@/utils/Request';
+import { useSearchParams,history,useModel   } from 'umi';
 
 const loginUrl = {
   url: '/rest/login',
@@ -15,6 +14,8 @@ const FormItem = Form.Item;
 
 export default function Login({ submitText }) {
 
+  const {  refresh  } =
+      useModel('@@initialState');
   const [params, setSearchParams] = useSearchParams();
 
   const { run, data, error, loading } = useRequest(loginUrl, {
@@ -27,6 +28,7 @@ export default function Login({ submitText }) {
           if (params.backUrl) {
             window.location.href = decodeURIComponent(params.backUrl);
           } else {
+            refresh();
             history.replace('/');
           }
         }, 1500);

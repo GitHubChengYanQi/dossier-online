@@ -26,7 +26,6 @@ ajaxService.interceptors.response.use((response) => {
   if (response.status !== 200) {
     throw new Error('网络错误');
   }
-  console.log(response)
   response = response.data;
   const errCode = typeof response.errCode !== 'undefined' ? parseInt(response.errCode, 0) : 0;
   if (errCode !== 0) {

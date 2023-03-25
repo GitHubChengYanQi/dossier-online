@@ -1,7 +1,7 @@
 import { useRequest as ahooksRequest } from 'ahooks';
-import ajaxService from '@/utils/Service';
+import ajaxService from '../..//Service';
 
-const useRequest = (config, options) => {
+const index = (config, options) => {
   // const { ajaxService } = Service();
 
   const requestService = (params) => {
@@ -29,4 +29,4 @@ const useRequest = (config, options) => {
     ...options,
   });
 };
-export default useRequest;
+export default index;
