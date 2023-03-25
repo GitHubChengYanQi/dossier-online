@@ -1,6 +1,7 @@
 import cookie from 'js-cookie';
 import axios from 'axios';
 import {message, Modal} from 'antd';
+import {history} from 'umi';
 
 const baseURI = "http://127.0.0.1";//config.baseURI || window.sing.sysURI;
 
@@ -30,20 +31,24 @@ ajaxService.interceptors.response.use((response) => {
   const errCode = typeof response.errCode !== 'undefined' ? parseInt(response.errCode, 0) : 0;
   if (errCode !== 0) {
     if (errCode === 1502) {
+      console.log(history)
       // cookie.remove('tianpeng-token');
-      Modal.error({
-        title: '提示',
-        content: '您已登录超时，请重新登录。',
-        okText: '重新登录',
-        onOk: () => {
-          Modal.destroyAll();
-          try {
-          } catch (e) {
-            window.location.href = `/#/login?backUrl=${encodeURIComponent(window.location.href)}`;
+      if(history.location.pathname !== "/user/login"){
+        Modal.error({
+          title: '提示',
+          content: '您已登录超时，请重新登录。',
+          okText: '重新登录',
+          onOk: () => {
+            Modal.destroyAll();
+            try {
+              history.push(`/user/login?backUrl=${encodeURIComponent(window.location.href)}`)
+            } catch (e) {
+              window.location.href = `/#/user/login?backUrl=${encodeURIComponent(window.location.href)}`;
+            }
           }
-        }
-      });
-      throw new Error(response.message);
+        });
+        throw new Error(response.message);
+      }
     } else if (errCode === 1001) {
       return response;
     } else if (errCode !== 200) {

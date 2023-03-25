@@ -33,17 +33,11 @@ const formatMenus = (data:any,parentUrl?:string):any=>{
 
 export const layout = (initialState:any) => {
   const token = cookie.get('tianpeng-token');
-  if (!token) {
-    history.push('/user/login');
-    // throw new Error('本地登录信息不存在');
-    return {name:""};
-  }
-  const jwt = token.split('.');
+
+  const jwt = token?token.split('.'):[];
   if (jwt.length !== 3) {
-    // throw new Error('本地登录信息错误');
-    history.push('/user/login');
-    // throw new Error('本地登录信息不存在');
-    return {name:""};
+    // history.push('/user/login');
+    console.warn('本地登录信息不存在');
   }
   return {
     logo: 'https://img.alicdn.com/tfs/TB1YHEpwUT1gK0jSZFhXXaAtVXa-28-27.svg',
