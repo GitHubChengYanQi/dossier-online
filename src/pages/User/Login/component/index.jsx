@@ -22,7 +22,7 @@ export default function Login({ submitText }) {
     ready:true,
     onSuccess:response=>{
       if (response) {
-        cookie.set('tianpeng-token', response);
+        cookie.set('tianpeng-token', response.data);
         setTimeout(() => {
           if (params.backUrl) {
             window.location.href = decodeURIComponent(params.backUrl);

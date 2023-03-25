@@ -7,6 +7,7 @@ import cookie from "js-cookie";
 
 export async function getInitialState(): Promise<{ name: string }> {
   const token = cookie.get('tianpeng-token');
+
   if (!token) {
     history.push('/user/login');
     // throw new Error('本地登录信息不存在');
@@ -25,6 +26,7 @@ export async function getInitialState(): Promise<{ name: string }> {
 export const layout = () => {
   return {
     logo: 'https://img.alicdn.com/tfs/TB1YHEpwUT1gK0jSZFhXXaAtVXa-28-27.svg',
+    layout:"top",
     menu: {
       locale: false,
     },
