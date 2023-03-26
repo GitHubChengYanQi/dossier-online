@@ -1,9 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styles from './index.less';
-import {PageContainer, ProTable} from "@ant-design/pro-components";
+import {PageContainer, ProFormTreeSelect, ProTable} from "@ant-design/pro-components";
 import {request} from "../../../../utils/Request";
-import {Button, Switch} from "antd";
+import {Button, Radio, Switch} from "antd";
 import EditButton from "../../../../components/EditButton";
+import EditForm from "./components/editForm";
+import {getTree} from "../../../../services/BASE_SYSTEM/dept";
 
 const userList = {
     url: '/rest/mgr/list',
@@ -11,6 +13,9 @@ const userList = {
 };
 
 export default function UserList() {
+
+    const [createModalVisible, handleModalVisible] = useState(false);
+    const [editId, setEditId] = useState(null);
 
     const columns = [
         {
@@ -23,11 +28,37 @@ export default function UserList() {
         },
         {
             title: '性别',
-            dataIndex: 'sexName'
+            dataIndex: 'sexName',
+            formItemProps:{
+                name:"sex"
+            },
+            renderFormItem:()=>{
+                return (<Radio.Group>
+                    <Radio value="M">男</Radio>
+                    <Radio value={2}>女</Radio>
+                </Radio.Group>)
+            }
         },
         {
             title: '部门',
-            dataIndex: 'deptName'
+            dataIndex: 'deptName',
+            formItemProps:{
+                name:"deptId"
+            },
+            renderFormItem:()=>{
+                return (
+                    <ProFormTreeSelect
+                        fieldProps={{
+                            allowClear:true,
+                            treeDefaultExpandAll:true
+                        }}
+
+                        request={async (params)=>{
+                            return await getTree();
+                        }}
+                />);
+            }
+
         },
         {
             title: '职位',
@@ -35,10 +66,26 @@ export default function UserList() {
         },
         {
             title: '创建时间',
-            dataIndex: 'createTime'
+            dataIndex: 'createTime',
+            hideInSearch: true,
+            hideInForm: true
         },
         {
             title: '状态',
+            valueType:"radio",
+            formItemProps:{
+                name:"status"
+            },
+            valueEnum:{
+                ENABLE: {
+                    text: '启用',
+                    status: 'Error',
+                },
+                closed: {
+                    text: '禁用',
+                    status: 'Success',
+                },
+            },
             render: (value, record) => {
                 return (
                     <Switch
@@ -60,6 +107,8 @@ export default function UserList() {
         {
             title: '操作',
             align: 'right',
+            hideInForm:true,
+            hideInSearch:true,
             render: (value, record) => {
                 return (
                     <>
@@ -78,7 +127,9 @@ export default function UserList() {
                             });
                         }}>重置密码</Button>
                         <EditButton onClick={() => {
-                            dfRef.current.open(record.userId);
+                            // dfRef.current.open(record.userId);
+                            setEditId(record.userId);
+                            handleModalVisible(true)
                         }}/>
                     </>
                 );
@@ -93,12 +144,18 @@ export default function UserList() {
             breadcrumb: {},
         }}>
       <ProTable
+          search={{
+              filterType:""
+          }}
           rowKey="userId"
           columns={columns}
           request={async (params, sorter, filter) => {
+              console.log(params)
               const { data, success } = await request({
                   ...userList,
-                  ...params,
+                  data:{
+                      ...params
+                  },
                   // FIXME: remove @ts-ignore
                   // @ts-ignore
                   sorter,
@@ -109,9 +166,28 @@ export default function UserList() {
                   data: data || [],
                   success:data?true:false,
               };
-          }}>
+          }}
+          toolBarRender={() => [
+              <Button
+                  key="1"
+                  type="primary"
+                  onClick={() => handleModalVisible(true)}
+              >
+                  新建
+              </Button>,
+          ]}
+      >
 
       </ProTable>
+        <EditForm
+            columns={columns}
+            id={editId}
+            onCancel={() => {
+                handleModalVisible(false);
+                setEditId(null);
+            }}
+            modalVisible={createModalVisible}
+        />
     </PageContainer>
   );
 }

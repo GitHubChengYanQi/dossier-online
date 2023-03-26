@@ -14,21 +14,22 @@ const FormItem = Form.Item;
 
 export default function Login({ submitText }) {
 
-  const {  refresh  } =
-      useModel('@@initialState');
+  const {  refresh  } = useModel('@@initialState');
   const [params, setSearchParams] = useSearchParams();
-
+  console.log(params)
   const { run, data, error, loading } = useRequest(loginUrl, {
     manual: true,
     ready:true,
     onSuccess:response=>{
       if (response) {
         cookie.set('tianpeng-token', response.data);
+        console.log(params)
+        refresh();
         setTimeout(() => {
           if (params.backUrl) {
             window.location.href = decodeURIComponent(params.backUrl);
           } else {
-            refresh();
+
             history.replace('/');
           }
         }, 1500);

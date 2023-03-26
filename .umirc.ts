@@ -9,6 +9,7 @@ export default defineConfig({
   layout: {
     title: '妇幼健康服务与管理信息系统',
   },
+  history: {type:"hash"},
   routes: [
     {
       path: '/',
@@ -82,6 +83,12 @@ export default defineConfig({
               name: '登录日志',
               path: '/BASE_SYSTEM/system/loginLog',
               component: './BASE_SYSTEM/system/loginLog',
+            }
+            ,
+            {
+              name: '业务日志',
+              path: '/BASE_SYSTEM/system/log',
+              component: './BASE_SYSTEM/system/log',
             }
           ]
         }

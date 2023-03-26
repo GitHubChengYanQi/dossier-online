@@ -6,36 +6,41 @@ import {Button, Switch} from "antd";
 import EditButton from "../../../../components/EditButton";
 import DelButton from "../../../../components/DelButton";
 
-const menuRemove = {
-    url: '/rest/menu/remove',
-    method: 'GET',
-    rowKey:'menuId'
+const deptList = {
+    url: '/rest/dept/list',
+    method: 'POST'
 };
-const menuTreeList = {
-    url: '/rest/menu/menuTreeList',
-    method: 'GET',
+const deptDelete = {
+    url: '/rest/dept/delete',
+    method: 'POST',
+    rowKey: 'deptId'
 };
-export default function MenuList() {
+export default function DeptList() {
 
     const columns = [
         {
-            title: '名称', dataIndex: 'label', width: 200
+            title: '部门简称', dataIndex: 'simpleName', width: 120
         },
         {
-            title: '菜单编码', dataIndex: 'value', width: 200
+            title: '部门全称', dataIndex: 'fullName', width: 120
+        },
+        {
+            title: '排序', dataIndex: 'sort', width: 80
+        },
+        {
+            title: '备注', dataIndex: 'description', width: 200
         },
         {
             title: '操作',
             align: 'right',
             width: 260,
-            valueType: 'option',
             render: (value, record) => {
                 return (
                     <>
                         <EditButton onClick={() => {
-                            ref.current.open(record.id);
+                            ref.current.open(record.deptId);
                         }}/>
-                        <DelButton api={menuRemove} value={record.id} onSuccess={() => {
+                        <DelButton api={deptDelete} value={record.deptId} onSuccess={() => {
                             tableRef.current.refresh();
                         }}/>
                     </>
@@ -43,15 +48,6 @@ export default function MenuList() {
             }
         },
     ];
-    const formatData = (data)=>{
-        if(!Array.isArray(data)) return [];
-        return data.map(item=>{
-            return {
-                ...item,
-                children:item.children && item.children.length>0?formatData(item.children):undefined
-            }
-        })
-    }
 
   return (
     <PageContainer
@@ -60,11 +56,11 @@ export default function MenuList() {
             breadcrumb: {},
         }}>
       <ProTable
-          rowKey="id"
+          rowKey="deptId"
           columns={columns}
           request={async (params, sorter, filter) => {
               const { data, success } = await request({
-                  ...menuTreeList,
+                  ...deptList,
                   ...params,
                   // FIXME: remove @ts-ignore
                   // @ts-ignore
@@ -73,7 +69,7 @@ export default function MenuList() {
               });
               console.log(success)
               return {
-                  data: formatData(data) || [],
+                  data: data || [],
                   success:data?true:false,
               };
           }}>

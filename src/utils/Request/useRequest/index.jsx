@@ -1,5 +1,5 @@
 import { useRequest as ahooksRequest } from 'ahooks';
-import ajaxService from '../..//Service';
+import ajaxService from '../../Service';
 
 const index = (config, options) => {
   // const { ajaxService } = Service();
