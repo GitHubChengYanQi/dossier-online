@@ -26,7 +26,14 @@ export default defineConfig({
     },{
       name: '在线建册',
       path: '/ZXJC',
-      component: './Home',
+      // component: './User/Bookbuilding',
+      routes:[
+        {
+          name: '快速建册',
+          path: '/ZXJC/quick',
+          component: './User/Bookbuilding',
+        }
+      ]
     },
     {
       name: '权限演示',
@@ -92,7 +99,7 @@ export default defineConfig({
       path: '/user/login',
       component: './User/Login',
       layout:false
-    },
+    }
   ],
   npmClient: 'npm',
 });
