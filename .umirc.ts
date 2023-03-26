@@ -20,11 +20,6 @@ export default defineConfig({
       component: './Home',
     },
     {
-      name: '基础功能',
-      path: '/BASE_SYSTEM',
-      // redirect: '/list'
-    },
-    {
       name: '企业功能',
       path: '/ENT_FUNC',
       component: './Home',
@@ -45,13 +40,50 @@ export default defineConfig({
     },
     {
       name: '系统设置',
-      path: '/system',
+      path: '/BASE_SYSTEM',
       // component: '@/layout/System',
       routes:[
         {
           name: '用户管理',
-          path: '/system/mgr',
-          component: './Table',
+          path: '/BASE_SYSTEM/system',
+          // component: './BASE_SYSTEM/system/mgr',
+          routes:[
+            {
+              name: '用户管理',
+              path: '/BASE_SYSTEM/system/mgr',
+              component: './BASE_SYSTEM/system/mgr',
+            },
+            {
+              name: '角色管理',
+              path: '/BASE_SYSTEM/system/role',
+              component: './BASE_SYSTEM/system/role',
+            },
+            {
+              name: '部门管理',
+              path: '/BASE_SYSTEM/system/dept',
+              component: './BASE_SYSTEM/system/dept',
+            },
+            {
+              name: '职位管理',
+              path: '/BASE_SYSTEM/system/position',
+              component: './BASE_SYSTEM/system/position',
+            },
+            {
+              name: '字典管理',
+              path: '/BASE_SYSTEM/system/dictType',
+              component: './BASE_SYSTEM/system/dictType',
+            },
+            {
+              name: '菜单管理',
+              path: '/BASE_SYSTEM/system/menu',
+              component: './BASE_SYSTEM/system/menu',
+            },
+            {
+              name: '登录日志',
+              path: '/BASE_SYSTEM/system/loginLog',
+              component: './BASE_SYSTEM/system/loginLog',
+            }
+          ]
         }
       ]
     },

@@ -12,7 +12,7 @@ const userInfo = {
 export async function getInitialState(): Promise<{ userInfo:any,menus:any }> {
 
     const response = await request(userInfo);
-    console.log(response.data)
+    // console.log(response.data)
 
   return { userInfo:response.data,menus:response.data.menus };
 }
@@ -34,6 +34,7 @@ const formatMenus = (data:any,parentUrl?:string):any=>{
 export const layout = (initialState:any) => {
   const token = cookie.get('tianpeng-token');
 
+  // console.log(formatMenus(initialState.initialState.menus));
   const jwt = token?token.split('.'):[];
   if (jwt.length !== 3) {
     // history.push('/user/login');
