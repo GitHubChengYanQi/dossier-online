@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useRef} from 'react';
 import {
   PageContainer,
   ProForm,
@@ -6,7 +6,6 @@ import {
   ProFormRadio,
   ProFormDatePicker,
   ProFormSelect,
-  ProFormDigit,
   ProTable,
 } from '@ant-design/pro-components';
 import AddressSelect from '@/components/AddressSelect';
@@ -14,11 +13,23 @@ import { Card, Tabs, Row, Col, Input, Form, Space } from 'antd';
 import zjlxList from '@/utils/zjType';
 import mzList from '@/utils/nation';
 import whcdList from '@/utils/whcd';
+import {ProFormInstance} from "@ant-design/pro-form/lib";
 
 const { TabPane } = Tabs;
 
-const Sf = (props) => {
-  const formRef = React.createRef();
+interface msgItem{
+  a?:number,
+  b?:number,
+}
+interface Msg {
+  success: boolean,
+  total: number,
+  result?:msgItem[]
+}
+
+const Sf = () => {
+
+  const formRef = useRef<ProFormInstance>();
 
   const columns = [
     {
@@ -33,11 +44,11 @@ const Sf = (props) => {
     },
   ]
 
-  function DatePickerChange(date, dateString) {
-    const _Y = dateString.split('-')[0];
+  function DatePickerChange(date:any, dateString:string) {
+    const _Y:number = parseInt(dateString.split('-')[0],0);
     const _date = new Date();
-    const currentY = _date.getFullYear();
-    formRef.current.setFieldValue('age', currentY - _Y);
+    const currentY:number = _date.getFullYear();
+    formRef?.current?.setFieldValue('age', currentY - _Y);
   }
 
   return (
@@ -122,8 +133,10 @@ const Sf = (props) => {
                                  rules={[{ required: true, message: '请输入姓名' }]} />
                   </Col>
                   <Col span={4}>
-                    <ProFormDatePicker name='a2' label='出生日期' placeholder='请选择出生日期'
-                                       rules={[{ required: true, message: '请选择出生日期' }]} onChange={DatePickerChange} />
+                    <ProFormDatePicker
+                        name='a2' label='出生日期' placeholder='请选择出生日期'
+                                       rules={[{ required: true, message: '请选择出生日期' }]}
+                                       onChange={DatePickerChange} />
                   </Col>
                   <Col span={4}>
                     <ProFormText width='md' name='age' label='年龄' placeholder='请输入年龄'
@@ -289,9 +302,10 @@ const Sf = (props) => {
                   current: number;
                 },
               ) => {
+                console.log(params)
                 // 这里需要返回一个 Promise,在返回之前你可以进行数据转化
                 // 如果需要转化参数可以在这里进行修改
-                const msg = await new Promise((resolve, reject) => {
+                const msg = await new Promise<Msg>((resolve) => {
                   resolve({
                     success: true,
                     total: 12,
