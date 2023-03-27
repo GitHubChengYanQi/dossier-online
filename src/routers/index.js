@@ -1,12 +1,7 @@
 export default [
   {
     path: '/',
-    redirect: '/home',
-  },
-  {
-    name: '首页',
-    path: '/home',
-    component: './Home',
+    redirect: '/user/login',
   },
   {
     name: '企业功能',
