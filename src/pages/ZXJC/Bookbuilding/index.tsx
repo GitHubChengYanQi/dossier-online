@@ -1,14 +1,4 @@
-import { FooterToolbar,
-  PageContainer,
-  ProForm,
-  ProFormDateRangePicker,
-  ProFormDigit,
-  ProFormRadio,
-  ProFormSelect,
-  ProFormText,
-  ProFormTextArea,
-  ProFormUploadButton,
-  ProLayout, } from '@ant-design/pro-components';
+import { PageContainer, } from '@ant-design/pro-components';
 import styles from './index.less';
 import { Card, Button, Checkbox, Form, Input, Select, Col, Row, DatePicker, Radio, InputNumber, Space, message } from 'antd';
 import AddressSelect from '@/components/AddressSelect';
@@ -18,23 +8,23 @@ import nationList from './nation'
 import zyList from './zy'
 import whcdList from './whcd'
 import gjList from './gj'
-import { useRequest } from "@/utils/Request/index";
+import { useRequest } from "@/utils/Request";
 const Bookbuilding: React.FC = () => {
   const addItem = {
     url: '/addItem',
     method: 'POST',
   };
   const [husbandState, setHusbandState] = useState(false);
-  const [messageApi, contextHolder] = message.useMessage();
+  const [messageApi] = message.useMessage();
   const { run: runAdd } = useRequest(addItem, {
     manual: true,
-    onError: (error) => {
-      Message.error(error.message);
+    onError: (error:any) => {
+      messageApi.error(error.message);
       console.log(error);
     },
-    onSuccess: (response) => {
+    onSuccess: (response:any) => {
       console.log(response);
-      if (response.errCode == 0){
+      if (response.errCode === 0){
         messageApi.open({
           type: 'success',
           content: '保存成功',
@@ -115,30 +105,11 @@ const Bookbuilding: React.FC = () => {
     console.log('Failed:', errorInfo);
   };
   return (
-    <PageContainer ghost>
-      <ProForm
-        labelCol={{ span: 8 }}
-        wrapperCol={{ span: 16 }}
-        autoComplete='off'
-        labelAlign='left'
-        layout='inline'
-        style={{ width: '100%' }}
-        initialValues={{ remember: true }}
-        submitter={{
-          render: (_, dom) => <FooterToolbar>{dom}</FooterToolbar>,
-        }}
-        onFinish={async (values) => console.log(values)}
-      >
-        <Card title='孕妇信息' bordered={false} style={{ width: '100%' }}>
-          <Row gutter={16}>
-            <Col span={6}>
-              <ProForm.Group>
-                <ProFormText name={'name'} label="合同名称" placeholder="请输入名称" />
-              </ProForm.Group>
-            </Col>
-          </Row>
-        </Card>
-      </ProForm>
+    <PageContainer
+        ghost
+        header={{
+        breadcrumb: {},
+      }}>
       <Form
         name='basic'
         labelCol={{ span: 8 }}
@@ -227,7 +198,7 @@ const Bookbuilding: React.FC = () => {
                 label='户籍性质 '
                 name='hjxz'
               >
-                <Radio.Group placeholder='请选择户籍性质'>
+                <Radio.Group>
                   <Radio value='农业'>农业</Radio>
                   <Radio value='非农业'>非农业</Radio>
                 </Radio.Group>
@@ -307,7 +278,7 @@ const Bookbuilding: React.FC = () => {
                 label='是否本地'
                 name='sfbd'
               >
-                <Radio.Group placeholder='请选择是否本地'>
+                <Radio.Group>
                   <Radio value='本地'>本地</Radio>
                   <Radio value='非本地'>非本地</Radio>
                 </Radio.Group>
@@ -318,7 +289,7 @@ const Bookbuilding: React.FC = () => {
                 label='居住年限'
                 name='jznx'
               >
-                <Radio.Group placeholder='请选择居住年限'>
+                <Radio.Group>
                   <Radio value='一年以上'>一年以上</Radio>
                   <Radio value='一年以下'>一年以下</Radio>
                 </Radio.Group>
@@ -329,7 +300,7 @@ const Bookbuilding: React.FC = () => {
                 label='是否服用叶酸 '
                 name='sffyys'
               >
-                <Radio.Group placeholder='请选择是否服用叶酸'>
+                <Radio.Group>
                   <Radio value='是'>是</Radio>
                   <Radio value='否'>否</Radio>
                 </Radio.Group>
@@ -681,7 +652,7 @@ const Bookbuilding: React.FC = () => {
                       label='是否本地'
                       name='zfSfbd'
                     >
-                      <Radio.Group placeholder='请选择是否本地'>
+                      <Radio.Group>
                         <Radio value='本地'>本地</Radio>
                         <Radio value='非本地'>非本地</Radio>
                       </Radio.Group>
@@ -692,7 +663,7 @@ const Bookbuilding: React.FC = () => {
                       label='户籍性质 '
                       name='zfHjxz'
                     >
-                      <Radio.Group placeholder='请选择户籍性质'>
+                      <Radio.Group>
                         <Radio value='农业'>农业</Radio>
                         <Radio value='非农业'>非农业</Radio>
                       </Radio.Group>
@@ -853,7 +824,7 @@ const Bookbuilding: React.FC = () => {
         {/*</Card>*/}
 
         <Form.Item wrapperCol={{ span: 24 }}>
-          <Space className={styles['flex-row-center']} style={{ width: '100%', 'justify-content': 'center', marginTop: '15px' }}>
+          <Space className={styles['flex-row-center']} style={{ width: '100%', justifyContent: 'center', marginTop: '15px' }}>
             <Button type='primary' htmlType='submit'>
               保存
             </Button>

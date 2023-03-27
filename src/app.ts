@@ -14,7 +14,7 @@ export async function getInitialState(): Promise<{ userInfo:any,menus:any }> {
     const response = await request(userInfo);
     // console.log(response.data)
 
-  return { userInfo:response.data,menus:response.data.menus };
+  return { userInfo:response.data,menus:response.data.new_menus };
 }
 
 const formatMenus = (data:any,parentUrl?:string):any=>{

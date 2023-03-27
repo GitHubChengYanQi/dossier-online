@@ -1,7 +1,7 @@
 import { Modal } from 'antd';
 import React, {PropsWithChildren, useEffect} from 'react';
 import {ProTable} from "@ant-design/pro-components";
-import {useRequest} from "../../../../../../utils/Request";
+import {request, useRequest} from "../../../../../../utils/Request";
 
 const getUserInfo = {
     url: '/rest/mgr/getUserInfo',
@@ -10,26 +10,6 @@ const getUserInfo = {
 };
 const EditForm = (props) => {
     const { modalVisible, onCancel,columns,id } = props;
-
-    const {data,run} = useRequest({
-        ...getUserInfo,
-
-    },{
-        manual: true,
-    });
-
-    useEffect(()=>{
-        if(id!==null){
-            /**
-             * 拉数据
-             */
-            run({
-                params:{
-                    userId:id
-                }
-            })
-        }
-    },[id])
 
     return (
         <Modal
@@ -40,15 +20,25 @@ const EditForm = (props) => {
             onCancel={() => onCancel()}
             footer={null}
         >
-            {id!==null&&data&&<ProTable
+            <ProTable
                 type="form"
                 columns={columns}
-                form={
-                    {
-                        initialValues:data.data
+                form={{
+                    request:async ()=>{
+                        if(id!==null && id!==0){
+                            const response = await request({
+                                ...getUserInfo,
+                                params:{
+                                    userId:id
+                                }
+                            });
+                            return response.data;
+                        }else{
+                            return {};
+                        }
                     }
-                }
-            />}
+            }}
+            />
         </Modal>
     );
 };

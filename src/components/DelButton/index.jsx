@@ -60,7 +60,7 @@ const DelButton = ({
     <Button
       disabled={disabled}
       size="small" danger onClick={onClick}  icon={icon || <DeleteOutlined />}
-      type="text" {...props} >{children}</Button>
+      type="text" {...props} >{children||'删除'}</Button>
   );
 };
 

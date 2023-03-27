@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
 import styles from './index.less';
-import {PageContainer, ProFormTreeSelect, ProTable} from "@ant-design/pro-components";
+import {PageContainer, ProFormText, ProFormSelect ,ProFormTreeSelect, ProTable} from "@ant-design/pro-components";
 import {request} from "../../../../utils/Request";
 import {Button, Radio, Switch} from "antd";
 import EditButton from "../../../../components/EditButton";
 import EditForm from "./components/editForm";
 import {getTree} from "../../../../services/BASE_SYSTEM/dept";
+import {getAll} from "../../../../services/BASE_SYSTEM/position";
 
 const userList = {
     url: '/rest/mgr/list',
@@ -20,11 +21,13 @@ export default function UserList() {
     const columns = [
         {
             title: '账号',
-            dataIndex: 'account'
+            dataIndex: 'account',
+            order:10
         },
         {
             title: '名称',
-            dataIndex: 'name'
+            dataIndex: 'name',
+            order: 9
         },
         {
             title: '性别',
@@ -40,8 +43,34 @@ export default function UserList() {
             }
         },
         {
+            title: '分组',
+            valueType: 'group',
+            hideInTable:true,
+            hideInSearch: true,
+            columns:[
+                {
+                    title: '密码',
+                    formItemProps:{
+                        name:"sex"
+                    },
+                    renderFormItem:()=>{
+                        return (<ProFormText.Password />)
+                    }
+                },{
+                    title: '确认密码',
+                    formItemProps:{
+                        name:"sex"
+                    },
+                    renderFormItem:()=>{
+                        return ((<ProFormText.Password />))
+                    }
+                }
+            ]
+        },
+        {
             title: '部门',
             dataIndex: 'deptName',
+            order: 8,
             formItemProps:{
                 name:"deptId"
             },
@@ -62,7 +91,15 @@ export default function UserList() {
         },
         {
             title: '职位',
-            dataIndex: 'positionName'
+            dataIndex: 'positionName',
+            order: 7,
+            renderFormItem:()=>{
+                return <ProFormSelect
+                    request={async (params)=>{
+                        return await getAll();
+                    }}
+                />
+            }
         },
         {
             title: '创建时间',
@@ -171,7 +208,10 @@ export default function UserList() {
               <Button
                   key="1"
                   type="primary"
-                  onClick={() => handleModalVisible(true)}
+                  onClick={() => {
+                      handleModalVisible(true);
+                      setEditId(0);
+                  }}
               >
                   新建
               </Button>,

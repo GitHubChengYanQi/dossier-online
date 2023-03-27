@@ -27,14 +27,12 @@ export default defineConfig({
     },{
       name: '在线建册',
       path: '/ZXJC',
-      // component: './User/Bookbuilding',
-      routes:[
-        {
-          name: '快速建册',
-          path: '/ZXJC/quick',
-          component: './User/Bookbuilding',
-        }
-      ]
+      redirect:"/ZXJC/quick",
+    },
+    {
+      name: '快速建册',
+      path: '/ZXJC/quick',
+      component: './ZXJC/Bookbuilding',
     },
     {
       name: '权限演示',
@@ -49,57 +47,54 @@ export default defineConfig({
     {
       name: '系统设置',
       path: '/BASE_SYSTEM',
+      redirect:"/BASE_SYSTEM/system/mgr"
       // component: '@/layout/System',
-      routes:[
-        {
-          name: '用户管理',
-          path: '/BASE_SYSTEM/system',
-          // component: './BASE_SYSTEM/system/mgr',
-          routes:[
-            {
-              name: '用户管理',
-              path: '/BASE_SYSTEM/system/mgr',
-              component: './BASE_SYSTEM/system/mgr',
-            },
-            {
-              name: '角色管理',
-              path: '/BASE_SYSTEM/system/role',
-              component: './BASE_SYSTEM/system/role',
-            },
-            {
-              name: '部门管理',
-              path: '/BASE_SYSTEM/system/dept',
-              component: './BASE_SYSTEM/system/dept',
-            },
-            {
-              name: '职位管理',
-              path: '/BASE_SYSTEM/system/position',
-              component: './BASE_SYSTEM/system/position',
-            },
-            {
-              name: '字典管理',
-              path: '/BASE_SYSTEM/system/dictType',
-              component: './BASE_SYSTEM/system/dictType',
-            },
-            {
-              name: '菜单管理',
-              path: '/BASE_SYSTEM/system/menu',
-              component: './BASE_SYSTEM/system/menu',
-            },
-            {
-              name: '登录日志',
-              path: '/BASE_SYSTEM/system/loginLog',
-              component: './BASE_SYSTEM/system/loginLog',
-            }
-            ,
-            {
-              name: '业务日志',
-              path: '/BASE_SYSTEM/system/log',
-              component: './BASE_SYSTEM/system/log',
-            }
-          ]
-        }
-      ]
+    },
+    {
+      name: '用户管理',
+      path: '/BASE_SYSTEM/system',
+      // component: './BASE_SYSTEM/system/mgr',
+    },
+    {
+      name: '用户管理',
+      path: '/BASE_SYSTEM/system/mgr',
+      component: './BASE_SYSTEM/system/mgr',
+    },
+    {
+      name: '角色管理',
+      path: '/BASE_SYSTEM/system/role',
+      component: './BASE_SYSTEM/system/role',
+    },
+    {
+      name: '部门管理',
+      path: '/BASE_SYSTEM/system/dept',
+      component: './BASE_SYSTEM/system/dept',
+    },
+    {
+      name: '职位管理',
+      path: '/BASE_SYSTEM/system/position',
+      component: './BASE_SYSTEM/system/position',
+    },
+    {
+      name: '字典管理',
+      path: '/BASE_SYSTEM/system/dictType',
+      component: './BASE_SYSTEM/system/dictType',
+    },
+    {
+      name: '菜单管理',
+      path: '/BASE_SYSTEM/system/menu',
+      component: './BASE_SYSTEM/system/menu',
+    },
+    {
+      name: '登录日志',
+      path: '/BASE_SYSTEM/system/loginLog',
+      component: './BASE_SYSTEM/system/loginLog',
+    }
+    ,
+    {
+      name: '业务日志',
+      path: '/BASE_SYSTEM/system/log',
+      component: './BASE_SYSTEM/system/log',
     },
     {
       name: '用户登录',
