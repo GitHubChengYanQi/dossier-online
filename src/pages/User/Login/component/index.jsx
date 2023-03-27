@@ -30,7 +30,7 @@ export default function Login({ submitText }) {
             window.location.href = decodeURIComponent(params.backUrl);
           } else {
 
-            history.replace('/');
+            history.replace('/ZXJC/quick');
           }
         }, 1500);
       }
