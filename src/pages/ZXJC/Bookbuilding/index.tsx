@@ -3,11 +3,11 @@ import styles from './index.less';
 import { Card, Button, Checkbox, Form, Input, Select, Col, Row, DatePicker, Radio, InputNumber, Space, message } from 'antd';
 import AddressSelect from '@/components/AddressSelect';
 import { useState } from 'react';
-import zjTypeList from './zjType';
-import nationList from './nation'
-import zyList from './zy'
-import whcdList from './whcd'
-import gjList from './gj'
+import zjTypeList from '../../../utils/zjType';
+import nationList from '../../../utils/nation'
+import zyList from '../../../utils/zy'
+import whcdList from '../../../utils/whcd'
+import gjList from '../../../utils/gj'
 import { useRequest } from "@/utils/Request";
 const Bookbuilding: React.FC = () => {
   const addItem = {
