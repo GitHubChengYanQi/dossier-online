@@ -1,12 +1,12 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import styles from './index.less';
-import {PageContainer, ProFormText, ProFormSelect ,ProFormTreeSelect, ProTable} from "@ant-design/pro-components";
+import {PageContainer, ProTable} from "@ant-design/pro-components";
 import {request} from "../../../../utils/Request";
-import {Button, Radio, Switch} from "antd";
+import {Button, Switch} from "antd";
 import EditButton from "../../../../components/EditButton";
 import EditForm from "./components/editForm";
-import {getTree} from "../../../../services/BASE_SYSTEM/dept";
-import {getAll} from "../../../../services/BASE_SYSTEM/position";
+
+import {Account, Birthday, CreateTime, DeptName, Name, PositionName, SexName, Status} from "./schema";
 
 const userList = {
     url: '/rest/mgr/list',
@@ -18,134 +18,21 @@ export default function UserList() {
     const [createModalVisible, handleModalVisible] = useState(false);
     const [editId, setEditId] = useState(null);
 
+    const actionRef = useRef();
     const columns = [
-        {
-            title: '账号',
-            dataIndex: 'account',
-            order:10
-        },
-        {
-            title: '名称',
-            dataIndex: 'name',
-            order: 9
-        },
-        {
-            title: '性别',
-            dataIndex: 'sexName',
-            formItemProps:{
-                name:"sex"
-            },
-            renderFormItem:()=>{
-                return (<Radio.Group>
-                    <Radio value="M">男</Radio>
-                    <Radio value={2}>女</Radio>
-                </Radio.Group>)
-            }
-        },
-        {
-            title: '分组',
-            valueType: 'group',
-            hideInTable:true,
-            hideInSearch: true,
-            columns:[
-                {
-                    title: '密码',
-                    formItemProps:{
-                        name:"sex"
-                    },
-                    renderFormItem:()=>{
-                        return (<ProFormText.Password />)
-                    }
-                },{
-                    title: '确认密码',
-                    formItemProps:{
-                        name:"sex"
-                    },
-                    renderFormItem:()=>{
-                        return ((<ProFormText.Password />))
-                    }
-                }
-            ]
-        },
-        {
-            title: '部门',
-            dataIndex: 'deptName',
-            order: 8,
-            formItemProps:{
-                name:"deptId"
-            },
-            renderFormItem:()=>{
-                return (
-                    <ProFormTreeSelect
-                        fieldProps={{
-                            allowClear:true,
-                            treeDefaultExpandAll:true
-                        }}
-
-                        request={async (params)=>{
-                            return await getTree();
-                        }}
-                />);
-            }
-
-        },
-        {
-            title: '职位',
-            dataIndex: 'positionName',
-            order: 7,
-            renderFormItem:()=>{
-                return <ProFormSelect
-                    request={async (params)=>{
-                        return await getAll();
-                    }}
-                />
-            }
-        },
-        {
-            title: '创建时间',
-            dataIndex: 'createTime',
-            hideInSearch: true,
-            hideInForm: true
-        },
-        {
-            title: '状态',
-            valueType:"radio",
-            formItemProps:{
-                name:"status"
-            },
-            valueEnum:{
-                ENABLE: {
-                    text: '启用',
-                    status: 'Error',
-                },
-                closed: {
-                    text: '禁用',
-                    status: 'Success',
-                },
-            },
-            render: (value, record) => {
-                return (
-                    <Switch
-                        checkedChildren="启用"
-                        unCheckedChildren="冻结"
-                        style={{width: 60}}
-                        defaultChecked={record.status === 'ENABLE'}
-                        onChange={(checked) => {
-                            if (checked) {
-                                unfreeze(record.userId);
-                            } else {
-                                freeze(record.userId);
-                            }
-                        }}
-                    />
-                );
-            }
-        },
+        Account,
+        Name,
+        SexName,
+        Birthday,
+        DeptName,
+        PositionName,
+        CreateTime,
+        Status,
         {
             title: '操作',
             align: 'right',
-            hideInForm:true,
-            hideInSearch:true,
+            hideInForm: true,
+            hideInSearch: true,
             render: (value, record) => {
                 return (
                     <>
@@ -174,60 +61,59 @@ export default function UserList() {
         }
     ];
 
-  return (
-    <PageContainer
-        header={{
-            title: '用户管理',
-            breadcrumb: {},
-        }}>
-      <ProTable
-          search={{
-              filterType:""
-          }}
-          rowKey="userId"
-          columns={columns}
-          request={async (params, sorter, filter) => {
-              console.log(params)
-              const { data, success } = await request({
-                  ...userList,
-                  data:{
-                      ...params
-                  },
-                  // FIXME: remove @ts-ignore
-                  // @ts-ignore
-                  sorter,
-                  filter,
-              });
-              console.log(success)
-              return {
-                  data: data || [],
-                  success:data?true:false,
-              };
-          }}
-          toolBarRender={() => [
-              <Button
-                  key="1"
-                  type="primary"
-                  onClick={() => {
-                      handleModalVisible(true);
-                      setEditId(0);
-                  }}
-              >
-                  新建
-              </Button>,
-          ]}
-      >
+    return (
+        <PageContainer
+            header={{
+                title: '用户管理',
+                breadcrumb: {},
+            }}>
+            <ProTable
+                actionRef={actionRef}
+                search={{
+                    filterType: ""
+                }}
+                rowKey="userId"
+                columns={columns}
+                request={async (params, sorter, filter) => {
+                    const {data, success} = await request({
+                        ...userList,
+                        data: {
+                            ...params
+                        },
+                        // FIXME: remove @ts-ignore
+                        // @ts-ignore
+                        sorter,
+                        filter,
+                    });
+                    return {
+                        data: data || [],
+                        success: data ? true : false,
+                    };
+                }}
+                toolBarRender={() => [
+                    <Button
+                        key="1"
+                        type="primary"
+                        onClick={() => {
+                            handleModalVisible(true);
+                            setEditId(0);
+                        }}
+                    >
+                        新建
+                    </Button>,
+                ]}
+            >
 
-      </ProTable>
-        <EditForm
-            columns={columns}
-            id={editId}
-            onCancel={() => {
-                handleModalVisible(false);
-                setEditId(null);
-            }}
-            modalVisible={createModalVisible}
-        />
-    </PageContainer>
-  );
+            </ProTable>
+            <EditForm
+                id={editId}
+                onCancel={(v) => {
+                    if(v)actionRef.current.reload();
+                    handleModalVisible(false);
+                    setEditId(null);
+                }}
+                modalVisible={createModalVisible}
+            />
+        </PageContainer>
+    );
 }

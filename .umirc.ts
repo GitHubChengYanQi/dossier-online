@@ -1,7 +1,18 @@
 import { defineConfig } from '@umijs/max';
 
 export default defineConfig({
-  antd: {},
+  antd: {
+    appConfig:{
+      message: {
+        // 配置 message 最大显示数，超过限制时，最早的消息会被自动关闭
+        maxCount: 3,
+      },
+      notification:{
+        placement: 'bottomRight',
+        bottom: 50,
+      }
+    }
+  },
   access: {},
   model: {},
   initialState: {},

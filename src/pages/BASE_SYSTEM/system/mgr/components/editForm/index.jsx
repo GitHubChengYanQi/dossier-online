@@ -1,44 +1,57 @@
-import { Modal } from 'antd';
+import {App,  Modal} from 'antd';
 import React, {PropsWithChildren, useEffect} from 'react';
-import {ProTable} from "@ant-design/pro-components";
-import {request, useRequest} from "../../../../../../utils/Request";
-
-const getUserInfo = {
-    url: '/rest/mgr/getUserInfo',
-    method: 'POST',
-    rowKey: 'userId'
-};
+import {BetaSchemaForm, ProForm, ProTable} from "@ant-design/pro-components";
+import {getUserInfo, save} from "../../../../../../services/BASE_SYSTEM/user";
+import {Account, Birthday, DeptName, Email, Name, PassWord, PositionName, RePassWord, SexName} from "../../schema";
 const EditForm = (props) => {
-    const { modalVisible, onCancel,columns,id } = props;
+    const {modalVisible, onCancel, id} = props;
+    const { message,notification } = App.useApp();
+
+    const columns = [
+        Account,
+        Name,
+        {
+            order: 8,
+            valueType: 'dependency',
+            name: [],
+            columns: (data) => {
+                return id === 0 ? [
+                    PassWord,
+                    RePassWord,
+
+                ] : []
+            }
+        },
+        Birthday,
+        Email,
+        SexName,
+        DeptName,
+        PositionName
+    ];
 
     return (
         <Modal
             destroyOnClose
-            title="新建"
-            width={420}
+            title={id===0?"新建":"编辑"}
+            width={540}
             open={modalVisible}
             onCancel={() => onCancel()}
             footer={null}
         >
-            <ProTable
-                type="form"
-                columns={columns}
-                form={{
-                    request:async ()=>{
-                        if(id!==null && id!==0){
-                            const response = await request({
-                                ...getUserInfo,
-                                params:{
-                                    userId:id
-                                }
-                            });
-                            return response.data;
-                        }else{
-                            return {};
-                        }
-                    }
-            }}
-            />
+            <ProForm
+                //grid //开启栅格化布局
+                // layout={"horizontal"}
+                request={async () => {
+                    return getUserInfo(id);
+                }}
+                onFinish={async (values)=>{
+                    await save(id,values)
+                    notification.success({message:'操作成功',placement: 'bottomRight'});
+                    onCancel(true)
+                }}
+            >
+                <BetaSchemaForm layoutType="Embed" columns={columns}/>
+            </ProForm>
         </Modal>
     );
 };

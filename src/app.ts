@@ -2,9 +2,9 @@
 
 // 全局初始化数据配置，用于 Layout 用户信息和权限初始化
 // 更多信息见文档：https://umijs.org/docs/api/runtime-config#getinitialstate
-import { history } from 'umi';
 import cookie from "js-cookie";
 import {request} from "./utils/Request";
+import {RuntimeAntdConfig} from "@@/plugin-antd/types";
 const userInfo = {
   url: '/rest/mgr/getMyInfo',
   method: 'POST',
@@ -57,4 +57,23 @@ export const layout = (initialState:any) => {
       },
     },
   };
+};
+
+export const antd: RuntimeAntdConfig = (memo) => {
+  // memo.theme ??= {};
+  // memo.theme.algorithm = theme.darkAlgorithm; // 配置 antd5 的预设 dark 算法
+
+  memo.appConfig = {
+    message: {
+      // 配置 message 最大显示数，超过限制时，最早的消息会被自动关闭
+      maxCount: 2,
+      top: 300,
+    },
+    notification:{
+      placement: 'bottomLeft',
+      bottom: 50,
+    }
+  }
+
+  return memo;
 };
