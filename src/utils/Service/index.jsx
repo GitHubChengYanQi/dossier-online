@@ -1,8 +1,8 @@
 import cookie from 'js-cookie';
 import axios from 'axios';
-import {message, Modal} from 'antd';
+import {App, Modal,message} from 'antd';
 import {history} from 'umi';
-
+// const { message,notification } = App.useApp();
 const baseURI = "http://127.0.0.1";//config.baseURI || window.sing.sysURI;
 
 
@@ -52,7 +52,7 @@ ajaxService.interceptors.response.use((response) => {
     } else if (errCode === 1001) {
       return response;
     } else if (errCode !== 200) {
-      message.error(response.message);
+      // message.error(response.message);
     }
     throw new Error(response.message);
   }

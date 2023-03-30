@@ -3,7 +3,8 @@ import { Form, Input, Button, Alert } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import cookie from 'js-cookie';
 import  {useRequest} from '@/utils/Request';
-import { useSearchParams,history,useModel   } from 'umi';
+import { useLocation ,useSearchParams,history,useModel   } from 'umi';
+import qs from "qs";
 
 const loginUrl = {
   url: '/rest/login',
@@ -15,19 +16,18 @@ const FormItem = Form.Item;
 export default function Login({ submitText }) {
 
   const {  refresh  } = useModel('@@initialState');
-  const [params, setSearchParams] = useSearchParams();
-  console.log(params)
+  const location = useLocation();
+  const params =qs.parse(location.search.substring(1))
   const { run, data, error, loading } = useRequest(loginUrl, {
     manual: true,
     ready:true,
     onSuccess:response=>{
       if (response) {
         cookie.set('tianpeng-token', response.data);
-        console.log(params)
         refresh();
         setTimeout(() => {
           if (params.backUrl) {
-            window.location.href = decodeURIComponent(params.backUrl);
+            window.location.href = params.backUrl;
           } else {
 
             history.replace('/ZXJC/quick');

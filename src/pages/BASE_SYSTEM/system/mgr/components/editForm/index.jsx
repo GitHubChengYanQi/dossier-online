@@ -46,7 +46,7 @@ const EditForm = (props) => {
                 }}
                 onFinish={async (values)=>{
                     await save(id,values)
-                    notification.success({message:'操作成功',placement: 'bottomRight'});
+                    notification.success({message:'操作成功'});
                     onCancel(true)
                 }}
             >

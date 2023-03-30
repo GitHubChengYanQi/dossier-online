@@ -131,6 +131,9 @@ export const PositionName = {
 export const CreateTime = {
     title: '创建时间', dataIndex: 'createTime', hideInSearch: true, hideInForm: true
 };
+export const roleName = {
+    title: '角色', dataIndex: 'roleName', hideInSearch: true, hideInForm: true
+};
 export const Status = {
     title: '状态', valueType: "radio", formItemProps: {
         name: "status"

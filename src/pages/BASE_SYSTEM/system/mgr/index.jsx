@@ -1,12 +1,13 @@
 import React, {useRef, useState} from 'react';
 import styles from './index.less';
-import {PageContainer, ProTable} from "@ant-design/pro-components";
+import {ModalForm, PageContainer, ProTable} from "@ant-design/pro-components";
 import {request} from "../../../../utils/Request";
 import {Button, Switch} from "antd";
 import EditButton from "../../../../components/EditButton";
 import EditForm from "./components/editForm";
 
-import {Account, Birthday, CreateTime, DeptName, Name, PositionName, SexName, Status} from "./schema";
+import {Account, Birthday, CreateTime, DeptName, Name, PositionName, roleName, SexName, Status} from "./schema";
+import RoleSet from "../role/components/roleSet";
 
 const userList = {
     url: '/rest/mgr/list',
@@ -15,13 +16,10 @@ const userList = {
 
 export default function UserList() {
 
-    const [createModalVisible, handleModalVisible] = useState(false);
-    const [editId, setEditId] = useState(null);
-
-    const actionRef = useRef();
     const columns = [
         Account,
         Name,
+        roleName,
         SexName,
         Birthday,
         DeptName,
@@ -37,7 +35,8 @@ export default function UserList() {
                 return (
                     <>
                         <Button type='ghost' className="button-left-margin" onClick={() => {
-                            roRef.current.open(record.userId);
+                            setEditId(record.userId);
+                            handleRoleSet(true);
                         }}>分配角色</Button>
                         <Button type='ghost' className="button-left-margin" onClick={() => {
                             Modal.confirm({
@@ -60,6 +59,13 @@ export default function UserList() {
             }
         }
     ];
+
+    const [createModalVisible, handleModalVisible] = useState(false);
+    const [roleSet, handleRoleSet] = useState(false);
+    const [editId, setEditId] = useState(null);
+
+    const actionRef = useRef();
+
 
     return (
         <PageContainer
@@ -91,16 +97,18 @@ export default function UserList() {
                     };
                 }}
                 toolBarRender={() => [
-                    <Button
-                        key="1"
-                        type="primary"
-                        onClick={() => {
-                            handleModalVisible(true);
-                            setEditId(0);
-                        }}
-                    >
-                        新建
-                    </Button>,
+                    <>
+
+                        <Button
+                            key="1"
+                            type="primary"
+                            onClick={() => {
+                                handleModalVisible(true);
+                                setEditId(0);
+                            }}
+                        >
+                            新建
+                        </Button></>,
                 ]}
             >
 
@@ -108,11 +116,20 @@ export default function UserList() {
             <EditForm
                 id={editId}
                 onCancel={(v) => {
-                    if(v)actionRef.current.reload();
+                    if (v) actionRef.current.reload();
                     handleModalVisible(false);
                     setEditId(null);
                 }}
                 modalVisible={createModalVisible}
+
+            />
+            <RoleSet
+                userId={editId}
+                modalVisible={roleSet}
+                onCancel={flag => {
+                    handleRoleSet(false);
+                    if (flag) actionRef.current.reload();
+                }}
             />
         </PageContainer>
     );
