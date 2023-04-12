@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { TreeSelect, Cascader } from 'antd';
-import { useRequest } from '@/utils/Request/index';
+import { useRequest } from '@/utils/Request';
 
 const AddressSelect: React.FC = (props) => {
   const listAll = {

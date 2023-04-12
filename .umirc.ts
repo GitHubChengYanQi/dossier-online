@@ -1,28 +1,27 @@
 import { defineConfig } from '@umijs/max';
-import routesList from './src/routers/index';
+import dayjs from "dayjs";
+import zhCN from 'antd/locale/zh_CN';
+import routeList from "./src/routers";
 
+dayjs.locale('zh-cn');
 export default defineConfig({
   antd: {
     appConfig:{
-      message: {
-        // 配置 message 最大显示数，超过限制时，最早的消息会被自动关闭
-        maxCount: 3,
-      },
-      notification:{
-        placement: 'bottomRight',
-        bottom: 50,
-      }
+    },
+    configProvider:{
+      locale:zhCN
     }
   },
+  styledComponents: {},
   access: {},
   model: {},
   initialState: {},
-  request: {},
-  layout: {
-    title: '妇幼健康服务与管理信息系统',
+  request: {
+    dataField: ''
   },
-  history: {type:"hash"},
-  routes: routesList,
+  layout: false,
+  history: {type:"browser"},
+  routes: routeList,
   npmClient: 'npm',
 });
 

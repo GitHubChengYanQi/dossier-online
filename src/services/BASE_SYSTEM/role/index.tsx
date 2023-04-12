@@ -1,6 +1,8 @@
 import {request} from "@/utils/Request";
 import {ResponseData} from "@/services/type/common";
 import {ProFieldRequestData} from "@ant-design/pro-utils/es/typing";
+import {GetListType} from "@/types/common";
+import {pageRequest} from "@/utils/Request/request";
 
 export const roleAdd = {
     url: '/rest/role/add',
@@ -55,20 +57,14 @@ export const roleTreeByUserIdApi = {
 };
 
 
+export const getRoleList:GetListType = async (params:Record<string, any>)=>{
+    return await pageRequest(roleList.url,{...params});
+}
+
 export const getTree = async () =>{
-    const response:ResponseData<ProFieldRequestData> = await request({
-        ...roleTreeList,
+    const response:ResponseData<ProFieldRequestData> = await request(roleTreeList.url,{
         data:{
             // roleId
-        }
-    });
-    return response.data;
-}
-export const roleTreeByUserId = async (userId:number) =>{
-    const response:ResponseData<ProFieldRequestData> = await request({
-        ...roleTreeByUserIdApi,
-        params:{
-            userId
         }
     });
     return response.data;
@@ -78,12 +74,11 @@ export interface roleSelect{
     checked:[]|string
 }
 export const roleListByUserId = async (userId:number) =>{
-    const response:ResponseData<roleSelect> = await request({
-        ...roleListByUserIdApi,
+    const response:ResponseData<roleSelect> = await request(roleListByUserIdApi.url,{
         params:{
             userId
         }
     });
     response.data.checked = response.data.checked[0];
-    return response.data;// ? response.data[0] : 0;
+    return response.data;
 }
