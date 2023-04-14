@@ -52,23 +52,22 @@ const TabList: React.FC<Partial<any>> = (props) => {
 
     const {onEdit, renderRoute, element, routes} = useTabList();
     const renderTabBar: TabsProps['renderTabBar'] = (props, DefaultTabBar) => (
-        <div style={{top: 56, position: "sticky", zIndex: 1}}>
+        <div id="iframe" style={{top: 56, position: "sticky", zIndex: 1}}>
             <DefaultTabBar {...props}  />
         </div>);
 
-    console.log(routes);
     return (
         <>
             {element?.props?.to && element}
             {routes ?
                 <>
-                    <GlobalStyle token={token}/>
+                    <GlobalStyle token={token}>
                     <Tabs
                         onTabClick={(key) => {
                             history.replace(key);
                         }}
                         size="small"
-                        id="iframe"
+
                         activeKey={renderRoute.path}
                         tabBarStyle={{
                             paddingLeft: 40,
@@ -77,9 +76,10 @@ const TabList: React.FC<Partial<any>> = (props) => {
                         renderTabBar={renderTabBar}
                         type="editable-card"
                         hideAdd
-                        animated
+                        // animated
                         onEdit={onEdit}
-                        items={routes}/></>
+                        items={routes}/>
+                    </GlobalStyle></>
                 : children}
         </>
     );

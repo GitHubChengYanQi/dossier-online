@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import styles from './index.less';
-import {PageContainer, ProTable} from "@ant-design/pro-components";
-import {request} from "../../../../utils/Request";
+import {ActionType, PageContainer, ProTable} from "@ant-design/pro-components";
+import {pageRequest, request} from "../../../../utils/Request";
 import {Button, Switch} from "antd";
 import EditButton from "../../../../components/EditButton";
 import DelButton from "../../../../components/DelButton";
+import {ColumnsType} from "@/types/common";
 
 const positionList = {
     url: '/rest/position/list',
@@ -17,7 +18,8 @@ const positionDel = {
 };
 export default function PositionList() {
 
-    const columns = [
+    const actionRef = useRef<ActionType>();
+    const columns:ColumnsType[] = [
         {
             title: '职位名称', dataIndex: 'name', width: 120
         },
@@ -46,10 +48,19 @@ export default function PositionList() {
                 return (
                     <>
                         <EditButton onClick={() => {
-                            ref.current.open(record.positionId);
+                            // ref.current.open(record.positionId);
                         }} />
-                        <DelButton api={positionDel} value={record.positionId} onSuccess={() => {
-                            tableRef.current.refresh();
+                        <DelButton request={async ()=>{
+
+                            const response = await request<any>(positionDel.url,{
+                                params:{
+                                    positionId:record.positionId
+                                }
+                            });
+                            actionRef.current?.reload()
+                            return response;
+                        }} value={record.positionId} onSuccess={() => {
+                            // tableRef.current.refresh();
                         }} />
                     </>
                 );
@@ -66,9 +77,9 @@ export default function PositionList() {
       <ProTable
           rowKey="positionId"
           columns={columns}
+          actionRef={actionRef}
           request={async (params, sorter, filter) => {
-              const { data, success } = await request({
-                  ...positionList,
+              const { data, success } = await pageRequest(positionList.url,{
                   ...params,
                   // FIXME: remove @ts-ignore
                   // @ts-ignore
@@ -78,7 +89,7 @@ export default function PositionList() {
               console.log(success)
               return {
                   data: data || [],
-                  success:data?true:false,
+                  success:!!data,
               };
           }}>
 

@@ -28,10 +28,6 @@ export interface DataBaseType {
 
 export const getDataBase = async () => {
     const response = await request(DataBaseInfo.url);
-    response.data.push({
-        label: "11111",
-        value: "123"
-    })
     return response.data;
 }
 export const getTableList = async (dbId: number) => {

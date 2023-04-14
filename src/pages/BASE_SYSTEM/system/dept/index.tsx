@@ -1,10 +1,9 @@
 import React from 'react';
-import styles from './index.less';
 import {PageContainer, ProTable} from "@ant-design/pro-components";
-import {request} from "../../../../utils/Request";
-import {Button, Switch} from "antd";
-import EditButton from "../../../../components/EditButton";
-import DelButton from "../../../../components/DelButton";
+import {pageRequest, request} from "@/utils/Request";
+import EditButton from "@/components/EditButton";
+import DelButton from "@/components/DelButton";
+import {ColumnsType} from "@/types/common";
 
 const deptList = {
     url: '/rest/dept/list',
@@ -17,7 +16,7 @@ const deptDelete = {
 };
 export default function DeptList() {
 
-    const columns = [
+    const columns:ColumnsType[] = [
         {
             title: '部门简称', dataIndex: 'simpleName', width: 120
         },
@@ -38,10 +37,10 @@ export default function DeptList() {
                 return (
                     <>
                         <EditButton onClick={() => {
-                            ref.current.open(record.deptId);
+                            // ref.current.open(record.deptId);
                         }}/>
-                        <DelButton api={deptDelete} value={record.deptId} onSuccess={() => {
-                            tableRef.current.refresh();
+                        <DelButton value={record.deptId} onSuccess={() => {
+                            // tableRef.current.refresh();
                         }}/>
                     </>
                 );
@@ -59,8 +58,7 @@ export default function DeptList() {
           rowKey="deptId"
           columns={columns}
           request={async (params, sorter, filter) => {
-              const { data, success } = await request({
-                  ...deptList,
+              const { data, success } = await pageRequest(deptList.url,{
                   ...params,
                   // FIXME: remove @ts-ignore
                   // @ts-ignore
@@ -70,7 +68,7 @@ export default function DeptList() {
               console.log(success)
               return {
                   data: data || [],
-                  success:data?true:false,
+                  success:!!data,
               };
           }}>
 

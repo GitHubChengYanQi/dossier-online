@@ -1,10 +1,10 @@
 import React from 'react';
-import styles from './index.less';
 import {PageContainer, ProTable} from "@ant-design/pro-components";
-import {request} from "../../../../utils/Request";
-import {Button, Switch} from "antd";
-import EditButton from "../../../../components/EditButton";
-import DelButton from "../../../../components/DelButton";
+import {pageRequest, request} from "@/utils/Request";
+import {Button} from "antd";
+import EditButton from "@/components/EditButton";
+import {ColumnsType} from "@/types/common";
+import {history} from "umi"
 
 const dictTypeList = {
     url: '/rest/dictType/list',
@@ -13,7 +13,7 @@ const dictTypeList = {
 };
 export default function DictTypeList() {
 
-    const columns = [
+    const columns:ColumnsType[] = [
         {
             title: '名称', dataIndex: 'simpleName', width: 200,
             render: (value, row) => {
@@ -63,7 +63,7 @@ export default function DictTypeList() {
                 return (
                     <>
                         <EditButton onClick={() => {
-                            ref.current.open(record.deptId);
+                            // ref.current.open(record.deptId);
                         }}/>
                     </>
                 );
@@ -81,8 +81,7 @@ export default function DictTypeList() {
           rowKey="dictTypeId"
           columns={columns}
           request={async (params, sorter, filter) => {
-              const { data, success } = await request({
-                  ...dictTypeList,
+              const { data, success } = await pageRequest(dictTypeList.url,{
                   ...params,
                   // FIXME: remove @ts-ignore
                   // @ts-ignore
@@ -91,7 +90,7 @@ export default function DictTypeList() {
               });
               return {
                   data: data || [],
-                  success:data?true:false,
+                  success:success,
               };
           }}>
 

@@ -4,6 +4,7 @@ import EditButton from "../../../../components/EditButton";
 import {getRoleList} from "@/services/BASE_SYSTEM/role";
 import {RestRoleResult} from "@/pages/BASE_SYSTEM/system/role/types";
 import useRoleField from "@/pages/BASE_SYSTEM/system/role/schema";
+import TableOptionsWrap from "@/components/TableOptionsWrap";
 
 
 
@@ -20,7 +21,7 @@ export default function RoleList() {
             align: 'right',
             render: (value:any, record:RestRoleResult) => {
                 return (
-                    <>
+                    <TableOptionsWrap>
                         <a
                             type="dashed"
                             className="button-left-margin"
@@ -32,7 +33,7 @@ export default function RoleList() {
                             // ref.current.open(record.roleId);
                         }}/>
                         {/*<DelButton/>*/}
-                    </>
+                    </TableOptionsWrap>
                 );
             }
         }
