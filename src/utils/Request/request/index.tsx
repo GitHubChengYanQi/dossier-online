@@ -8,6 +8,7 @@ const request = async <T = any>(url: string, opts: any = {method: 'POST'}) => {
         method: "POST",
         ...opts
     });
+
     if (response.data.errCode === 1502) {
         const _window = window as any;
         _window.ds.sessionExpire();

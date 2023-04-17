@@ -27,7 +27,7 @@ export interface RestRoleResult {
     /**
      * 主键id
      */
-    roleid: number;
+    roleId: number;
     /**
      * 序号
      */

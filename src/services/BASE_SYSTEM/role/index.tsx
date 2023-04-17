@@ -1,5 +1,5 @@
 import {request} from "@/utils/Request";
-import {ResponseData} from "@/services/type/common";
+import {ResponseData} from "@/types/common";
 import {ProFieldRequestData} from "@ant-design/pro-utils/es/typing";
 import {GetListType} from "@/types/common";
 import {pageRequest} from "@/utils/Request/request";
@@ -10,7 +10,7 @@ export const roleAdd = {
 };
 
 export const roleRemove = {
-    url: '/role/remove',
+    url: '/rest/role/remove',
     method: 'POST',
 };
 
@@ -41,7 +41,7 @@ export const roleSet = {
     method: 'POST'
 };
 export const roleSetView = {
-    url: '/rest/menu/menuTreeListByRoleId',
+    url: '/rest/menu/ ',
     method: 'POST',
     rowKey: 'roleId'
 };
@@ -56,29 +56,73 @@ export const roleTreeByUserIdApi = {
     rowKey: 'userId'
 };
 
-
-export const getRoleList:GetListType = async (params:Record<string, any>)=>{
-    return await pageRequest(roleList.url,{...params});
+export const saveRoleInfo = async (roleId: number, data: any) => {
+    if (roleId === 0) {
+        return await request(roleAdd.url, {
+            data
+        })
+    }
+    return await request(roleSave.url, {
+        data: {
+            ...data,
+            roleId
+        }
+    })
+}
+export const setRolePermission = async (roleId: number, ids: number[]) => {
+    return await request(roleSet.url, {
+        data: {
+            roleId,
+            ids:ids.join(",")
+        }
+    });
 }
 
-export const getTree = async () =>{
-    const response:ResponseData<ProFieldRequestData> = await request(roleTreeList.url,{
-        data:{
+export const delRoleInfo = async (roleId: number) => {
+    return await request(roleRemove.url, {
+        params: {
+            roleId
+        }
+    });
+}
+export const getRoleInfo = async (roleId: number) => {
+    if (roleId === 0) {
+        return {};
+    }
+    const response = await request(roleView.url, {
+        params: {
+            roleId
+        }
+    });
+    return response.data;
+}
+
+export const getRoleList: GetListType = async (params: Record<string, any>) => {
+    return await pageRequest(roleList.url, {...params});
+}
+
+export const getTree = async () => {
+    const response: ResponseData<ProFieldRequestData> = await request(roleTreeList.url, {
+        data: {
             // roleId
         }
     });
     return response.data;
 }
 
-export interface roleSelect{
-    checked:[]|string
+export interface roleSelect {
+    checked: [] | string
 }
-export const roleListByUserId = async (userId:number) =>{
-    const response:ResponseData<roleSelect> = await request(roleListByUserIdApi.url,{
-        params:{
+
+export const roleListByUserId = async (userId: number) => {
+    const response = await request<roleSelect>(roleListByUserIdApi.url, {
+        params: {
             userId
         }
     });
-    response.data.checked = response.data.checked[0];
+    if (response.data?.checked) {
+        response.data.checked = response.data?.checked[0];
+    }
+
     return response.data;
 }

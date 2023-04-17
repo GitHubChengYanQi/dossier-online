@@ -1,58 +1,113 @@
-import React from 'react';
-import {PageContainer, ProColumns, ProTable} from "@ant-design/pro-components";
-import EditButton from "../../../../components/EditButton";
-import {getRoleList} from "@/services/BASE_SYSTEM/role";
-import {RestRoleResult} from "@/pages/BASE_SYSTEM/system/role/types";
-import useRoleField from "@/pages/BASE_SYSTEM/system/role/schema";
+import React, {useRef, useState} from 'react';
+import {ActionType, PageContainer, ProColumns, ProTable} from "@ant-design/pro-components";
+import EditButton from "@/components/EditButton";
+import {delRoleInfo, getRoleList} from "@/services/BASE_SYSTEM/role";
+import {RestRoleResult} from "./types";
+import useRoleField from "./schema";
 import TableOptionsWrap from "@/components/TableOptionsWrap";
-
+import RoleEdit from "./components/RoleEdit";
+import {Button} from "antd";
+import DelButton from "@/components/DelButton";
+import useAlert from "@/components/useAlert";
+import SetPermission from "@/pages/BASE_SYSTEM/system/role/components/SetPermission";
 
 
 export default function RoleList() {
 
-    const {Name,description} = useRoleField();
+    const [open, setOpen] = useState<boolean>(false);
+    const [permissionOpen, setPermissionOpen] = useState<boolean>(false);
+    const [editId, setEditId] = useState<number>(0);
 
-    const columns:ProColumns[] = [
+    const actionRef = useRef<ActionType>();
+    const {Name, description} = useRoleField();
+
+    const {error} = useAlert();
+
+    const columns: ProColumns[] = [
         Name,
         description,
         {
             title: '操作',
             width: 360,
             align: 'right',
-            render: (value:any, record:RestRoleResult) => {
+            hideInSearch:true,
+            render: (value: any, record: RestRoleResult) => {
                 return (
                     <TableOptionsWrap>
                         <a
                             type="dashed"
                             className="button-left-margin"
                             onClick={() => {
-                                console.log(record)
-                                // refRoleSet.current.open(record.roleId);
+                                setEditId(record.roleId);
+                                setPermissionOpen(true);
                             }}>权限配置</a>
                         <EditButton onClick={() => {
-                            // ref.current.open(record.roleId);
+                            setEditId(record.roleId);
+                            setOpen(true);
                         }}/>
-                        {/*<DelButton/>*/}
+                        <DelButton request={async () => {
+                            const response = await delRoleInfo(record.roleId);
+                            if (response.errCode !== 0) {
+                                error(response.message);
+                            } else {
+                                actionRef.current?.reload();
+                            }
+                        }}/>
                     </TableOptionsWrap>
                 );
             }
         }
     ];
 
-  return (
-    <PageContainer
-        header={{
-            title: '用户管理',
-            breadcrumb: {},
-        }}>
-      <ProTable<RestRoleResult>
-          rowKey="roleId"
-          columns={columns}
-          request={async (params, sorter, filter) => {
-              return await getRoleList<RestRoleResult>(params, sorter, filter);
-          }}>
+    return (
+        <PageContainer
+            header={{
+                title: '用户管理',
+                breadcrumb: {},
+            }}>
+            <ProTable<RestRoleResult>
+                actionRef={actionRef}
+                rowKey="roleId"
+                columns={columns}
+                request={async (params, sorter, filter) => {
+                    return await getRoleList<RestRoleResult>(params, sorter, filter);
+                }}
+                toolBarRender={() => [
+                    <>
+                        <Button
+                            key="1"
+                            type="primary"
+                            onClick={() => {
+                                setOpen(true);
+                                setEditId(0);
+                            }}
+                        >
+                            新建
+                        </Button></>,
+                ]}
+            >
 
-      </ProTable>
-    </PageContainer>
-  );
+            </ProTable>
+            <RoleEdit
+                editId={editId}
+                open={open}
+                onOpenChange={(v) => {
+                    if (!v) {
+                        setEditId(0);
+                    }
+                    setOpen(v);
+                }}
+                onReload={() => {
+                    actionRef.current?.reload()
+
+                }}
+            />
+            <SetPermission
+                editId={editId}
+                open={permissionOpen}
+                onClose={() => {
+                setPermissionOpen(false)
+            }}/>
+        </PageContainer>
+    );
 }

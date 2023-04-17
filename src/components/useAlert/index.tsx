@@ -1,10 +1,10 @@
 import {App} from "antd";
 import {history} from "umi";
 
-let sessionExpireShow:boolean = false
+let sessionExpireShow: boolean = false
 const useAlert = () => {
 
-    const {modal,notification,message} = App.useApp();
+    const {modal, notification, message} = App.useApp();
 
     const sessionExpire = () => {
         /**
@@ -24,19 +24,28 @@ const useAlert = () => {
             });
         }
     }
+    const success = (message:string)=>{
+        notification.success({
+            message,
+            placement:"bottomRight"
+        });
+    }
     const error = (message: string) => {
         modal.error({
             title: "操作失败",
             content: message,
-            centered:true
+            centered: true
         });
     }
 
 
     return {
         sessionExpire,
-        modal,notification,message,
-        error
+        modal,
+        notification,
+        message,
+        error,
+        success
     }
 };
 export default useAlert;
