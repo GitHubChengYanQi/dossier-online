@@ -36,72 +36,92 @@ const routeList = [
         component: './Table',
     },
     {
-        name: '系统设置',
+        name: '基本功能',
         path: '/BASE_SYSTEM',
-        redirect: "/BASE_SYSTEM/system/mgr",
-        // component: './layout/System',
+        redirect: "/BASE_SYSTEM/system",
         routes: [
             {
-                name: '用户管理',
+                name:"业务设置",
+                path:"/BASE_SYSTEM/Work",
+                redirect: "/BASE_SYSTEM/Work/group/groupList",
+                routes: [
+                    {
+                        name:"业务设置",
+                        path:"/BASE_SYSTEM/Work/group/groupList",
+                        component: "./Work/Medical/medicalGroup/medicalGroupList"
+                    },
+                    {
+                        name:"业务设置",
+                        path:"/BASE_SYSTEM/Work/item/list",
+                        component: "./Work/Medical/medicalItem/medicalItemList"
+                    }
+                ]
+            },
+            {
+                name: '系统设置',
                 path: '/BASE_SYSTEM/system',
                 redirect: "/BASE_SYSTEM/system/mgr",
                 routes: [
                     {
-                        name: '用户列表',
-                        path: '/BASE_SYSTEM/system/mgr',
-                        component: './BASE_SYSTEM/system/mgr',
+                        name: '用户管理',
+                        path: '/BASE_SYSTEM/system',
+                        redirect: "/BASE_SYSTEM/system/mgr",
+                        routes: [
+                            {
+                                name: '用户列表',
+                                path: '/BASE_SYSTEM/system/mgr',
+                                component: './BASE_SYSTEM/system/mgr',
+                            },
+                        ],
                     },
-                ],
-            },
-            {
-                name: '角色管理',
-                path: '/BASE_SYSTEM/system/role',
-                component: './BASE_SYSTEM/system/role',
-            },
-            {
-                name: '部门管理',
-                path: '/BASE_SYSTEM/system/dept',
-                component: './BASE_SYSTEM/system/dept',
-            },
-            {
-                name: '职位管理',
-                path: '/BASE_SYSTEM/system/position',
-                component: './BASE_SYSTEM/system/position',
-            },
-            {
-                name: '字典管理',
-                path: '/BASE_SYSTEM/system/dictType',
-                component: './BASE_SYSTEM/system/dictType',
-            },
-            {
-                name: '菜单管理',
-                path: '/BASE_SYSTEM/system/menu',
-                component: './BASE_SYSTEM/system/menu',
-            },
-            {
-                name: '登录日志',
-                path: '/BASE_SYSTEM/system/loginLog',
-                component: './BASE_SYSTEM/system/loginLog',
-            },
-            {
-                name: '业务日志',
-                path: '/BASE_SYSTEM/system/log',
-                component: './BASE_SYSTEM/system/log',
-            },
-            {
-                name: '代码生成',
-                path: '/BASE_SYSTEM/dev_tools/gen',
-                component: './BASE_SYSTEM/dev_tools/gen',
-            },
-            {
-                name: '数据管理',
-                path: '/BASE_SYSTEM/dataInfo',
-                component: './BASE_SYSTEM/system/databaseInfo/databaseInfoList',
+                    {
+                        name: '角色管理',
+                        path: '/BASE_SYSTEM/system/role',
+                        component: './BASE_SYSTEM/system/role',
+                    },
+                    {
+                        name: '部门管理',
+                        path: '/BASE_SYSTEM/system/dept',
+                        component: './BASE_SYSTEM/system/dept',
+                    },
+                    {
+                        name: '职位管理',
+                        path: '/BASE_SYSTEM/system/position',
+                        component: './BASE_SYSTEM/system/position',
+                    },
+                    {
+                        name: '字典管理',
+                        path: '/BASE_SYSTEM/system/dictType',
+                        component: './BASE_SYSTEM/system/dictType',
+                    },
+                    {
+                        name: '菜单管理',
+                        path: '/BASE_SYSTEM/system/menu',
+                        component: './BASE_SYSTEM/system/menu',
+                    },
+                    {
+                        name: '登录日志',
+                        path: '/BASE_SYSTEM/system/loginLog',
+                        component: './BASE_SYSTEM/system/loginLog',
+                    },
+                    {
+                        name: '业务日志',
+                        path: '/BASE_SYSTEM/system/log',
+                        component: './BASE_SYSTEM/system/log',
+                    },
+                ]
             },
             {
                 name: '代码生成',
-                path: '/BASE_SYSTEM/dataInfoEdit',
-                component: './BASE_SYSTEM/system/databaseInfo/databaseInfoEdit',
+                path: '/BASE_SYSTEM/dev_tools',
+                redirect: "/BASE_SYSTEM/dev_tools/gen",
+                routes: [
+                    {
+                        name: '代码生成',
+                        path: '/BASE_SYSTEM/dev_tools/gen',
+                        component: './BASE_SYSTEM/dev_tools/gen',
+                    }
+                ]
             },
         ]
     },
