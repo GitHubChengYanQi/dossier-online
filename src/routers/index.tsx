@@ -46,12 +46,17 @@ const routeList = [
                 redirect: "/BASE_SYSTEM/Work/group/groupList",
                 routes: [
                     {
-                        name:"业务设置",
+                        name:"检查单管理",
+                        path:"/BASE_SYSTEM/Work/medical",
+                        component: "./Work/Medical/medical/medicalList"
+                    },
+                    {
+                        name:"检查分组",
                         path:"/BASE_SYSTEM/Work/group/groupList",
                         component: "./Work/Medical/medicalGroup/medicalGroupList"
                     },
                     {
-                        name:"业务设置",
+                        name:"检查项目",
                         path:"/BASE_SYSTEM/Work/item/list",
                         component: "./Work/Medical/medicalItem/medicalItemList"
                     }

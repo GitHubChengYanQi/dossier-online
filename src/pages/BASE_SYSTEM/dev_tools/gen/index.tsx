@@ -19,7 +19,6 @@ const GenCode = () => {
         author,
         proPackage,
         removePrefix,
-        version,
         dataSourceId,
         genLocation,
         tables,
@@ -29,7 +28,6 @@ const GenCode = () => {
         author,
         proPackage,
         removePrefix,
-        version,
         genLocation,
         dataSourceId,
         {

@@ -6,6 +6,7 @@
  */
 import {ResponseData} from "@/types/common";
 import {request,pageRequest} from "@/utils/Request";
+import {medicalGroupDelete} from "@/pages/Work/Medical/medicalGroup/service";
 
 export const medicalItemAdd = {
   url: '/medicalItem/add',
@@ -53,9 +54,12 @@ export const getMedicalItemList = async (params: Record<string, any>, sorter:any
     });
 }
 export const getMedicalItemInfo = async (id: number) => {
-    const response: ResponseData<any> = await request(medicalItemEdit.url, {
+    if(id===0){
+        return {};
+    }
+    const response: ResponseData<any> = await request(medicalItemDetail.url, {
             params: {
-                userId: id
+                medicalItemId: id
             }
         });
     return response.data;
@@ -73,4 +77,11 @@ export const saveMedicalItem = async (id: number, data: any) => {
             data
         });
     }
+}
+export const delMedicalItemInfo = async (id: number) => {
+    return await request(medicalItemDelete.url, {
+        params: {
+            medicalItemId: id
+        }
+    });
 }

@@ -53,9 +53,9 @@ export const getMedicalGroupList = async (params: Record<string, any>, sorter:an
     });
 }
 export const getMedicalGroupInfo = async (id: number) => {
-    const response: ResponseData<any> = await request(medicalGroupEdit.url, {
+    const response: ResponseData = await request(medicalGroupDetail.url, {
             params: {
-                userId: id
+                medicalGroupId: id
             }
         });
     return response.data;
@@ -73,4 +73,11 @@ export const saveMedicalGroup = async (id: number, data: any) => {
             data
         });
     }
+}
+export const delMedicalGroupInfo = async (id: number) => {
+    return await request(medicalGroupDelete.url, {
+        params: {
+            medicalGroupId: id
+        }
+    });
 }

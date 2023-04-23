@@ -1,27 +1,30 @@
 /**
- * 检查分组字段配置页
+ * 科目表字段配置页
  *
- * @author 
- * @Date 2023-04-14 11:48:58
+ * @author Sing
+ * @Date 2023-04-23 21:45:11
  */
 
 import {request} from "@/utils/Request";
 import {ColumnsType} from "@/types/common";
 
-const useMedicalGroup = ()=>{
-    const MedicalGroupId:ColumnsType = {
-        title:"编码",
-        dataIndex:"medicalGroupId",
+const useHisSubject = ()=>{
+    const SubjectId:ColumnsType = {
+        title:"",
+        dataIndex:"subjectId",
         hideInForm:true,
+        hideInTable:true,
         hideInSearch:true,
     }
-    const Name:ColumnsType = {
-        title:"名称",
-        dataIndex:"name",
+    const SubjectName:ColumnsType = {
+        title:"科目名称",
+        dataIndex:"subjectName",
     }
-    const Code:ColumnsType = {
-        title:"编码",
-        dataIndex:"code",
+    const Sort:ColumnsType = {
+        title:"排序",
+        dataIndex:"sort",
+        valueType:"digit",
+        hideInSearch:true,
     }
     const CreateTime:ColumnsType = {
         title:"",
@@ -59,9 +62,9 @@ const useMedicalGroup = ()=>{
         hideInSearch:true,
     }
     return {
-        MedicalGroupId,
-        Name,
-        Code,
+        SubjectId,
+        SubjectName,
+        Sort,
         CreateTime,
         CreateUser,
         UpdateTime,
@@ -69,4 +72,4 @@ const useMedicalGroup = ()=>{
         Display,
     }
 }
-export default useMedicalGroup
+export default useHisSubject

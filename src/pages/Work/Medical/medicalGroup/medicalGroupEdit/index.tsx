@@ -1,28 +1,32 @@
 /**
  * 检查分组编辑页
  *
- * @author 
+ * @author
  * @Date 2023-04-14 11:48:58
  */
 
 import React from 'react';
-import {BetaSchemaForm, ProForm} from "@ant-design/pro-components";
+import {BetaSchemaForm} from "@ant-design/pro-components";
 import useMedicalGroupField from "../schema";
-import { saveMedicalGroup,getMedicalGroupInfo } from "../service";
+import {saveMedicalGroup, getMedicalGroupInfo} from "../service";
 import useAlert from "@/components/useAlert";
+import FormWrap, {FormWrapProps} from "@/components/FormWrap";
 
-const MedicalGroupEdit = (props:any) => {
-    const { medicalGroupId } = props;
+type MedicalGroupEditProps<T> = {
+    medicalGroupId: number;
+} & FormWrapProps<T>
+const MedicalGroupEdit = <T extends Record<string, any>>(props: MedicalGroupEditProps<T>) => {
+    const {medicalGroupId, type, open, onSuccess,onClose,width} = props;
     const {
-          MedicalGroupId,
-          Name,
-          Code,
-          CreateTime,
-          CreateUser,
-          UpdateTime,
-          UpdateUser,
-          Display,
-        } = useMedicalGroupField();
+        MedicalGroupId,
+        Name,
+        Code,
+        CreateTime,
+        CreateUser,
+        UpdateTime,
+        UpdateUser,
+        Display,
+    } = useMedicalGroupField();
     const columns = [
         MedicalGroupId,
         Name,
@@ -32,24 +36,32 @@ const MedicalGroupEdit = (props:any) => {
         UpdateTime,
         UpdateUser,
         Display,
-        ];
+    ];
 
-    const {error,notification} = useAlert();
+    const {error, notification} = useAlert();
+
 
     return (
-        <ProForm
+        <FormWrap
+            open={open}
+            type={type}
+            onClose={onClose}
+            width={width}
             request={async () => {
                 return getMedicalGroupInfo(medicalGroupId);
-                }}
+            }}
             onFinish={async (values) => {
-                await saveMedicalGroup(medicalGroupId, values).catch((e) => {
-                    error(e.message);
-                });
-                notification.success({message: '操作成功'});
-                }}
-            >
+                const response = await saveMedicalGroup(medicalGroupId, values);
+                if (response.errCode !== 0) {
+                    error(response.message);
+                } else {
+                    onSuccess?.();
+                    notification.success({message: '操作成功'});
+                }
+            }}
+        >
             <BetaSchemaForm layoutType="Embed" columns={columns}/>
-        </ProForm>
+        </FormWrap>
     );
 };
 

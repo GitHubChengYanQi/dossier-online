@@ -136,6 +136,7 @@ const FieldConfigList = (
 
                         <ProFormSelect width={160} name={"type"} label={<h4>字段类型</h4>} options={[
                             {label: '文本输入框', value: ''},
+                            {label: '多行文本', value: 'textArea'},
                             {label: '上级ID', value: 'parentId'},
                             {label: '密码输入框', value: 'password'},
                             {label: '数字输入框', value: 'digit'},
@@ -145,7 +146,6 @@ const FieldConfigList = (
                             {label: '树形下拉框', value: 'treeSelect'},
                             {label: '复选框', value: 'checkbox'},
                             {label: '单选框', value: 'radio'},
-                            {label: '多行文本', value: 'textArea'},
                             {label: '日期选择器', value: 'date'},
                             {label: '周选择器', value: 'dateWeek'},
                             {label: '月选择器', value: 'dateMonth'},

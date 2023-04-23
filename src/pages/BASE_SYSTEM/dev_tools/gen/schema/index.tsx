@@ -5,7 +5,8 @@ import {getDataBase} from "@/pages/BASE_SYSTEM/dev_tools/gen/components/GenDataB
 const useGenField = ()=>{
     const author:ColumnsType = {
         width:300,
-        title: '作者'
+        title: '作者',
+        dataIndex:"author"
     }
     const proPackage:ColumnsType = {
         width:300,
@@ -14,11 +15,13 @@ const useGenField = ()=>{
     }
     const removePrefix:ColumnsType = {
         width:300,
-        title: '表前缀移除'
+        title: '表前缀移除',
+        dataIndex:'removePrefix'
     }
     const version:ColumnsType = {
         width:300,
-        title: '版本'
+        title: '版本',
+        dataIndex:'version'
     }
     const genLocation:ColumnsType = {
         width:300,

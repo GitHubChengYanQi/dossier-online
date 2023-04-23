@@ -1,50 +1,58 @@
 /**
- * 检查分组列表页
+ * 检查列表页
  *
- * @author
- * @Date 2023-04-14 11:48:58
+ * @author 
+ * @Date 2023-04-20 10:18:26
  */
 
 import React, {useRef, useState} from 'react';
-import useMedicalGroupField from "../schema";
-import {delMedicalGroupInfo, getMedicalGroupList} from "../service";
+import useMedicalField from "../schema";
+import {delMedicalInfo,getMedicalList} from "../service";
 import EditButton from "@/components/EditButton";
 import TableOptionsWrap from "@/components/TableOptionsWrap";
-import {PageContainer, ProTable, ActionType} from "@ant-design/pro-components";
+import {PageContainer, ProTable,ActionType} from "@ant-design/pro-components";
 import {Button} from "antd";
 import {ColumnsType} from "@/types/common";
-import MedicalGroupEdit from "@/pages/Work/Medical/medicalGroup/medicalGroupEdit";
 import DelButton from "@/components/DelButton";
 import useAlert from "@/components/useAlert";
+import MedicalEdit from "../medicalEdit";
 
-const MedicalGroupList = () => {
+const MedicalList = () => {
 
-    const [editId, setEditId] = useState<number>(0);
-    const [open, setOpen] = useState<boolean>(false);
+    const [editId,setEditId] = useState<number>(0);
+    const [open,setOpen] = useState<boolean>(false);
 
     const {error, notification} = useAlert();
 
     const actionRef = useRef<ActionType>();
 
     const {
-        MedicalGroupId,
-        Name,
-        Code,
+        MedicalId,
+        Title,
+        Sort,
         CreateTime,
         CreateUser,
         UpdateTime,
         UpdateUser,
         Display,
-    } = useMedicalGroupField();
+    } = useMedicalField();
 
-    const columns: ColumnsType[] = [
+    const columns:ColumnsType[] = [
         {
             dataIndex: 'index',
             valueType: 'indexBorder',
             width: 48,
         },
-        Name,
-        Code,
+        MedicalId,
+        Title,
+        {
+            title:"分组数",
+            dataIndex:"medicalGroupId",
+            render:(value,record)=>{
+                return record.medicalGroupId.length
+            }
+        },
+        Sort,
         CreateTime,
         CreateUser,
         UpdateTime,
@@ -52,16 +60,16 @@ const MedicalGroupList = () => {
         Display,
         {
             title: "操作",
-            align: "right",
-            render: (value: any, record: any) => {
-                return (
+            align:"right",
+            render:(value: any, record: any)=>{
+                return(
                     <TableOptionsWrap>
-                        <EditButton onClick={() => {
-                            setEditId(record.medicalGroupId);
+                        <EditButton onClick={()=>{
+                            setEditId(record.medicalId);
                             setOpen(true)
-                        }}/>
+                        }} />
                         <DelButton request={async () => {
-                            const response = await delMedicalGroupInfo(record.medicalGroupId);
+                            const response = await delMedicalInfo(record.medicalId);
                             if (response.errCode !== 0) {
                                 error(response.message);
                             } else {
@@ -73,19 +81,17 @@ const MedicalGroupList = () => {
                 )
             }
         }
-    ];
-
-
+        ];
 
     return (
         <PageContainer>
             <ProTable
                 scroll={{x: "max-content"}}
                 actionRef={actionRef}
-                rowKey="medicalGroupId"
+                rowKey="medicalId"
                 columns={columns}
                 request={async (params, sorter, filter) => {
-                    const {data, success} = await getMedicalGroupList(params, sorter, filter);
+                    const {data, success} = await getMedicalList(params, sorter, filter);
                     return {
                         data: data || [],
                         success
@@ -100,21 +106,14 @@ const MedicalGroupList = () => {
                                 setOpen(true);
                             }}
                         >
-                            新建
+                        新建
                         </Button>
                     </>,
                 ]}
             />
-            <MedicalGroupEdit type={"Modal"} onClose={() => {
-                setEditId(0);
-                setOpen(false)
-            }} onSuccess={() => {
-                setEditId(0);
-                actionRef?.current?.reload();
-                setOpen(false)
-            }} medicalGroupId={editId} open={open} width={360}/>
+            <MedicalEdit width={460}  onClose={()=>{ setEditId(0);setOpen(false)}} onSuccess={()=>{setEditId(0);actionRef?.current?.reload();setOpen(false)}} medicalId={editId} open={open} />
         </PageContainer>
     );
 };
 
-export default MedicalGroupList;
+export default MedicalList;
