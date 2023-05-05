@@ -5,14 +5,15 @@ import {freeze, unfreeze} from "@/services/BASE_SYSTEM/user";
 import {useModel} from "umi";
 
 
-interface statusProps{
-    record:any
+interface statusProps {
+    record: any
 }
-export const StatusRender:React.FC<statusProps> = (props)=>{
+
+export const StatusRender: React.FC<statusProps> = (props) => {
     const {record} = props;
 
-    const [value,setValue] =  useState(record.status);
-    const [loading,setLoading] =  useState(false);
+    const [value, setValue] = useState(record.status);
+    const [loading, setLoading] = useState(false);
 
     return <Switch
         checkedChildren="启用"
@@ -36,9 +37,9 @@ export const StatusRender:React.FC<statusProps> = (props)=>{
     />
 }
 
-const useUserField = ()=>{
-    const {data:deptData,run:deptRun} = useModel("dept");
-    const {data:positionData,run:positionRun} = useModel("position");
+const useUserField = () => {
+    const {data: deptData, run: deptRun} = useModel("dept");
+    const {data: positionData, run: positionRun} = useModel("position");
 
     const Account: ColumnsType = {
         title: '账号', dataIndex: 'account', order: 10,
@@ -85,7 +86,7 @@ const useUserField = ()=>{
         }
     }
     const SexName: ColumnsType = {
-        title: '性别', dataIndex: 'sexName', align: "center", formItemProps: {
+        title: '性别', dataIndex: 'sexName',  formItemProps: {
             name: "sex",
         }, renderFormItem: () => {
             return (<Radio.Group>
@@ -129,8 +130,30 @@ const useUserField = ()=>{
             ]
         }, valueType: "password",
     };
+    const DeptId: ColumnsType = {
+        title: '部门',
+        dataIndex: 'deptId',
+        order: 6,
+        formItemProps: {
+            rules: [
+                {
+                    required: true,
+                    message: '请选择部门!',
+                }
+            ]
+        },
+        fieldProps: {
+            treeDefaultExpandAll: true,
+            treeData:deptData
+        },
+        valueType: "treeSelect",
+    };
     const DeptName: ColumnsType = {
-        title: '部门', dataIndex: 'deptName', order: 6, formItemProps: {
+        title: '部门',
+        dataIndex: 'deptName',
+        order: 0,
+        formItemProps: {
+            hidden:true,
             name: "deptId",
             rules: [
                 {
@@ -140,16 +163,10 @@ const useUserField = ()=>{
             ]
         },
         fieldProps: {
-            treeDefaultExpandAll: true
+            treeDefaultExpandAll: true,
+            treeData:deptData
         },
         valueType: "treeSelect",
-        request: async () => {
-            if(!deptData){
-                const response = await deptRun();
-                return response
-            }
-            return deptData;
-        }
     };
     const PositionName: ColumnsType = {
         title: '职位', dataIndex: 'positionName', order: 5,
@@ -167,9 +184,9 @@ const useUserField = ()=>{
             mode: "multiple"
         },
         request: async () => {
-            if(!positionData){
+            if (!positionData) {
                 const response = await positionRun();
-                return  response;
+                return response;
             }
             return positionData;
         }
@@ -181,16 +198,19 @@ const useUserField = ()=>{
         title: '角色', dataIndex: 'roleName', hideInSearch: true, hideInForm: true
     };
     const Status: ColumnsType = {
+        order:1,
         title: '状态', valueType: "radio", formItemProps: {
             name: "status"
-        }, align: "center", valueEnum: {
+        },
+        // align: "center",
+        valueEnum: {
             ENABLE: {
                 text: '启用', status: 'Error',
             }, closed: {
                 text: '禁用', status: 'Success',
             },
         }, render: (value, record) => {
-            return <StatusRender record={record} />;
+            return <StatusRender record={record}/>;
         }
     }
     return {
@@ -205,7 +225,8 @@ const useUserField = ()=>{
         PositionName,
         CreateTime,
         roleName,
-        Status
+        Status,
+        DeptId
     }
 }
 export default useUserField;

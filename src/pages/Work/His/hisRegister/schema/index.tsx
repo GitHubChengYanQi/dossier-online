@@ -1,44 +1,38 @@
 /**
- * 部门科目关联表字段配置页
+ * 挂号信息字段配置页
  *
  * @author Sing
- * @Date 2023-04-23 21:45:11
+ * @Date 2023-05-03 19:52:48
  */
 
 import {request} from "@/utils/Request";
 import {ColumnsType} from "@/types/common";
 
-const useHisDeptSubject = ()=>{
-    const DeptSubId:ColumnsType = {
+const useHisRegister = ()=>{
+    const RegisterId:ColumnsType = {
         title:"",
-        dataIndex:"deptSubId",
+        dataIndex:"registerId",
         hideInForm:true,
         hideInTable:true,
         hideInSearch:true,
     }
-    const DeptId:ColumnsType = {
-        title:"关联部门",
-        dataIndex:"deptIds",
-        valueType:"treeSelect",
-        fieldProps:{
-            multiple:true,
-            treeDefaultExpandAll:true,
-            treeExpandAction:"click",
-        },
-        request:async ()=>{
-            const response = await request("/rest/dept/tree");
+    const Department:ColumnsType = {
+        title:"科室",
+        dataIndex:"department",
+    }
+    const Doctor:ColumnsType = {
+        title:"医生",
+        dataIndex:"doctor",
+    }
+    const NumberType:ColumnsType = {
+        title:"号别",
+        dataIndex:"numberType",
+        valueType:"radio",
+        debounceTime: 500,
+        request: async (data)=>{
+            const response = await request("/medicalBind/listSelect",data);
             return response.data;
-        }
-    }
-    const SubjectId:ColumnsType = {
-        title:"subjectId",
-        dataIndex:"subjectId",
-    }
-    const Sort:ColumnsType = {
-        title:"排序",
-        dataIndex:"sort",
-        valueType:"digit",
-        hideInSearch:true,
+        },
     }
     const CreateTime:ColumnsType = {
         title:"",
@@ -76,10 +70,10 @@ const useHisDeptSubject = ()=>{
         hideInSearch:true,
     }
     return {
-        DeptSubId,
-        DeptId,
-        SubjectId,
-        Sort,
+        RegisterId,
+        Department,
+        Doctor,
+        NumberType,
         CreateTime,
         CreateUser,
         UpdateTime,
@@ -87,4 +81,4 @@ const useHisDeptSubject = ()=>{
         Display,
     }
 }
-export default useHisDeptSubject
+export default useHisRegister

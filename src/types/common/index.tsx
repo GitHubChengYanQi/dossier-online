@@ -43,7 +43,12 @@ export declare type FieldProps = {
 /**
  * 全局初始化状态
  */
-export interface initType{avatar:string,name:string ,userInfo: any, menus: any }
+export interface initType {
+    avatar: string,
+    name: string,
+    userInfo: any,
+    menus: any
+}
 
 /**
  * 列表service 定义

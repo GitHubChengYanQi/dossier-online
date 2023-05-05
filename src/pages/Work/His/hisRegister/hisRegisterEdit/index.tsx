@@ -1,40 +1,39 @@
 /**
- * 科目表编辑页
+ * 挂号信息编辑页
  *
  * @author Sing
- * @Date 2023-04-23 21:45:11
+ * @Date 2023-05-03 19:52:48
  */
 
 import React from 'react';
 import {BetaSchemaForm} from "@ant-design/pro-components";
-import useHisSubjectField from "../schema";
-import { saveHisSubject,getHisSubjectInfo } from "../service";
+import useHisRegisterField from "../schema";
+import { saveHisRegister,getHisRegisterInfo } from "../service";
 import useAlert from "@/components/useAlert";
 import FormWrap,{FormWrapProps} from "@/components/FormWrap";
-import useHisDeptSubject from "@/pages/Work/His/hisDeptSubject/schema";
 
-type HisSubjectEditProps<T> = {
-    subjectId:number
+type HisRegisterEditProps<T> = {
+    registerId:number
 } & FormWrapProps<T>
 
-const HisSubjectEdit = <T extends Record<string, any>>(props: HisSubjectEditProps<T>) => {
-    const { subjectId, type, open , onSuccess, onClose, width } = props;
+const HisRegisterEdit = <T extends Record<string, any>>(props: HisRegisterEditProps<T>) => {
+    const { registerId, type, open , onSuccess, onClose, width } = props;
     const {
-          SubjectId,
-          SubjectName,
-          Sort,
+          RegisterId,
+          Department,
+          Doctor,
+          NumberType,
           CreateTime,
           CreateUser,
           UpdateTime,
           UpdateUser,
           Display,
-        } = useHisSubjectField();
-    const {DeptId} = useHisDeptSubject();
+        } = useHisRegisterField();
     const columns = [
-        SubjectId,
-        SubjectName,
-        DeptId,
-        Sort,
+        RegisterId,
+        Department,
+        Doctor,
+        NumberType,
         CreateTime,
         CreateUser,
         UpdateTime,
@@ -51,15 +50,10 @@ const HisSubjectEdit = <T extends Record<string, any>>(props: HisSubjectEditProp
             onClose={onClose}
             width={width}
             request={async () => {
-                if(subjectId===0){
-                    return {
-                        sort:0
-                    }
-                }
-                return getHisSubjectInfo(subjectId);
+                return getHisRegisterInfo(registerId);
             }}
             onFinish={async (values) => {
-                const response = await saveHisSubject(subjectId, values);
+                const response = await saveHisRegister(registerId, values);
                 if (response.errCode !== 0) {
                     error(response.message);
                 } else {
@@ -73,4 +67,4 @@ const HisSubjectEdit = <T extends Record<string, any>>(props: HisSubjectEditProp
     );
 };
 
-export default HisSubjectEdit;
+export default HisRegisterEdit;

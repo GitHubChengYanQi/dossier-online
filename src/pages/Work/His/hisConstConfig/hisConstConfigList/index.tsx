@@ -1,23 +1,22 @@
 /**
- * 科目表列表页
+ * 费用配置表列表页
  *
  * @author Sing
- * @Date 2023-04-23 21:45:11
+ * @Date 2023-04-26 15:21:31
  */
 
 import React, {useRef,useState} from 'react';
-import useHisSubjectField from "../schema";
-import {delHisSubjectInfo,getHisSubjectList} from "../service";
-import HisSubjectEdit from "../hisSubjectEdit";
+import useHisConstConfigField from "../schema";
+import {delHisConstConfigInfo,getHisConstConfigList} from "../service";
+import HisConstConfigEdit from "../hisConstConfigEdit";
 import EditButton from "@/components/EditButton";
-import TableOptionsWrap from "@/components/TableOptionsWrap";
 import {PageContainer, ProTable,ActionType} from "@ant-design/pro-components";
-import {Button, Divider, Space} from "antd";
+import {Button, Space, Typography} from "antd";
 import {ColumnsType} from "@/types/common";
 import DelButton from "@/components/DelButton";
 import useAlert from "@/components/useAlert";
 
-const HisSubjectList = () => {
+const HisConstConfigList = () => {
 
     const [editId,setEditId] = useState<number>(0);
     const [open,setOpen] = useState<boolean>(false);
@@ -27,15 +26,18 @@ const HisSubjectList = () => {
     const actionRef = useRef<ActionType>();
 
     const {
-        SubjectId,
-        SubjectName,
+        CostConfigId,
+        ConstName,
+        Type,
+        TypeKey,
+        Money,
         Sort,
         CreateTime,
         CreateUser,
         UpdateTime,
         UpdateUser,
         Display,
-    } = useHisSubjectField();
+    } = useHisConstConfigField();
 
     const columns:ColumnsType[] = [
         {
@@ -43,8 +45,11 @@ const HisSubjectList = () => {
             valueType: 'indexBorder',
             width: 48,
         },
-        SubjectId,
-        SubjectName,
+        CostConfigId,
+        ConstName,
+        Type,
+        TypeKey,
+        Money,
         Sort,
         CreateTime,
         CreateUser,
@@ -53,16 +58,17 @@ const HisSubjectList = () => {
         Display,
         {
             title: "操作",
-            align:"right",
+            width:120,
             render:(value: any, record: any)=>{
                 return(
-                    <Space size={0} split={<Divider type={"vertical"}/> }>
+                    <Space>
                         <EditButton onClick={()=>{
-                            setEditId(record.subjectId);
+                            setEditId(record.costConfigId);
                             setOpen(true)
                         }} />
+                        <Typography.Link />
                         <DelButton request={async () => {
-                            const response = await delHisSubjectInfo(record.subjectId);
+                            const response = await delHisConstConfigInfo(record.costConfigId);
                             if (response.errCode !== 0) {
                                 error(response.message);
                             } else {
@@ -81,10 +87,10 @@ const HisSubjectList = () => {
             <ProTable
                 scroll={{x: "max-content"}}
                 actionRef={actionRef}
-                rowKey="subjectId"
+                rowKey="costConfigId"
                 columns={columns}
                 request={async (params, sorter, filter) => {
-                    const {data, success} = await getHisSubjectList(params, sorter, filter);
+                    const {data, success} = await getHisConstConfigList(params, sorter, filter);
                     return {
                         data: data || [],
                         success
@@ -104,9 +110,9 @@ const HisSubjectList = () => {
                     </>,
                 ]}
             />
-            <HisSubjectEdit width={560}  onClose={()=>{ setEditId(0);setOpen(false)}} onSuccess={()=>{setEditId(0);actionRef?.current?.reload();setOpen(false)}} subjectId={editId} open={open} />
+            <HisConstConfigEdit width={640}  onClose={()=>{ setEditId(0);setOpen(false)}} onSuccess={()=>{setEditId(0);actionRef?.current?.reload();setOpen(false)}} costConfigId={editId} open={open} />
         </PageContainer>
     );
 };
 
-export default HisSubjectList;
+export default HisConstConfigList;

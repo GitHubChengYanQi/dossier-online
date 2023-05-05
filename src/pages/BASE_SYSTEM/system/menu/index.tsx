@@ -5,18 +5,23 @@ import EditButton from "@/components/EditButton";
 import DelButton from "@/components/DelButton";
 import {ColumnsType} from "@/types/common";
 import useMenuField from "./schema";
-import {Button} from "antd";
+import {Button, Divider, Space, Typography} from "antd";
 import MenuEdit from "@/pages/BASE_SYSTEM/system/menu/menuEdit";
 import {menuRemove, menuTreeList} from "@/pages/BASE_SYSTEM/system/menu/service";
+import TableOptionsWrap from "@/components/TableOptionsWrap";
+import {PlusOutlined} from "@ant-design/icons";
 
 export default function MenuList() {
 
     const [open, setOpen] = useState<boolean>(false);
     const [editId, setEditId] = useState<number>(0);
-    const {Label, value} = useMenuField();
+    const [pid, setPid] = useState<number>(0);
+
+    const {Label, value,sort} = useMenuField();
     const actionRef = useRef<ActionType>();
     const columns: ColumnsType[] = [
         Label,
+        sort,
         value,
         {
             title: '操作',
@@ -25,7 +30,11 @@ export default function MenuList() {
             valueType: 'option',
             render: (value, record) => {
                 return (
-                    <>
+                    <Space size={0} split={<Divider type="vertical"/>}>
+                        <Typography.Link onClick={()=>{
+                            setPid(record.id)
+                            setOpen(true);
+                        }}>添加子菜单</Typography.Link>
                         <EditButton onClick={() => {
                             setEditId(record.id)
                             setOpen(true);
@@ -39,7 +48,7 @@ export default function MenuList() {
                             actionRef.current?.reload();
                             return response;
                         }}/>
-                    </>
+                    </Space>
                 );
             }
         },
@@ -68,27 +77,30 @@ export default function MenuList() {
                         sorter,
                         filter,
                     });
-                    console.log(success)
                     return {
                         data: formatData(data) || [],
                         success: !!data,
                     };
                 }}
-                toolBarRender={() => [
-                    <>
+                toolBarRender={() =>{
+                    return [<>
                         <Button
                             key="1"
                             type="primary"
                             onClick={() => {
+                                setPid(0)
                                 setOpen(true);
                                 setEditId(0);
                             }}
                         >
                             新建
-                        </Button></>,
-                ]}
+                        </Button>
+                    </>]
+                }}
             />
-            <MenuEdit open={open} editId={editId} onOpenChange={(v) => {
+            <MenuEdit
+                pid={pid}
+                open={open} editId={editId} onOpenChange={(v) => {
                 setOpen(v);
                 actionRef.current?.reload();
             }}/>

@@ -59,6 +59,15 @@ const routeList = [
                         name:"检查项目",
                         path:"/BASE_SYSTEM/Work/item/list",
                         component: "./Work/Medical/medicalItem/medicalItemList"
+                    },
+                    {
+                        name:"科目设置",
+                        path:"/BASE_SYSTEM/Work/His/subject",
+                        component: "./Work/His/hisSubject/hisSubjectList"
+                    },{
+                        name:"科目设置",
+                        path:"/BASE_SYSTEM/Work/His/hisCost",
+                        component: "./Work/His/hisConstConfig/hisConstConfigList"
                     }
                 ]
             },
@@ -68,12 +77,12 @@ const routeList = [
                 redirect: "/BASE_SYSTEM/system/mgr",
                 routes: [
                     {
-                        name: '用户管理',
+                        name: '通讯录管理',
                         path: '/BASE_SYSTEM/system',
                         redirect: "/BASE_SYSTEM/system/mgr",
                         routes: [
                             {
-                                name: '用户列表',
+                                name: '通讯录管理',
                                 path: '/BASE_SYSTEM/system/mgr',
                                 component: './BASE_SYSTEM/system/mgr',
                             },

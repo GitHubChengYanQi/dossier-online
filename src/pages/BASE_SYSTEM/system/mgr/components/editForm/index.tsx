@@ -17,7 +17,7 @@ const EditForm: React.FC<userEditProps & ModalFormProps> = (props) => {
     const {modalVisible, onCancel, userId, ...other} = props;
     const {notification} = App.useApp();
     const {error} = useAlert();
-    const {Account, Birthday, DeptName, Email, Name, PassWord, PositionName, RePassWord, SexName} = useUserField();
+    const {Account, Birthday, DeptId, Email, Name, PassWord, PositionName, RePassWord, SexName} = useUserField();
 
     const columns:Array<ColumnsType> = [
         {
@@ -46,13 +46,13 @@ const EditForm: React.FC<userEditProps & ModalFormProps> = (props) => {
         Birthday,
         Email,
         SexName,
-        DeptName,
+        DeptId,
         PositionName
     ];
 
     return (
         <ModalForm
-            title="分配角色"
+            title="成员管理"
             width={540}
             open={modalVisible}
             {...other}

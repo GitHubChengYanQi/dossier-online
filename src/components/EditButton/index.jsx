@@ -1,11 +1,11 @@
 import React from 'react';
-import {Button} from 'antd';
+import {Button, Typography} from 'antd';
 import {EditOutlined} from '@ant-design/icons';
 
 const EditButton = ({onClick,style={}, ...props}) => {
 
   return (
-      <a onClick={onClick} style={style} className="right-margin" type='link'  {...props}><EditOutlined />编辑</a>
+      <Typography.Link onClick={onClick} style={style} className="right-margin" type='link'  {...props}>编辑</Typography.Link>
   );
 };
 

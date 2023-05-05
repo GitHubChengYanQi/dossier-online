@@ -1,6 +1,5 @@
 import React from 'react';
-import {Button, ButtonProps} from 'antd';
-import {DeleteOutlined} from '@ant-design/icons';
+import {ButtonProps, theme, Typography} from 'antd';
 import useAlert from "@/components/useAlert";
 
 type delButtonProps = {
@@ -9,13 +8,16 @@ type delButtonProps = {
     disabled?: boolean;
     request?: () => Promise<any>;
 } & ButtonProps
+
+const { useToken } = theme;
 const DelButton = (props: delButtonProps) => {
 
     const {
-        onSuccess, onCancel, disabled, children, icon,request, ...other
+        onSuccess, onCancel,  children, request
     } = props
     const {modal} = useAlert();
 
+    const { token } = useToken();
 
     const onClick = () => {
         modal.confirm({
@@ -33,10 +35,10 @@ const DelButton = (props: delButtonProps) => {
     };
 
     return (
-        <Button
-            disabled={disabled}
-            size="small" danger onClick={onClick} icon={icon || <DeleteOutlined/>}
-            type="text" {...other} >{children || '删除'}</Button>
+        <Typography.Link
+            onClick={onClick}
+            // style={{color:token.colorError}}
+            >{children || '删除'}</Typography.Link>
     );
 };
 

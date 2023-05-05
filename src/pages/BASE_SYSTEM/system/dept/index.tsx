@@ -4,6 +4,7 @@ import {pageRequest, request} from "@/utils/Request";
 import EditButton from "@/components/EditButton";
 import DelButton from "@/components/DelButton";
 import {ColumnsType} from "@/types/common";
+import {Divider, Space} from "antd";
 
 const deptList = {
     url: '/rest/dept/list',
@@ -35,14 +36,14 @@ export default function DeptList() {
             width: 260,
             render: (value, record) => {
                 return (
-                    <>
+                    <Space size={0} split={<Divider type="vertical"/>}>
                         <EditButton onClick={() => {
                             // ref.current.open(record.deptId);
                         }}/>
                         <DelButton value={record.deptId} onSuccess={() => {
                             // tableRef.current.refresh();
                         }}/>
-                    </>
+                    </Space>
                 );
             }
         },

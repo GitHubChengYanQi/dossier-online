@@ -2,7 +2,7 @@ import React, {useRef} from 'react';
 import styles from './index.less';
 import {ActionType, PageContainer, ProTable} from "@ant-design/pro-components";
 import {pageRequest, request} from "../../../../utils/Request";
-import {Button, Switch} from "antd";
+import {Button, Divider, Space, Switch} from "antd";
 import EditButton from "../../../../components/EditButton";
 import DelButton from "../../../../components/DelButton";
 import {ColumnsType} from "@/types/common";
@@ -46,7 +46,7 @@ export default function PositionList() {
             width: 260,
             render: (value, record) => {
                 return (
-                    <>
+                    <Space size={0} split={<Divider type="vertical"/>}>
                         <EditButton onClick={() => {
                             // ref.current.open(record.positionId);
                         }} />
@@ -62,7 +62,7 @@ export default function PositionList() {
                         }} value={record.positionId} onSuccess={() => {
                             // tableRef.current.refresh();
                         }} />
-                    </>
+                    </Space>
                 );
             }
         },

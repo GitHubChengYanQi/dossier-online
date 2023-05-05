@@ -6,7 +6,7 @@ import {RestRoleResult} from "./types";
 import useRoleField from "./schema";
 import TableOptionsWrap from "@/components/TableOptionsWrap";
 import RoleEdit from "./components/RoleEdit";
-import {Button} from "antd";
+import {Button, Divider, Space} from "antd";
 import DelButton from "@/components/DelButton";
 import useAlert from "@/components/useAlert";
 import SetPermission from "@/pages/BASE_SYSTEM/system/role/components/SetPermission";
@@ -33,7 +33,7 @@ export default function RoleList() {
             hideInSearch:true,
             render: (value: any, record: RestRoleResult) => {
                 return (
-                    <TableOptionsWrap>
+                    <Space size={0} split={<Divider type="vertical"/>}>
                         <a
                             type="dashed"
                             className="button-left-margin"
@@ -53,7 +53,7 @@ export default function RoleList() {
                                 actionRef.current?.reload();
                             }
                         }}/>
-                    </TableOptionsWrap>
+                    </Space>
                 );
             }
         }

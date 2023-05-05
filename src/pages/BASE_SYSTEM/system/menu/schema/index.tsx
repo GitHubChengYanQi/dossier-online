@@ -74,9 +74,9 @@ const useMenuField = () => {
         }
     }
     const sort:ColumnsType = {
-        width: 120,
         title: "排序",
         dataIndex: "sort",
+        valueType:"digit",
         fieldProps:{
             placeholder:"请输入数字",
         }

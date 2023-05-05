@@ -1,40 +1,55 @@
 /**
- * 科目表编辑页
+ * 病人表编辑页
  *
  * @author Sing
- * @Date 2023-04-23 21:45:11
+ * @Date 2023-05-03 19:52:48
  */
 
 import React from 'react';
 import {BetaSchemaForm} from "@ant-design/pro-components";
-import useHisSubjectField from "../schema";
-import { saveHisSubject,getHisSubjectInfo } from "../service";
+import useHisPatientField from "../schema";
+import { saveHisPatient,getHisPatientInfo } from "../service";
 import useAlert from "@/components/useAlert";
 import FormWrap,{FormWrapProps} from "@/components/FormWrap";
-import useHisDeptSubject from "@/pages/Work/His/hisDeptSubject/schema";
 
-type HisSubjectEditProps<T> = {
-    subjectId:number
+type HisPatientEditProps<T> = {
+    patientId:number
 } & FormWrapProps<T>
 
-const HisSubjectEdit = <T extends Record<string, any>>(props: HisSubjectEditProps<T>) => {
-    const { subjectId, type, open , onSuccess, onClose, width } = props;
+const HisPatientEdit = <T extends Record<string, any>>(props: HisPatientEditProps<T>) => {
+    const { patientId, type, open , onSuccess, onClose, width } = props;
     const {
-          SubjectId,
-          SubjectName,
-          Sort,
+          PatientId,
+          Name,
+          Birthday,
+          Age,
+          Mobile,
+          Gender,
+          IdType,
+          IdNumber,
+          Nation,
+          Education,
+          Domicile,
+          Residence,
           CreateTime,
           CreateUser,
           UpdateTime,
           UpdateUser,
           Display,
-        } = useHisSubjectField();
-    const {DeptId} = useHisDeptSubject();
+        } = useHisPatientField();
     const columns = [
-        SubjectId,
-        SubjectName,
-        DeptId,
-        Sort,
+        PatientId,
+        Name,
+        Birthday,
+        Age,
+        Mobile,
+        Gender,
+        IdType,
+        IdNumber,
+        Nation,
+        Education,
+        Domicile,
+        Residence,
         CreateTime,
         CreateUser,
         UpdateTime,
@@ -51,15 +66,10 @@ const HisSubjectEdit = <T extends Record<string, any>>(props: HisSubjectEditProp
             onClose={onClose}
             width={width}
             request={async () => {
-                if(subjectId===0){
-                    return {
-                        sort:0
-                    }
-                }
-                return getHisSubjectInfo(subjectId);
+                return getHisPatientInfo(patientId);
             }}
             onFinish={async (values) => {
-                const response = await saveHisSubject(subjectId, values);
+                const response = await saveHisPatient(patientId, values);
                 if (response.errCode !== 0) {
                     error(response.message);
                 } else {
@@ -73,4 +83,4 @@ const HisSubjectEdit = <T extends Record<string, any>>(props: HisSubjectEditProp
     );
 };
 
-export default HisSubjectEdit;
+export default HisPatientEdit;

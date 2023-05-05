@@ -7,11 +7,12 @@ type menuEditProps = {
     open: boolean;
     editId: number;
 
+    pid?: number;
     onOpenChange?: (v: boolean) => void;
 }
 const MenuEdit: React.FC<menuEditProps> = (props) => {
 
-    const {open, editId, onOpenChange} = props;
+    const {open, editId, pid, onOpenChange} = props;
     const {
         Label,
         value,
@@ -36,18 +37,24 @@ const MenuEdit: React.FC<menuEditProps> = (props) => {
 
             width={420}
             modalProps={{
-                centered:true,
-                destroyOnClose:true
+                centered: true,
+                destroyOnClose: true
             }}
             open={open}
             onOpenChange={(v) => {
                 onOpenChange?.(v);
             }}
-            request={async ()=>{
+            request={async () => {
+                if (editId === 0) {
+                    console.log(pid)
+                    return {
+                        pid: `${pid}`
+                    }
+                }
                 return await getMenuInfo(editId);
             }}
-            onFinish={async (values)=>{
-                await save(editId,values);
+            onFinish={async (values) => {
+                await save(editId, values);
                 onOpenChange?.(false);
             }}
         >

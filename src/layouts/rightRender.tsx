@@ -4,6 +4,7 @@
 import React from 'react';
 import {Avatar, version, Dropdown, Menu, Spin} from 'antd';
 import {LogoutOutlined} from '@ant-design/icons';
+import cookie from "js-cookie";
 
 export function getAvatarRenderContent(opts: {
     runtimeConfig?: any,
@@ -13,20 +14,20 @@ export function getAvatarRenderContent(opts: {
     logout?: () => void
 }) {
 
-
+    const token = cookie.get('Authorization')
     const avatar = (
-        <span className="umi-plugin-layout-action">
-        <Avatar
-            size="small"
-            className="umi-plugin-layout-avatar"
-            src={
-                opts.initialState?.avatar ||
-                'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png'
-            }
-            alt="avatar"
-        />
-        <span className="umi-plugin-layout-name">{opts.initialState?.name}</span>
-      </span>
+        <div>
+            <Avatar
+                size="small"
+                crossOrigin={"use-credentials"}
+                src={
+                    opts.initialState?.avatar?`${opts.initialState?.avatar}?authorization=${token}` :
+                    ''
+                }
+                alt="avatar"
+            />
+            <span style={{marginLeft:8}}>{opts.initialState?.name}</span>
+        </div>
     );
 
     if (opts.loading) {
@@ -38,14 +39,14 @@ export function getAvatarRenderContent(opts: {
     }
 
     const langMenu = {
-        className: "umi-plugin-layout-menu",
+        // className: "umi-plugin-layout-menu",
         selectedKeys: [],
         items: [
             {
                 key: "logout",
+                icon: <LogoutOutlined />,
                 label: (
                     <>
-                        <LogoutOutlined/>
                         退出登录
                     </>
                 ),
@@ -62,7 +63,7 @@ export function getAvatarRenderContent(opts: {
             : {overlay: <Menu {...langMenu} />};
 
     return (
-        <div className="umi-plugin-layout-right anticon">
+        <>
             {opts?.logout ? (
                 <Dropdown {...dropdownProps} overlayClassName="umi-plugin-layout-container">
                     {avatar}
@@ -70,6 +71,6 @@ export function getAvatarRenderContent(opts: {
             ) : (
                 avatar
             )}
-        </div>
+        </>
     );
 }
