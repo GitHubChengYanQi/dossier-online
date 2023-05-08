@@ -1,71 +1,139 @@
-import React, { useEffect, useState } from 'react';
-import { TreeSelect, Cascader } from 'antd';
-import { useRequest } from '@/utils/Request';
+import React, {useEffect} from 'react';
+import {Card, Cascader, Form, Input} from 'antd';
+import {useModel} from "umi";
+import {ProFormText} from "@ant-design/pro-components";
 
-const AddressSelect: React.FC = (props) => {
-  const listAll = {
-    url: '/rest/area/listAll',
-    method: 'POST',
-  };
-  const [options, setOptions] = useState([]);
-  const [targetOption,setTargetOption] = useState('')
+interface Option {
+    id: string | number | null;
+    value?: string | number | null;
+    label: React.ReactNode;
+    children?: Option[];
+    isLeaf?: boolean;
+    loading?: boolean;
+}
 
-  const { run: getTreeData } = useRequest(listAll, {
-    manual: true,
-    onError: (error) => {
-      Message.error(error.message);
-      console.log(error);
-    },
-    onSuccess: (response) => {
-      console.log(response);
-      if(!response.length){
-        targetOption.loading = false;
-        targetOption.isLeaf = true;
-      }
-      response.forEach(e => {
-        e.isLeaf = false;
-      });
-      if (targetOption) {
-        setTimeout(() => {
-          targetOption.loading = false;
-          targetOption.children= response
-          setTargetOption('');
-          setOptions([...options]);
-        },1000);
-      } else {
-        setOptions(response);
-      }
-    },
-  });
+type address = {
+    sf?: number | string;
 
-  useEffect(() => {
-    getTreeData();
-  }, []);
+    city?: number | string;
 
-  useEffect(() => {
-    if (targetOption) {
-      getTreeData({ data: { parentId: targetOption.id } });
+    area?: number | string;
+
+    jd?: number | string;
+
+    sq?: number | string;
+
+    mph?: number | string;
+
+}
+
+interface AddressProps {
+    value?: address;
+
+    onChange?: (values: address) => void;
+
+}
+
+const AddressSelect: React.FC<AddressProps> = (props) => {
+
+    const {value, onChange: propsChange} = props;
+    const {data} = useModel("area");
+
+
+    const onChange = (values: any) => {
+        console.log(value)
+        propsChange?.(
+            {
+                ...value,
+                ...values
+            }
+        );
     }
-  }, [targetOption]);
+    useEffect(() => {
+        console.log(value)
 
-  const loadData = (selectedOptions) => {
-    const targetO= selectedOptions[selectedOptions.length - 1];
-    targetO.loading = true;
-    setTargetOption(targetO)
+        // setFieldsValue({
+        //     ...fieldsValue,
+        //     ...value,
+        // });
+    }, [value]);
 
-  };
-  return (
-    <Cascader
-      options={options}
-      loadData={loadData}
-      fieldNames={{
-        label: 'title',
-        value: 'id',
-        pid: 'parentid',
-      }}
-      {...props}
-      changeOnSelect />
-  );
+    return (
+        <Card>
+            <Form.Item
+                labelCol={{span: 3}}
+                wrapperCol={{span: 10}}
+                label='城市/地区'
+            >
+                <Cascader
+                    placeholder='请选择城市/地区'
+                    options={data}
+                    onChange={(values: any) => {
+                        if (values.length === 3) {
+                            onChange?.({
+                                sf: values[0],
+                                city: values[1],
+                                area: values[2],
+                            });
+                        }
+                    }}
+                    value={value?.sf?[value?.sf]:undefined}
+                />
+            </Form.Item>
+            <Form.Item
+                labelCol={{span: 3}}
+                wrapperCol={{span: 10}}
+                label='街道/乡镇'
+            >
+                <Input
+                    placeholder='请输入街道/乡镇'
+                    onChange={(values: any) => {
+                        onChange?.({
+                            jd: values.target.value,
+                        });
+                    }}
+                    value={value?.jd}
+                />
+            </Form.Item>
+
+            <Form.Item
+                labelCol={{span: 3}}
+                wrapperCol={{span: 10}}
+                label='社区/村'
+
+            >
+                <Input
+                    placeholder='请输入社区/村'
+
+                    onChange={(values: any) => {
+                        onChange?.({
+                            sq: values.target.value,
+                        });
+                    }
+                    }
+                />
+            </Form.Item>
+
+            <Form.Item
+                labelCol={{span: 3}}
+                wrapperCol={{span: 7}}
+                label='组/门牌号'
+
+
+            >
+                <Input
+                    placeholder='请输入组/门牌号'
+                    onChange={(values: any) => {
+                        onChange?.({
+                            mph: values.target.value,
+                        });
+                    }
+                    }
+                />
+            </Form.Item>
+
+        </Card>
+    );
 };
 
 export default AddressSelect;

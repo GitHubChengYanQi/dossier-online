@@ -1,5 +1,4 @@
-import React, {useEffect} from "react";
-import useAlert from "@/components/useAlert";
+import React from "react";
 import {ConfigProvider as AntConfigProvider, App} from "antd";
 import zhCN from 'antd/locale/zh_CN';
 import dayjs from "dayjs";
@@ -17,6 +16,11 @@ const ConfigProvider: React.FC<alertProps> = (props) => {
 
         <AntConfigProvider
             locale={zhCN}
+            theme={{
+                token:{
+                    borderRadius:4
+                }
+            }}
         >
             <App>{children}</App>
         </AntConfigProvider>

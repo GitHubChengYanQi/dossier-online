@@ -38,11 +38,11 @@ export const StatusRender: React.FC<statusProps> = (props) => {
 }
 
 const useUserField = () => {
-    const {data: deptData, run: deptRun} = useModel("dept");
+    const {data: deptData} = useModel("dept");
     const {data: positionData, run: positionRun} = useModel("position");
 
     const Account: ColumnsType = {
-        title: '账号', dataIndex: 'account', order: 10,
+        title: '账号', dataIndex: 'account',
         fieldProps: {},
         formItemProps: {
             name: "account",
@@ -56,8 +56,9 @@ const useUserField = () => {
         }
     };
     const Birthday: ColumnsType = {
-        title: '生日', dataIndex: 'birthday',
-        valueType: "date", order: 1
+        title: '生日',
+        dataIndex: 'birthday',
+        valueType: "date",
 
     };
     const Email: ColumnsType = {
@@ -74,7 +75,7 @@ const useUserField = () => {
 
     };
     const Name: ColumnsType = {
-        title: '名称', dataIndex: 'name', order: 9,
+        title: '姓名', dataIndex: 'name',
         formItemProps: {
             rules: [
                 {
@@ -86,7 +87,7 @@ const useUserField = () => {
         }
     }
     const SexName: ColumnsType = {
-        title: '性别', dataIndex: 'sexName',  formItemProps: {
+        title: '性别', dataIndex: 'sexName', formItemProps: {
             name: "sex",
         }, renderFormItem: () => {
             return (<Radio.Group>
@@ -96,7 +97,7 @@ const useUserField = () => {
         }
     };
     const PassWord: ColumnsType = {
-        title: '密码', order: 8, formItemProps: {
+        title: '密码',  formItemProps: {
             name: "password",
             rules: [
                 {
@@ -110,7 +111,6 @@ const useUserField = () => {
     };
     const RePassWord: ColumnsType = {
         title: '确认密码',
-        order: 7,
         formItemProps: {
             name: "rePassword",
             rules: [
@@ -133,8 +133,9 @@ const useUserField = () => {
     const DeptId: ColumnsType = {
         title: '部门',
         dataIndex: 'deptId',
-        order: 6,
+
         formItemProps: {
+            wrapperCol: {span: 19},
             rules: [
                 {
                     required: true,
@@ -143,8 +144,9 @@ const useUserField = () => {
             ]
         },
         fieldProps: {
+            multiple: true,
             treeDefaultExpandAll: true,
-            treeData:deptData
+            treeData: deptData
         },
         valueType: "treeSelect",
     };
@@ -152,8 +154,9 @@ const useUserField = () => {
         title: '部门',
         dataIndex: 'deptName',
         order: 0,
+        hideInSearch:true,
         formItemProps: {
-            hidden:true,
+            hidden: true,
             name: "deptId",
             rules: [
                 {
@@ -164,12 +167,11 @@ const useUserField = () => {
         },
         fieldProps: {
             treeDefaultExpandAll: true,
-            treeData:deptData
+            treeData: deptData
         },
-        valueType: "treeSelect",
     };
     const PositionName: ColumnsType = {
-        title: '职位', dataIndex: 'positionName', order: 5,
+        title: '职务', dataIndex: 'positionName',
         formItemProps: {
             name: "position",
             rules: [
@@ -198,7 +200,6 @@ const useUserField = () => {
         title: '角色', dataIndex: 'roleName', hideInSearch: true, hideInForm: true
     };
     const Status: ColumnsType = {
-        order:1,
         title: '状态', valueType: "radio", formItemProps: {
             name: "status"
         },

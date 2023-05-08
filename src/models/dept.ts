@@ -1,13 +1,25 @@
 import {useRequest} from "@/utils/Request";
 import {getTree} from "@/services/BASE_SYSTEM/dept";
+import {DataNode} from "rc-tree/lib/interface";
 
-const formatDeptData = (data: any) => {
+export declare type DeptTreeType = {
+    title: string,
+    key: string,
+    value?: string,
+    index: number,
+    count: number
+
+    children?: DeptTreeType[]
+} & DataNode;
+
+
+const formatDeptData = (data: any[]): DeptTreeType[] => {
     if (!Array.isArray(data)) {
-        return null;
+        return [];
     }
     return data.map((item: any, index) => {
 
-        const result = {
+        const result: DeptTreeType = {
             title: item.title,
             key: item.key,
             value: item.key,
@@ -21,11 +33,11 @@ const formatDeptData = (data: any) => {
     });
 }
 const useDept = () => {
-    const {data, loading, run} = useRequest(async () => {
+    const {data, loading, run, refresh} = useRequest(async () => {
         return await getTree();
     }, {
         manual: true
     });
-    return {data: formatDeptData(data), loading, run}
+    return {data: formatDeptData(data), loading, run, refresh}
 }
 export default useDept;

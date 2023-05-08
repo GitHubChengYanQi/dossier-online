@@ -1,6 +1,6 @@
 import {request as requestProvide} from "@umijs/max";
 import {ResponseData, ResponsePageInfo} from "@/types/common";
-import {RequestData} from "@ant-design/pro-table/lib";
+import {RequestData} from "@ant-design/pro-table/es/typing";
 
 const request = async <T = any>(url: string, opts: any = {method: 'POST'}) => {
     const response = await requestProvide<ResponseData<T>>(url, {
@@ -42,9 +42,9 @@ const pageRequest = async <T = any>(url: string, opts: any = {method: 'POST'}): 
         return Promise.reject(response.data);
     }
     return {
+
+        ...response.data,
         success: true,
-        total: response.data.count,
-        data: response.data.data
     };
 };
 

@@ -30,7 +30,7 @@ const useAlert = () => {
             placement:"bottomRight"
         });
     }
-    const error = (message: string) => {
+    const error = (message: string|undefined) => {
         modal.error({
             title: "操作失败",
             content: message,

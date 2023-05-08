@@ -334,126 +334,39 @@ const Bookbuilding: React.FC = () => {
           {/* 第五行 -----------------------------------*/}
 
           {/* 第六行 -----------------------------------*/}
-          <Row gutter={16}>
-            <Col span={6}>
-              <Form.Item
-                label='户籍地址'
-                name='Adz'
-                rules={[{ required: true, message: '请选择户籍地址' }]}
-              >
-                <AddressSelect key='addressSelect_1' />
-              </Form.Item>
-            </Col>
-            <Col span={6}>
-              <Form.Item
-                label='街道/乡镇'
-                name='Ajd'
-                rules={[{ required: true, message: '请填写街道/乡镇' }]}
-              >
-                <Input placeholder='请填写街道/乡镇' style={{ width: '100%' }} />
-              </Form.Item>
-            </Col>
-            <Col span={6}>
-              <Form.Item
-                label='社区/村'
-                name='Asq'
-                rules={[{ required: true, message: '请填写社区/村' }]}
-              >
-                <Input placeholder='请填写社区/村' style={{ width: '100%' }} />
-              </Form.Item>
-            </Col>
-            <Col span={6}>
-              <Form.Item
-                label='组/门牌号'
-                name='Amph'
-                rules={[{ required: true, message: '请填写组/门牌号' }]}
-              >
-                <Input placeholder='请填写组/门牌号' style={{ width: '100%' }} />
-              </Form.Item>
-            </Col>
-          </Row>
+          <Form.Item
+              labelCol={{span:2}}
+              wrapperCol={{span:20}}
+              label='户籍地址'
+              name='Adz'
+              rules={[{ required: true, message: '请选择户籍地址' }]}
+          >
+            <AddressSelect key='addressSelect_1' />
+          </Form.Item>
           {/* 第六行 -----------------------------------*/}
 
           {/* 第七行 -----------------------------------*/}
-          <Row gutter={16}>
-            <Col span={6}>
-              <Form.Item
-                label='现住地址'
-                name='Bdz'
-                rules={[{ required: true, message: '请选择现住地址' }]}
-              >
-                <AddressSelect key='addressSelect_1' />
-              </Form.Item>
-            </Col>
-            <Col span={6}>
-              <Form.Item
-                label='街道/乡镇'
-                name='Bjd'
-                rules={[{ required: true, message: '请填写街道/乡镇' }]}
-              >
-                <Input placeholder='请填写街道/乡镇' style={{ width: '100%' }} />
-              </Form.Item>
-            </Col>
-            <Col span={6}>
-              <Form.Item
-                label='社区/村'
-                name='Bsq'
-                rules={[{ required: true, message: '请填写社区/村' }]}
-              >
-                <Input placeholder='请填写社区/村' style={{ width: '100%' }} />
-              </Form.Item>
-            </Col>
-            <Col span={6}>
-              <Form.Item
-                label='组/门牌号'
-                name='Bmph'
-                rules={[{ required: true, message: '请填写组/门牌号' }]}
-              >
-                <Input placeholder='请填写组/门牌号' style={{ width: '100%' }} />
-              </Form.Item>
-            </Col>
-          </Row>
+          <Form.Item
+              labelCol={{span:2}}
+              wrapperCol={{span:20}}
+              label='现住地址'
+              name='Bdz'
+              rules={[{ required: true, message: '请选择现住地址' }]}
+          >
+            <AddressSelect key='addressSelect_1' />
+          </Form.Item>
           {/* 第七行 -----------------------------------*/}
 
           {/* 第八行 -----------------------------------*/}
-          <Row gutter={16}>
-            <Col span={6}>
-              <Form.Item
-                label='产后修养地址'
-                name='Cdz'
-                rules={[{ required: true, message: '请选择产后修养地址' }]}
-              >
-                <AddressSelect key='addressSelect_1' />
-              </Form.Item>
-            </Col>
-            <Col span={6}>
-              <Form.Item
-                label='街道/乡镇'
-                name='Cjd'
-                rules={[{ required: true, message: '请填写街道/乡镇' }]}
-              >
-                <Input placeholder='请填写街道/乡镇' style={{ width: '100%' }} />
-              </Form.Item>
-            </Col>
-            <Col span={6}>
-              <Form.Item
-                label='社区/村'
-                name='Csq'
-                rules={[{ required: true, message: '请填写社区/村' }]}
-              >
-                <Input placeholder='请填写社区/村' style={{ width: '100%' }} />
-              </Form.Item>
-            </Col>
-            <Col span={6}>
-              <Form.Item
-                label='组/门牌号'
-                name='Cmph'
-                rules={[{ required: true, message: '请填写组/门牌号' }]}
-              >
-                <Input placeholder='请填写组/门牌号' style={{ width: '100%' }} />
-              </Form.Item>
-            </Col>
-          </Row>
+          <Form.Item
+              labelCol={{span:2}}
+              wrapperCol={{span:20}}
+              label='产后修养地址'
+              name='Cdz'
+              rules={[{ required: true, message: '请选择产后修养地址' }]}
+          >
+            <AddressSelect key='addressSelect_1' />
+          </Form.Item>
           {/* 第八行 -----------------------------------*/}
 
           {/* 第九行 -----------------------------------*/}
@@ -673,85 +586,27 @@ const Bookbuilding: React.FC = () => {
                 {/* 第四行 -----------------------------------*/}
 
                 {/* 第五行 -----------------------------------*/}
-                <Row gutter={16}>
-                  <Col span={6}>
-                    <Form.Item
-                      label='户籍地址'
-                      name='zfAdz'
-                      rules={[{ required: true, message: '请选择户籍地址' }]}
-                    >
-                      <AddressSelect key='addressSelect_1' />
-                    </Form.Item>
-                  </Col>
-                  <Col span={6}>
-                    <Form.Item
-                      label='街道/乡镇'
-                      name='zfAjd'
-                      rules={[{ required: true, message: '请填写街道/乡镇' }]}
-                    >
-                      <Input placeholder='请填写街道/乡镇' style={{ width: '100%' }} />
-                    </Form.Item>
-                  </Col>
-                  <Col span={6}>
-                    <Form.Item
-                      label='社区/村'
-                      name='zfAsq'
-                      rules={[{ required: true, message: '请填写社区/村' }]}
-                    >
-                      <Input placeholder='请填写社区/村' style={{ width: '100%' }} />
-                    </Form.Item>
-                  </Col>
-                  <Col span={6}>
-                    <Form.Item
-                      label='组/门牌号'
-                      name='zfAmph'
-                      rules={[{ required: true, message: '请填写组/门牌号' }]}
-                    >
-                      <Input placeholder='请填写组/门牌号' style={{ width: '100%' }} />
-                    </Form.Item>
-                  </Col>
-                </Row>
+                <Form.Item
+                    labelCol={{span:2}}
+                    wrapperCol={{span:20}}
+                    label='户籍地址'
+                    name='zfAdz'
+                    rules={[{ required: true, message: '请选择户籍地址' }]}
+                >
+                  <AddressSelect key='addressSelect_1' />
+                </Form.Item>
                 {/* 第五行 -----------------------------------*/}
 
                 {/* 第六行 -----------------------------------*/}
-                <Row gutter={16}>
-                  <Col span={6}>
-                    <Form.Item
-                      label='现住地址'
-                      name='zfBdz'
-                      rules={[{ required: true, message: '请选择现住地址' }]}
-                    >
-                      <AddressSelect key='addressSelect_1' />
-                    </Form.Item>
-                  </Col>
-                  <Col span={6}>
-                    <Form.Item
-                      label='街道/乡镇'
-                      name='zfBjd'
-                      rules={[{ required: true, message: '请填写街道/乡镇' }]}
-                    >
-                      <Input placeholder='请填写街道/乡镇' style={{ width: '100%' }} />
-                    </Form.Item>
-                  </Col>
-                  <Col span={6}>
-                    <Form.Item
-                      label='社区/村'
-                      name='zfBsq'
-                      rules={[{ required: true, message: '请填写社区/村' }]}
-                    >
-                      <Input placeholder='请填写社区/村' style={{ width: '100%' }} />
-                    </Form.Item>
-                  </Col>
-                  <Col span={6}>
-                    <Form.Item
-                      label='组/门牌号'
-                      name='zfBmph'
-                      rules={[{ required: true, message: '请填写组/门牌号' }]}
-                    >
-                      <Input placeholder='请填写组/门牌号' style={{ width: '100%' }} />
-                    </Form.Item>
-                  </Col>
-                </Row>
+                <Form.Item
+                    labelCol={{span:2}}
+                    wrapperCol={{span:20}}
+                    label='现住地址'
+                    name='zfBdz'
+                    rules={[{ required: true, message: '请选择现住地址' }]}
+                >
+                  <AddressSelect key='addressSelect_1' />
+                </Form.Item>
                 {/* 第六行 -----------------------------------*/}
 
               </>

@@ -1,5 +1,5 @@
-import {createGlobalStyle,history, styled} from "umi";
-import React, {useEffect, useRef} from "react";
+import { history, styled} from "umi";
+import React from "react";
 import {Tabs, TabsProps, theme} from "antd";
 import {GlobalToken} from "antd/es/theme/interface";
 import useTabList from "@/components/TabList/useTabList";
@@ -8,7 +8,10 @@ import useTabList from "@/components/TabList/useTabList";
 const {useToken} = theme;
 const GlobalStyle = styled.div<{ token: GlobalToken }>`
   #iframe {
+
     .ant-tabs-nav {
+      margin: 0;
+
       .ant-tabs-tab {
         background: ${props => {
           return props.token.colorBgContainer
@@ -43,6 +46,13 @@ const GlobalStyle = styled.div<{ token: GlobalToken }>`
     }
 
   }
+
+  .ant-page-header {
+    background: ${props => {
+      return props.token.colorBgContainer
+    }};
+    margin-bottom: 16px
+  }
 `;
 
 const TabList: React.FC<Partial<any>> = (props) => {
@@ -50,25 +60,25 @@ const TabList: React.FC<Partial<any>> = (props) => {
     const {children} = props;
     const {token} = useToken();
 
-    const {onEdit, renderRoute, element, routes} = useTabList();
+    const {onEdit, lastRoute, element, routes} = useTabList();
     const renderTabBar: TabsProps['renderTabBar'] = (props, DefaultTabBar) => (
-        <div id="iframe" style={{top: 56, position: "sticky", zIndex: 1}}>
+        <div id="iframe" style={{top: 56, position: "sticky", zIndex: 99}}>
             <DefaultTabBar {...props}  />
         </div>);
 
     return (
         <>
             {element?.props?.to && element}
-            {routes ?
-                <>
-                    <GlobalStyle token={token}>
+            <GlobalStyle token={token}>
+                {routes ?
+
                     <Tabs
                         onTabClick={(key) => {
                             history.replace(key);
                         }}
                         size="small"
 
-                        activeKey={renderRoute.path}
+                        activeKey={lastRoute.pathname}
                         tabBarStyle={{
                             paddingLeft: 40,
                             backgroundColor: "#fff"
@@ -79,8 +89,8 @@ const TabList: React.FC<Partial<any>> = (props) => {
                         // animated
                         onEdit={onEdit}
                         items={routes}/>
-                    </GlobalStyle></>
-                : children}
+                    : children}
+            </GlobalStyle>
         </>
     );
 }

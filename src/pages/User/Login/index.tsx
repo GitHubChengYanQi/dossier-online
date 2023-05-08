@@ -15,6 +15,7 @@ import useAlert from "@/components/useAlert";
 import cookie from "js-cookie";
 import {useModel, history} from "umi";
 import qs from "qs";
+import {useNavigate} from "@@/exports";
 
 const iconStyles = {
     marginInlineStart: '16px',
@@ -28,6 +29,7 @@ const Login = () => {
     const {error} = useAlert();
     const {refresh} = useModel('@@initialState');
     const [message,setMessage] = useState<string>("");
+    const navigate = useNavigate();
 
     useEffect(() => {
         window.document.title = '欢迎使用数字化管理系统';
@@ -54,13 +56,14 @@ const Login = () => {
                             error(response.message);
                         }
                         const params: any = qs.parse(location.search.substring(1))
-                        cookie.set('Authorization', response.data);
+                        cookie.set('Authorization', response.data||"");
                         setMessage("登录成功,请稍后...")
                         if (params.backUrl) {
                             window.location.href = params.backUrl;
                         } else {
                             refresh();
-                            history.replace('/ZXJC/quick');
+                            window.location.href = '/ZXJC/quick'
+                            // navigate('/ZXJC/quick',{replace:true});
                         }
                     }}
                     message={message&&<Alert type="success" showIcon message={message} style={{margin:8}} />}

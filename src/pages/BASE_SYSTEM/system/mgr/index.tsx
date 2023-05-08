@@ -2,13 +2,12 @@ import React, {useRef, useState} from 'react';
 import {PageContainer, ProColumns, ProTable, ActionType} from "@ant-design/pro-components";
 import {Button, Divider, Dropdown, Layout, Space, Spin, Tree, Typography} from "antd";
 import EditButton from "@/components/EditButton";
-import EditForm from "./components/editForm";
 import useUserField from "./schema";
 import RoleSet from "../role/components/roleSet";
 import useAlert from "@/components/useAlert";
 import {getUserList, resetPassWord} from "@/services/BASE_SYSTEM/user";
 import {RestUserResult} from "@/pages/BASE_SYSTEM/system/mgr/types";
-import {useModel, useRequest} from "umi";
+import {useModel, useNavigate, useRequest} from "umi";
 import {MoreOutlined} from "@ant-design/icons";
 import {FormInstance} from "antd/lib";
 
@@ -16,6 +15,9 @@ const {DirectoryTree} = Tree;
 
 import {styled} from "umi";
 import {ItemType} from "antd/es/menu/hooks/useItems";
+import DeptEdit from "@/pages/BASE_SYSTEM/system/dept/deptEdit";
+import DeptDel from "@/pages/BASE_SYSTEM/system/dept/deptDel";
+import {DeptTreeType} from "@/models/dept";
 
 const StyleDiv = styled.div`
   margin-top: 16px;
@@ -54,19 +56,21 @@ const StyleDiv = styled.div`
   }
 `;
 
-type nodeDataProps = {
-    title: string;
-    key: string;
-    value: string;
-    index: number;
-    count: number;
-}
+
 export default function UserList() {
 
     const {modal} = useAlert();
-    const [createModalVisible, handleModalVisible] = useState(false);
+    // const [, handleModalVisible] = useState(false);
     const [roleSet, handleRoleSet] = useState(false);
     const [treeLoading, setTreeLoading] = useState<boolean>(false);
+
+    const [drop, setDrop] = useState<string>("");
+    const [deptOpen, setDeptOpen] = useState<boolean>(false);
+    const [deptId, setDeptId] = useState<string>("");
+    const [sDeptId, setSdeptId] = useState<string>("");
+    const [pid, setPid] = useState<string>("");
+
+
     const [editId, setEditId] = useState<number>(0);
     const [tableTitle, setTableTitle] = useState<string>("全部");
 
@@ -74,42 +78,35 @@ export default function UserList() {
 
     const {data: deptData} = useModel("dept");
 
+    const navigate = useNavigate();
+
     const columns: ProColumns[] = [
         {
             ...Account,
-            width: 120
         },
         {
             ...Name,
-            width: 120
         },
         {
             ...roleName,
-            width: 120
         },
         {
             ...SexName,
-            width: 60
         },
         {
             ...Birthday,
-            width: 120
         },
         {
             ...DeptName,
-            width: 120
         },
         {
             ...PositionName,
-            width: 120
         },
         {
             ...CreateTime,
-            width: 160
         },
         {
             ...Status,
-            width: 80
         },
         // {
         //     hideInSearch: true
@@ -118,7 +115,7 @@ export default function UserList() {
             title: '操作',
             hideInForm: true,
             hideInSearch: true,
-            width: 140,
+            width: 200,
             render: (value: any, record: any) => {
                 return (
                     <Space size={0} split={<Divider type="vertical"/>}>
@@ -140,8 +137,9 @@ export default function UserList() {
                         }}>重置密码</a>
                         <EditButton onClick={() => {
                             // dfRef.current.open(record.userId);
-                            setEditId(record.userId);
-                            handleModalVisible(true)
+                            // setEditId(record.userId);
+                            // handleModalVisible(true)
+                            navigate(`/BASE_SYSTEM/system/mgr/${record.userId}`)
                         }}/>
                     </Space>
                 );
@@ -150,12 +148,8 @@ export default function UserList() {
     ];
 
     const {run} = useRequest(async (params, sorter, filter) => {
-        const {data, success} = await getUserList<RestUserResult>(params, sorter, filter);
+        return  await getUserList<RestUserResult>(params, sorter, filter);
 
-        return {
-            data: data || [],
-            success
-        };
     }, {
         manual: true
     })
@@ -172,36 +166,42 @@ export default function UserList() {
                         <StyleDiv>
                             {deptData && <DirectoryTree
                                 // draggable
+                                defaultSelectedKeys={["0"]}
                                 expandAction={false}
                                 blockNode
                                 defaultExpandAll
-                                treeData={deptData}
+                                treeData={[
+                                    {
+                                        title:"全部",
+                                        key:"0",
+                                        index:0,
+                                        count:0
+                                    },
+                                    ...deptData
+                                ]}
                                 checkStrictly
                                 onSelect={(selectedKeys, info) => {
-                                    // console.log(info)
-                                    // cancel();
                                     setTableTitle(info.node.title)
-                                    formRef.current?.setFieldValue("deptId", selectedKeys[0]);
+                                    setSdeptId(`${selectedKeys[0]}`);
+                                    // formRef.current?.setFieldValue("deptId", selectedKeys[0]);
                                     formRef.current?.submit();
                                 }}
-                                titleRender={(nodeData: nodeDataProps) => {
-                                    const item:ItemType[] = [];
+                                titleRender={(nodeData: DeptTreeType) => {
+                                    const item: ItemType[] = [];
                                     if (nodeData.count > 1) {
                                         item.push({
                                             type: 'divider',
                                         });
-                                        if (nodeData.index!==0) {
+                                        if (nodeData.index !== 0) {
                                             item.push({
-                                                label: (<Typography.Link onClick={(e) => {
-                                                    e.stopPropagation()
+                                                label: (<Typography.Link onClick={() => {
                                                 }}>上移</Typography.Link>),
                                                 key: '3',
                                             })
                                         }
                                         if (nodeData.count - nodeData.index > 1) {
                                             item.push({
-                                                label: (<Typography.Link onClick={(e) => {
-                                                    e.stopPropagation()
+                                                label: (<Typography.Link onClick={() => {
                                                 }}>下移</Typography.Link>),
                                                 key: '4',
                                             })
@@ -211,26 +211,41 @@ export default function UserList() {
 
                                     return (<div className={"title-line"}>
                                         <span className={"title"}>{nodeData.title}</span>
-                                        <Dropdown
+                                        {nodeData.key!=="0"&&<Dropdown
+                                            destroyPopupOnHide={true}
                                             placement={"bottom"}
                                             trigger={['click']}
+                                            open={`${drop}`===nodeData.key}
+                                            onOpenChange={(v)=>{
+                                                if(v){
+                                                    setDrop(nodeData.key);
+                                                }else{
+                                                    setDrop("")
+                                                }
+                                            }}
                                             menu={{
+                                                onClick:({domEvent})=>{
+                                                    domEvent.stopPropagation();
+                                                    setDrop("")
+                                                },
                                                 items: [
                                                     {
-                                                        label: (<Typography.Link onClick={(e) => {
-                                                            e.stopPropagation()
+                                                        label: (<Typography.Link onClick={() => {
+                                                            setDeptId("")
+                                                            setPid(nodeData.key)
+                                                            setDeptOpen(true);
                                                         }}>添加子部门</Typography.Link>),
                                                         key: '0',
                                                     },
                                                     {
-                                                        label: (<Typography.Link onClick={(e) => {
-                                                            e.stopPropagation()
+                                                        label: (<Typography.Link onClick={() => {
+                                                            setDeptId(nodeData.key)
+                                                            setDeptOpen(true);
                                                         }}>修改名称</Typography.Link>),
                                                         key: 'edit',
                                                     },
                                                     {
-                                                        label: (<Typography.Link onClick={(e) => {
-                                                            e.stopPropagation()
+                                                        label: (<Typography.Link onClick={() => {
                                                         }}>设置负责人</Typography.Link>),
                                                         key: '1',
                                                     },
@@ -239,10 +254,7 @@ export default function UserList() {
                                                         type: "divider",
                                                     },
                                                     {
-                                                        label: (<Typography.Link onClick={(e) => {
-                                                            e.stopPropagation()
-                                                        }}><Typography.Text
-                                                            type="danger">删除</Typography.Text></Typography.Link>),
+                                                        label: (<DeptDel deptId={nodeData.key} />),
                                                         key: '5',
                                                     }
                                                 ]
@@ -250,11 +262,25 @@ export default function UserList() {
                                             <a onClick={(e) => e.stopPropagation()}>
                                                 <MoreOutlined/>
                                             </a>
-                                        </Dropdown>
+                                        </Dropdown>}
                                     </div>);
                                 }}
                             />}
                         </StyleDiv>
+                        <DeptEdit
+                            pid={pid}
+                            deptId={deptId}
+                            open={deptOpen}
+                            onClose={() => {
+                                setDeptOpen(false);
+                            }}
+                            onSuccess={()=>{
+                                setDeptId("")
+                                setPid("")
+                                setDeptOpen(false);
+                            }}
+                            type={"Modal"}
+                        />
                     </Spin>
                 </Layout.Sider>
                 <Layout.Content>
@@ -265,7 +291,7 @@ export default function UserList() {
                         headerTitle={tableTitle}
                         scroll={{x: "max-content"}}
                         form={{
-                            syncToUrl: true
+                            syncToUrl: true,
                         }}
                         actionRef={actionRef}
                         formRef={formRef}
@@ -274,8 +300,10 @@ export default function UserList() {
                         }}
                         rowKey="userId"
                         columns={columns}
-
                         request={async (params, sorter, filter) => {
+                            if(sDeptId){
+                                params.deptId = sDeptId;
+                            }
                             return await run(params, sorter, filter);
 
                         }}
@@ -285,23 +313,14 @@ export default function UserList() {
                                     key="1"
                                     type="primary"
                                     onClick={() => {
-                                        handleModalVisible(true);
-                                        setEditId(0);
+                                        navigate(`/BASE_SYSTEM/system/mgr/0`)
+                                        // handleModalVisible(true);
+                                        // setEditId(0);
                                     }}
                                 >
                                     添加成员
                                 </Button></>,
                         ]}
-                    />
-                    <EditForm
-                        userId={editId}
-                        onCancel={(v) => {
-                            if (v) actionRef?.current?.reload();
-                            handleModalVisible(false);
-                            setEditId(0);
-                        }}
-                        modalVisible={createModalVisible}
-
                     />
                     <RoleSet
                         userId={editId}

@@ -1,5 +1,5 @@
 import {history, useSelectedRoutes} from "@@/exports";
-import {useEffect, useMemo, useState} from "react";
+import {useEffect, useMemo} from "react";
 import {RouteMatch, RouteObject} from "react-router/lib/router";
 import {tabs} from "@/types/common";
 import {useModel} from "umi";
@@ -31,10 +31,13 @@ const useTabList = ()=>{
             const index = tmp.findIndex(item => item.key === key);
             tmp.splice(index, 1);
             setRoutes([...tmp]);
-            if (key === renderRoute.path) {
+            if (key === lastRoute.pathname) {
                 history.replace(tmp[index-1].key||"/");
             }
         }
+    }
+    const closeCurrent = ()=>{
+        onEdit(lastRoute.pathname,"remove");
     }
 
     const element = renderRoute.element as any;
@@ -42,13 +45,13 @@ const useTabList = ()=>{
     useEffect(() => {
 
         const tmp = [...routes] as tabs[];
-        const index = tmp.findIndex(item => item.key === renderRoute.path);
+        const index = tmp.findIndex(item => item.key === lastRoute.pathname);
         if (!element?.props.to) {
             if (index === -1 && tmp.length!==0) {
                 setRoutes([
                     ...tmp,
                     {
-                        key: renderRoute.path || "",
+                        key: lastRoute.pathname || "",
                         label: renderRoute.name || "",
                         children: element
                     }
@@ -61,10 +64,12 @@ const useTabList = ()=>{
     }, [route]);
 
     return {
+        closeCurrent,
         onEdit,
         renderRoute,
         element,
-        routes
+        routes,
+        lastRoute
     }
 }
 export default useTabList;

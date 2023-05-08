@@ -32,6 +32,7 @@ export interface ResponsePageInfo<T = any> {
     message: string;
     success: boolean;
     count?: number;
+    total?: number;
     current?: number;
     pageSize?: number;
 }

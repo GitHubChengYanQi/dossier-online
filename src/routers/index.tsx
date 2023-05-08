@@ -19,6 +19,10 @@ const routeList = [
         name: '收费',
         path: '/SF',
         component: './SF',
+    },{
+        name: '保健',
+        path: '/BJ',
+        component: './BJ',
     },
     {
         name: '主 页',
@@ -81,6 +85,11 @@ const routeList = [
                         path: '/BASE_SYSTEM/system',
                         redirect: "/BASE_SYSTEM/system/mgr",
                         routes: [
+                            {
+                                name: '用户管理',
+                                path: '/BASE_SYSTEM/system/mgr/:userId',
+                                component: './BASE_SYSTEM/system/mgr/components/editForm',
+                            },
                             {
                                 name: '通讯录管理',
                                 path: '/BASE_SYSTEM/system/mgr',

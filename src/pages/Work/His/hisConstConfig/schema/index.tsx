@@ -18,7 +18,7 @@ const useHisConstConfig = () => {
     }
     const ConstName: ColumnsType = {
         title: "名称",
-        dataIndex: "constName",
+        dataIndex: "costName",
         formItemProps:{
             rules:[
                 {required:true,message:"名称为必填"}

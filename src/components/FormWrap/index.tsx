@@ -5,8 +5,9 @@ import {
     ProForm,
     ModalFormProps,
     DrawerFormProps,
-    ProFormProps, ProCard
+    ProFormProps, ProCard, PageContainer
 } from "@ant-design/pro-components";
+import omit from "omit.js";
 
 export declare type FormWrapProps<T> = {
     type?: "Form" | "Modal" | "Drawer";
@@ -14,10 +15,24 @@ export declare type FormWrapProps<T> = {
     onSuccess?: () => void;
     onClose?: () => void;
     children?: React.ReactNode | React.ReactNode[];
+    isPage?:boolean;
 } & Omit<ModalFormProps<T>, "children"> & Omit<DrawerFormProps<T>, "children"> & Omit<ProFormProps<T>, "children">
+
 const FormWrap = <T extends Record<string, any>>(props: FormWrapProps<T>) => {
 
-    const {open = false, type, title, onClose, children,width, ...otherProps} = props;
+    const {open = false,isPage = true, type, title, onClose, children,width,modalProps, ...otherProps} = props;
+
+    const renderForm = ()=>{
+        return (
+            <ProCard>
+                <ProForm<T>
+                    {...omit(otherProps,["onOpenChange"])}
+                >
+                    {children}
+                </ProForm>
+            </ProCard>
+        );
+    }
 
     switch (type) {
         case "Modal":
@@ -35,21 +50,26 @@ const FormWrap = <T extends Record<string, any>>(props: FormWrapProps<T>) => {
                             onClose?.()
                         }
                     }}
+                    {...modalProps}
                     {...otherProps}
                 >
                     {children}
                 </ModalForm>
             );
         case "Form":
-            return (
-                <ProCard>
-                    <ProForm<T>
-                        {...otherProps}
+            if(isPage){
+                return (
+                    <PageContainer
+
+                    header={{
+                        title
+                    }}
                     >
-                        {children}
-                    </ProForm>
-                </ProCard>
-            );
+                        {renderForm()}
+                    </PageContainer>
+                );
+            }
+            return renderForm();
         case "Drawer":
         default:
             return (
@@ -70,6 +90,7 @@ const FormWrap = <T extends Record<string, any>>(props: FormWrapProps<T>) => {
                     {children}
                 </DrawerForm>
             );
+
     }
 
 }

@@ -9,7 +9,7 @@ import {
     BetaSchemaForm,
     ProForm, ProFormCheckbox,
     ProFormGroup, ProFormInstance,
-    ProFormList, ProFormRadio, ProFormSelect, ProFormText,
+    ProFormList,  ProFormSelect, ProFormText,
 } from "@ant-design/pro-components";
 import {getFieldList, saveFieldConfig} from "../../service";
 import DbSourceConfig from "../dbSourceConfig";

@@ -1,6 +1,7 @@
 import {GetListType, ResponseData} from "@/types/common";
 import {request} from "@/utils/Request";
 import {pageRequest} from "@/utils/Request/request";
+import {SortOrder} from "antd/lib/table/interface";
 
 export const getUserInfoApi = {
     url: '/rest/mgr/getUserInfo',
@@ -73,15 +74,17 @@ export const resetPassWord = async (userId: number) => {
         }
     })
 }
-export const getUserList: GetListType = async <T = any>(params: Record<string, any>) => {
+export const getUserList = async <T = any>(
+    params: T & {
+        pageSize?: number;
+        current?: number;
+        keyword?: string;
+    }, sort: Record<string, SortOrder>, filter: Record<string, (string | number)[] | null>
+) => {
     return await pageRequest<T>(userList.url, {
         data: {
             ...params
         },
-        // FIXME: remove @ts-ignore
-        // @ts-ignore
-        // sorter,
-        // filter,
     });
 }
 export const setUserRole = async (userId: number, roleIds: string) => {
@@ -92,8 +95,8 @@ export const setUserRole = async (userId: number, roleIds: string) => {
         }
     });
 }
-export const getUserInfo = async (id: number) => {
-    if (id !== 0) {
+export const getUserInfo = async (id: number | string) => {
+    if (id !== 0 && id !== "0") {
         const response: ResponseData<any> = await request(getUserInfoApi.url, {
             params: {
                 userId: id
@@ -108,7 +111,7 @@ export const getUserInfo = async (id: number) => {
         return {};
     }
 }
-export const save = async (id: number, data: any) => {
+export const save = async (id: number | string, data: any) => {
     data.position = data.position.join(",");
 
     if (id !== null && id !== 0) {
