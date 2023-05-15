@@ -149,7 +149,7 @@ const routeList = [
         name: '审批流',
         path: '/workFlow',
         component: './Workflow/index',
-        layout: false
+        // layout: false
     },
 ]
 export default routeList;

@@ -8,7 +8,7 @@ import ZoomLayout from './Nodes/ZoomLayout';
 import styles from './index.module.scss';
 
 
-const Workflow = ({value, onChange, type, module}) => {
+const Workflow = ({value, onChange}) => {
 
   const ref = useRef();
 
