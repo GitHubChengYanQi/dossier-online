@@ -1,17 +1,21 @@
-import {Outlet, useModel, useLocation, useNavigate} from 'umi'
-import {PageContainer, ProLayout} from "@ant-design/pro-components";
+// @ts-nocheck
+import {Outlet, useModel, useLocation, useNavigate,useAppData,matchRoutes} from 'umi'
+import {ProLayout} from "@ant-design/pro-components";
 import {Link} from "@@/exports";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import TabList from "@/components/TabList";
 // import cookie from "js-cookie";
 import useAlert from "@/components/useAlert";
-import {Spin} from "antd";
 import {getAvatarRenderContent} from "@/layouts/rightRender";
 import ConfigProvider from "@/components/ConfigProvider";
 import {getMyInfo} from "@/services/BASE_SYSTEM/user";
 import {baseURI} from "@/utils/Service";
 import {request} from "@/utils/Request";
 import cookie from "js-cookie";
+import DiyLoading from "@/components/DiyLoading";
+import type { IRoute } from 'umi';
+import { useAccessMarkedRoutes } from '@@/plugin-access';
+import useTabList from "@/components/TabList/useTabList";
 
 const formatMenus = (data: any, parentUrl?: string): any => {
     if (!Array.isArray(data)) {
@@ -26,16 +30,70 @@ const formatMenus = (data: any, parentUrl?: string): any => {
         }
     });
 }
+
+const filterRoutes = (routes: IRoute[], filterFn: (route: IRoute) => boolean) => {
+    if (routes.length === 0) {
+        return []
+    }
+
+    let newRoutes = []
+    for (const route of routes) {
+        const newRoute = {...route };
+        if (filterFn(route)) {
+            console.log(route)
+            if (Array.isArray(newRoute.routes)) {
+                newRoutes.push(...filterRoutes(newRoute.routes, filterFn))
+            }
+        } else {
+            if (Array.isArray(newRoute.children)) {
+                newRoute.children = filterRoutes(newRoute.children, filterFn);
+                newRoute.routes = newRoute.children;
+            }
+            newRoutes.push(newRoute);
+        }
+    }
+
+    return newRoutes;
+}
+
+// 格式化路由 处理因 wrapper 导致的 菜单 path 不一致
+const mapRoutes = (routes: IRoute[]) => {
+    if (routes.length === 0) {
+        return []
+    }
+    return routes.map(route => {
+        // 需要 copy 一份, 否则会污染原始数据
+        const newRoute = {...route}
+        if (route.originPath) {
+            newRoute.path = route.originPath
+        }
+
+        if (Array.isArray(route.routes)) {
+            newRoute.routes = mapRoutes(route.routes);
+        }
+
+        if (Array.isArray(route.children)) {
+            newRoute.children = mapRoutes(route.children);
+        }
+
+        return newRoute
+    })
+}
+
 const Main = () => {
-    const {initialState, error, refresh, setInitialState} = useModel('@@initialState');
+
+    const { clientRoutes } = useAppData();
+
+    const {initialState, setInitialState} = useModel('@@initialState');
     const {run: deptRun} = useModel("dept");
     const {run: areaRun} = useModel("area");
 
     const location = useLocation();
     const navigate = useNavigate();
     const useAlertFunc = useAlert();
+    const {clear} = useTabList();
 
-    const [loading,setLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     // const token = cookie.get('Authorization');
 
@@ -71,6 +129,15 @@ const Main = () => {
     // }
 
 
+    // 现在的 layout 及 wrapper 实现是通过父路由的形式实现的, 会导致路由数据多了冗余层级, proLayout 消费时, 无法正确展示菜单, 这里对冗余数据进行过滤操作
+    const newRoutes = filterRoutes(clientRoutes.filter(route => route.id === '@@/global-layout'), (route) => {
+        return (!!route.isLayout && route.id !== '@@/global-layout') || !!route.isWrapper;
+    })
+    // const route = mapRoutes(newRoutes);
+    const [route] = useAccessMarkedRoutes(mapRoutes(newRoutes));
+    const matchedRoute = useMemo(() => matchRoutes(route.children, location.pathname)?.pop?.()?.route, [location.pathname]);
+
+    console.log(matchedRoute)
     /**
      * TODO
      * 留着做Tab模式的开关
@@ -79,11 +146,12 @@ const Main = () => {
     const replace = true;
 
     if (loading) {
-        return (<Spin/>);
+        return (<DiyLoading/>);
     }
     return (
         <ConfigProvider>
             <ProLayout
+                route={route}
                 title="信息系统"
                 logo='https://img.alicdn.com/tfs/TB1YHEpwUT1gK0jSZFhXXaAtVXa-28-27.svg'
                 layout="mix"
@@ -94,11 +162,13 @@ const Main = () => {
                         return getAvatarRenderContent({
                             initialState,
                             logout: async () => {
-                                await request("/rest/logout",{
-                                    method:"GET"
+                                await request("/rest/logout", {
+                                    method: "GET"
                                 });
                                 cookie.remove('Authorization');
-                                navigate("/user/login",{replace:true})
+                                // navigate("/user/login", {replace: true})
+                                clear();
+                                navigate("/user/login")
                             }
                         })
                     }
@@ -106,7 +176,7 @@ const Main = () => {
                 onMenuHeaderClick={(e: any) => {
                     e.stopPropagation();
                     e.preventDefault();
-                    navigate('/',{replace:true});
+                    navigate('/', {replace: true});
                 }}
                 menuItemRender={(menuItemProps: any, defaultDom: any) => {
                     if (menuItemProps.isUrl || menuItemProps.children) {
@@ -140,9 +210,9 @@ const Main = () => {
                     padding: 0
                 }}
             >
-                <TabList>
+                {replace ? <TabList>
                     <Outlet/>
-                </TabList>
+                </TabList> : <Outlet/>}
             </ProLayout>
         </ConfigProvider>);
 }

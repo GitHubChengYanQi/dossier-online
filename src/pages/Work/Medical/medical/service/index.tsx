@@ -87,3 +87,10 @@ export const delMedicalInfo = async (id: number) => {
         }
     });
 }
+export const selectMedical = async (params:Record<string, any>) => {
+    return await request("/medical/listSelect", {
+        data: {
+            ...params
+        },
+    });
+}

@@ -8,7 +8,6 @@
 import React, {useRef,useState} from 'react';
 import useHisDeptSubjectField from "../schema";
 import {delHisDeptSubjectInfo,getHisDeptSubjectList} from "../service";
-import HisDeptSubjectEdit from "../medicalEdit";
 import EditButton from "@/components/EditButton";
 import TableOptionsWrap from "@/components/TableOptionsWrap";
 import {PageContainer, ProTable,ActionType} from "@ant-design/pro-components";
@@ -16,6 +15,7 @@ import {Button} from "antd";
 import {ColumnsType} from "@/types/common";
 import DelButton from "@/components/DelButton";
 import useAlert from "@/components/useAlert";
+import HisDeptSubjectEdit from "@/pages/Work/His/hisDeptSubject/hisDeptSubjectEdit";
 
 const HisDeptSubjectList = () => {
 

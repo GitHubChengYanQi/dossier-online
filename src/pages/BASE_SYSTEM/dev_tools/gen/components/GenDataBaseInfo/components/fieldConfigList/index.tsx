@@ -136,7 +136,7 @@ const FieldConfigList = (
 
                         <ProFormSelect width={160} name={"type"} label={<h4>字段类型</h4>} options={[
                             {label: '文本输入框', value: ''},
-                            {label: '多行文本', value: 'textArea'},
+                            {label: '多行文本', value: 'textarea'},
                             {label: '上级ID', value: 'parentId'},
                             {label: '密码输入框', value: 'password'},
                             {label: '数字输入框', value: 'digit'},

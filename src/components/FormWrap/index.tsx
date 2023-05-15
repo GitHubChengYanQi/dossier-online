@@ -15,22 +15,20 @@ export declare type FormWrapProps<T> = {
     onSuccess?: () => void;
     onClose?: () => void;
     children?: React.ReactNode | React.ReactNode[];
-    isPage?:boolean;
+    isPage?: boolean;
 } & Omit<ModalFormProps<T>, "children"> & Omit<DrawerFormProps<T>, "children"> & Omit<ProFormProps<T>, "children">
 
 const FormWrap = <T extends Record<string, any>>(props: FormWrapProps<T>) => {
 
-    const {open = false,isPage = true, type, title, onClose, children,width,modalProps, ...otherProps} = props;
+    const {open = false, isPage = true, type, title, onClose, children, width, modalProps, ...otherProps} = props;
 
-    const renderForm = ()=>{
+    const renderForm = () => {
         return (
-            <ProCard>
-                <ProForm<T>
-                    {...omit(otherProps,["onOpenChange"])}
-                >
-                    {children}
-                </ProForm>
-            </ProCard>
+            <ProForm<T>
+                {...omit(otherProps, ["onOpenChange"])}
+            >
+                {children}
+            </ProForm>
         );
     }
 
@@ -42,11 +40,11 @@ const FormWrap = <T extends Record<string, any>>(props: FormWrapProps<T>) => {
                     title={title}
                     width={width}
                     modalProps={{
-                        centered:true,
-                        destroyOnClose:true
+                        centered: true,
+                        destroyOnClose: true
                     }}
                     onOpenChange={(visible) => {
-                        if(!visible){
+                        if (!visible) {
                             onClose?.()
                         }
                     }}
@@ -57,13 +55,13 @@ const FormWrap = <T extends Record<string, any>>(props: FormWrapProps<T>) => {
                 </ModalForm>
             );
         case "Form":
-            if(isPage){
+            if (isPage) {
                 return (
                     <PageContainer
 
-                    header={{
-                        title
-                    }}
+                        header={{
+                            title
+                        }}
                     >
                         {renderForm()}
                     </PageContainer>
@@ -78,10 +76,10 @@ const FormWrap = <T extends Record<string, any>>(props: FormWrapProps<T>) => {
                     title={title}
                     width={width}
                     drawerProps={{
-                        destroyOnClose:true
+                        destroyOnClose: true
                     }}
                     onOpenChange={(visible) => {
-                        if(!visible){
+                        if (!visible) {
                             onClose?.()
                         }
                     }}

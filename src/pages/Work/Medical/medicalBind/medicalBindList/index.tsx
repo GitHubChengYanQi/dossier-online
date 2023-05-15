@@ -5,23 +5,20 @@
  * @Date 2023-04-20 10:18:26
  */
 
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import useMedicalBindField from "../schema";
-import {delMedicalBindInfo,getMedicalBindList} from "../service";
+import {getMedicalBindList} from "../service";
 import EditButton from "@/components/EditButton";
 import TableOptionsWrap from "@/components/TableOptionsWrap";
 import {PageContainer, ProTable,ActionType} from "@ant-design/pro-components";
 import {Button} from "antd";
 import {ColumnsType} from "@/types/common";
-import DelButton from "@/components/DelButton";
-import useAlert from "@/components/useAlert";
+import MedicalBindEdit from "@/pages/Work/Medical/medicalBind/medicalBindEdit";
 
 const MedicalBindList = () => {
 
     const [editId,setEditId] = useState<number>(0);
     const [open,setOpen] = useState<boolean>(false);
-
-    const {error, notification} = useAlert();
 
     const actionRef = useRef<ActionType>();
 

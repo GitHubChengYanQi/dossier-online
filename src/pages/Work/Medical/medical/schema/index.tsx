@@ -6,6 +6,7 @@
  */
 
 import {ColumnsType} from "@/types/common";
+import {getMedicalList} from "@/pages/Work/Medical/medical/service";
 
 const useMedical = () => {
     const MedicalId: ColumnsType = {
@@ -67,6 +68,29 @@ const useMedical = () => {
         hideInTable: true,
         hideInSearch: true,
     }
+
+    const MedicalSelect: ColumnsType = {
+        title: "检查单",
+        dataIndex: "medicalId",
+        valueType: "select",
+        fieldProps: {
+            showSearch: true
+        },
+        debounceTime:300,
+        request: async (params) => {
+            const response = await getMedicalList({
+                title: params.keyWords || ""
+            }, {}, {});
+            const data = response.data;
+            console.log(data)
+            return data ? data.map((item: any) => {
+                return {
+                    label: item.title,
+                    value: item.medicalId
+                }
+            }) : [];
+        }
+    }
     return {
         MedicalId,
         Title,
@@ -76,6 +100,7 @@ const useMedical = () => {
         UpdateTime,
         UpdateUser,
         Display,
+        MedicalSelect
     }
 }
 export default useMedical

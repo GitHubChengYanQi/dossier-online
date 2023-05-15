@@ -1,10 +1,9 @@
 import {ProTable} from "@ant-design/pro-components";
 import React, {useState} from "react";
 import {ParamsType} from "@ant-design/pro-provider";
-import {ProTableProps} from "@ant-design/pro-table/es/typing";
+import {ProTableProps, RequestData} from "@ant-design/pro-table/es/typing";
 import {LoadingOutlined} from "@ant-design/icons";
 import Omit from "omit.js";
-import {RequestData} from "@ant-design/pro-table/lib";
 
 
 /**

@@ -59,6 +59,7 @@ const HisConstConfigList = () => {
         {
             title: "操作",
             width:120,
+            hideInSearch:true,
             render:(value: any, record: any)=>{
                 return(
                     <Space>

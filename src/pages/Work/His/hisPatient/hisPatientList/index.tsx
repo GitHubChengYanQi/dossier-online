@@ -8,14 +8,13 @@
 import React, {useRef,useState} from 'react';
 import useHisPatientField from "../schema";
 import {delHisPatientInfo,getHisPatientList} from "../service";
-import HisPatientEdit from "../medicalEdit";
 import EditButton from "@/components/EditButton";
-import TableOptionsWrap from "@/components/TableOptionsWrap";
 import {PageContainer, ProTable,ActionType} from "@ant-design/pro-components";
 import {Button, Space, Divider} from "antd";
 import {ColumnsType} from "@/types/common";
 import DelButton from "@/components/DelButton";
 import useAlert from "@/components/useAlert";
+import HisPatientEdit from "@/pages/Work/His/hisPatient/hisPatientEdit";
 
 const HisPatientList = () => {
 

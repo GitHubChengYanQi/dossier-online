@@ -39,7 +39,7 @@ const useHisConstConfig = () => {
                 text: "挂号费"
             },
             2: {
-                text: "诊费"
+                text: "检查费"
             },
             3: {
                 text: "药费"
@@ -109,6 +109,8 @@ const useHisConstConfig = () => {
         hideInTable: true,
         hideInSearch: true,
     }
+
+
     return {
         CostConfigId,
         ConstName,

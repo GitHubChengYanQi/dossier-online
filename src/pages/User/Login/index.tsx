@@ -8,14 +8,12 @@ import {
     WeiboCircleOutlined
 } from "@ant-design/icons";
 import {ProFormText, LoginForm} from "@ant-design/pro-components";
-import styles from "./index.module.less"
 import {login, loginProps} from "@/services/BASE_SYSTEM/user";
 import {ResponseData} from "@/types/common";
 import useAlert from "@/components/useAlert";
 import cookie from "js-cookie";
-import {useModel, history} from "umi";
+import {useModel,useNavigate, history} from "umi";
 import qs from "qs";
-import {useNavigate} from "@@/exports";
 
 const iconStyles = {
     marginInlineStart: '16px',
@@ -36,8 +34,8 @@ const Login = () => {
     });
 
     return (
-        <div className={styles.UserLayout}>
-            <div className={styles.panel}>
+        <div>
+            <div>
                 <LoginForm<loginProps>
                     title="妇幼健康"
                     subTitle="妇幼健康服务与管理信息系统"
@@ -62,8 +60,8 @@ const Login = () => {
                             window.location.href = params.backUrl;
                         } else {
                             refresh();
-                            window.location.href = '/ZXJC/quick'
-                            // navigate('/ZXJC/quick',{replace:true});
+                            // window.location.href = '/ZXJC/quick'
+                            navigate('/ZXJC/quick',{replace:true});
                         }
                     }}
                     message={message&&<Alert type="success" showIcon message={message} style={{margin:8}} />}

@@ -14,6 +14,7 @@ import FormWrap, {FormWrapProps} from "@/components/FormWrap";
 import {HisConstConfigType} from "@/pages/Work/His/hisConstConfig/type";
 import {ColumnsType} from "@/types/common";
 import {request} from "@/utils/Request";
+import useMedical from "@/pages/Work/Medical/medical/schema";
 
 type HisConstConfigEditProps<T> = {
     costConfigId: number
@@ -35,6 +36,8 @@ const HisConstConfigEdit = <T extends Record<string, any>>(props: HisConstConfig
         Display,
     } = useHisConstConfigField();
 
+    const {MedicalSelect} = useMedical();
+
     const columns: ColumnsType[] = [
         CostConfigId,
         ConstName,
@@ -46,13 +49,13 @@ const HisConstConfigEdit = <T extends Record<string, any>>(props: HisConstConfig
                 if (type === `1`) {
                     return [
                         {
-                            valueType:"formList",
-                            dataIndex:"costList",
-                            columns:[
+                            valueType: "formList",
+                            dataIndex: "costList",
+                            columns: [
                                 {
-                                    valueType:"group",
+                                    valueType: "group",
 
-                                    columns:[
+                                    columns: [
                                         {
                                             title: "选择科目",
                                             dataIndex: "subjectId",
@@ -71,9 +74,9 @@ const HisConstConfigEdit = <T extends Record<string, any>>(props: HisConstConfig
                                             title: "选择职位",
                                             dataIndex: "positionIds",
                                             valueType: "select",
-                                            width:240,
-                                            fieldProps:{
-                                                mode:"multiple"
+                                            width: 240,
+                                            fieldProps: {
+                                                mode: "multiple"
                                             },
                                             formItemProps: {
                                                 rules: [
@@ -87,6 +90,13 @@ const HisConstConfigEdit = <T extends Record<string, any>>(props: HisConstConfig
                                         },]
                                 }
                             ]
+                        }
+                    ];
+                }
+                if (type === `2`) {
+                    return [
+                        {
+                            ...MedicalSelect, dataIndex: "typeKey"
                         }
                     ];
                 }
@@ -112,7 +122,10 @@ const HisConstConfigEdit = <T extends Record<string, any>>(props: HisConstConfig
             onClose={onClose}
             width={width}
             request={async () => {
-                return getHisConstConfigInfo(costConfigId);
+                console.log(costConfigId)
+                const response =  await getHisConstConfigInfo(costConfigId);
+                console.log(response);
+                return response;
             }}
             onFinish={async (values) => {
                 const response = await saveHisConstConfig(costConfigId, values);

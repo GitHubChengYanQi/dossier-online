@@ -8,14 +8,13 @@
 import React, {useRef,useState} from 'react';
 import useHisRegisterField from "../schema";
 import {delHisRegisterInfo,getHisRegisterList} from "../service";
-import HisRegisterEdit from "../medicalEdit";
 import EditButton from "@/components/EditButton";
-import TableOptionsWrap from "@/components/TableOptionsWrap";
 import {PageContainer, ProTable,ActionType} from "@ant-design/pro-components";
 import {Button, Space, Divider} from "antd";
 import {ColumnsType} from "@/types/common";
 import DelButton from "@/components/DelButton";
 import useAlert from "@/components/useAlert";
+import HisRegisterEdit from "@/pages/Work/His/hisRegister/hisRegisterEdit";
 
 const HisRegisterList = () => {
 

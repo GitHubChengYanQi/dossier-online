@@ -63,10 +63,12 @@ export const getHisConstConfigInfo = async (id: number) => {
             costConfigId: id
         }
     });
-    response.data.costList = response.data.costList.map((i:any)=> {
-        i.positionIds = i.positionIds.map((j:number)=>`${j}`);
-        return i;
-    });
+    if(response.data.costList){
+        response.data.costList = response.data.costList.map((i:any)=> {
+            i.positionIds = i.positionIds.map((j:number)=>`${j}`);
+            return i;
+        });
+    }
     return response.data;
 }
 

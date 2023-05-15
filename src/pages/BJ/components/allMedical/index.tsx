@@ -30,10 +30,10 @@ const AllMedical: React.FC<AllMedicalProps> = (props) => {
                 title={"所有检查"}
                 gutter={16}
             >
-                <Row gutter={16}>
+                <Row gutter={8}>
                     {data && data.map((item: any, index: number) => {
                         return (
-                            <Col key={index} span={6}>
+                            <Col key={index} span={8}>
                                 <div onClick={() => {
                                     onClick?.({
                                         key:item.value,

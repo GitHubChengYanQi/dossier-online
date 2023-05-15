@@ -5,9 +5,9 @@ import {tabs} from "@/types/common";
 import {useModel} from "umi";
 
 
-const useTabList = ()=>{
+const useTabList = () => {
     const route = useSelectedRoutes() as any;
-    const {routes,setRoutes} = useModel("useTabs");
+    const {routes, setRoutes} = useModel("useTabs");
     /**
      * 初始化tab
      */
@@ -32,12 +32,15 @@ const useTabList = ()=>{
             tmp.splice(index, 1);
             setRoutes([...tmp]);
             if (key === lastRoute.pathname) {
-                history.replace(tmp[index-1].key||"/");
+                history.replace(tmp[index - 1].key || "/");
             }
         }
     }
-    const closeCurrent = ()=>{
-        onEdit(lastRoute.pathname,"remove");
+    const clear = () => {
+        setRoutes([]);
+    }
+    const closeCurrent = () => {
+        onEdit(lastRoute.pathname, "remove");
     }
 
     const element = renderRoute.element as any;
@@ -47,7 +50,7 @@ const useTabList = ()=>{
         const tmp = [...routes] as tabs[];
         const index = tmp.findIndex(item => item.key === lastRoute.pathname);
         if (!element?.props.to) {
-            if (index === -1 && tmp.length!==0) {
+            if (index === -1 && tmp.length !== 0) {
                 setRoutes([
                     ...tmp,
                     {
@@ -57,13 +60,14 @@ const useTabList = ()=>{
                     }
                 ]);
             }
-            if(tmp.length===0){
+            if (tmp.length === 0) {
                 setRoutes(homeElement);
             }
         }
     }, [route]);
 
     return {
+        clear,
         closeCurrent,
         onEdit,
         renderRoute,

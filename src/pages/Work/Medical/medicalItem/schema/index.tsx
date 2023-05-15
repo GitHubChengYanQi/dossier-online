@@ -64,7 +64,7 @@ const useMedicalItem = () => {
             allowClear: false,
             options: [
                 {label: '文本输入框', value: 'text'},
-                {label: '多行文本', value: 'textArea'},
+                {label: '多行文本', value: 'textarea'},
                 {label: '数字输入框', value: 'digit'},
                 {label: '下拉选择器', value: 'select'},
                 {label: '复选框', value: 'checkbox'},
