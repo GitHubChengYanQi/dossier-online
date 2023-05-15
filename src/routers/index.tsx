@@ -145,5 +145,11 @@ const routeList = [
         component: './User/Login',
         layout: false
     },
+    {
+        name: '审批流',
+        path: '/workFlow',
+        component: './Workflow/index',
+        layout: false
+    },
 ]
 export default routeList;
