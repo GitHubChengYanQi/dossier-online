@@ -2,7 +2,6 @@ import React, {useContext} from 'react';
 import NodeWrap from '../NodeWrap';
 import TitleElement from '../TitleElement';
 import WFC from '../../OperatorContext';
-import {Owner} from '@/pages/Workflow/Nodes/MatchNode';
 
 function NotifierNode(props) {
   const {onDeleteNode, onSelectNode} = useContext(WFC);
@@ -32,10 +31,7 @@ function NotifierNode(props) {
     title={TitleEl}
     objRef={props.objRef}>
     <div className="text">
-      {props.stepType ?
-        Owner(props)
-        :
-        '请选择抄送人'}
+      {'请选择抄送人'}
     </div>
     icon
   </NodeWrap>);

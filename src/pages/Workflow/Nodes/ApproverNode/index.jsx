@@ -2,7 +2,6 @@ import React, {useContext} from 'react';
 import NodeWrap from '../NodeWrap';
 import TitleElement from '../TitleElement';
 import WFC from '../../OperatorContext';
-import {Owner} from '@/pages/Workflow/Nodes/MatchNode';
 
 
 function ApproverNode(props) {
@@ -34,10 +33,7 @@ function ApproverNode(props) {
     title={TitleEl}
     objRef={props.objRef}>
     <div>
-      {props.stepType ?
-        Owner(props)
-        :
-        '请选择'}
+      {'请选择'}
     </div>
    icon
 

@@ -13,17 +13,13 @@ const Workflow = ({value, onChange}) => {
   const ref = useRef();
 
   const defaultConfig = {
-    'pkId': 'start',
-    'nodeName': '发起人',
-    'stepType': 'start',
-    'auditType': 'start',
-    'type': '0',
+    'auditType': OptionTypes.START,
     'childNode': null,  // 下级步骤
     'conditionNodeList': [] // 分支
   };
 
   const [config, setConfig] = useState(value || defaultConfig);
-
+  console.log(config);
   const [currentNode, setCurrentNode] = useState();
 
   const updateNode = () => {
@@ -41,14 +37,12 @@ const Workflow = ({value, onChange}) => {
     const o = objRef.childNode;
 
     if (type === OptionTypes.APPROVER) {
-      objRef.childNode = {...NodeTemplates[OptionTypes.APPROVER], childNode: o, auditType: 'process',};
+      objRef.childNode = {...NodeTemplates[OptionTypes.APPROVER], childNode: o};
     }
     if (type === OptionTypes.NOTIFIER) {
       objRef.childNode = {
         ...NodeTemplates[OptionTypes.NOTIFIER],
         childNode: o,
-        stepType: 'send',
-        auditType: 'send',
       };
     }
     if (type === OptionTypes.CONDITION) {
@@ -56,17 +50,14 @@ const Workflow = ({value, onChange}) => {
         ...NodeTemplates[OptionTypes.CONDITION], conditionNodeList: [
           {
             ...NodeTemplates[OptionTypes.BRANCH],
-            nodeName: '条件1',
-            auditType: 'branch',
-            stepType: 'branch',
             childNode: o
           },
-          {...NodeTemplates[OptionTypes.BRANCH], nodeName: '条件2', auditType: 'branch', stepType: 'branch',},
+          {...NodeTemplates[OptionTypes.BRANCH] },
         ]
       };
     }
     if (type === OptionTypes.BRANCH) {
-      objRef.conditionNodeList.push({...NodeTemplates[NodeTypes.BRANCH], auditType: 'branch', stepType: 'branch'});
+      objRef.conditionNodeList.push({...NodeTemplates[NodeTypes.BRANCH]});
     }
     updateNode();
   };
@@ -96,7 +87,7 @@ const Workflow = ({value, onChange}) => {
       prev: pRef
     });
 
-    console.log(objRef.type);
+    console.log(objRef);
   };
 
   useEffect(() => {
