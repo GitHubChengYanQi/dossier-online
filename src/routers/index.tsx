@@ -146,9 +146,15 @@ const routeList = [
         layout: false
     },
     {
-        name: '审批流',
+        name: '流程管理',
         path: '/workFlow',
-        component: './Workflow/index',
+        component: './Workflow/list',
+        // layout: false
+    },
+    {
+        name: '流程编辑',
+        path: '/workFlow/:type',
+        component: './Workflow/edit',
         // layout: false
     },
 ]

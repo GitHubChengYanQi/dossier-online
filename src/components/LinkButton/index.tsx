@@ -16,7 +16,6 @@ const Index: React.FC<LinkButtonProps> = (props) => {
 
     const {disabled = false, type, onClick, children} = props;
 
-    console.log(disabled)
     if (disabled) {
         return <Text disabled>{children}</Text>
     }

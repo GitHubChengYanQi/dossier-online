@@ -9,23 +9,27 @@ export const OptionTypes = {
 export const NodeTypes = OptionTypes;
 // 节点类型默认标题名
 export const OptionNames = {
-  [OptionTypes.APPROVER]: '过程',
+  [OptionTypes.APPROVER]: '审批',
   [OptionTypes.NOTIFIER]: '抄送',
-  [OptionTypes.CONDITION]: '分支',
+  [OptionTypes.CONDITION]: '条件分支',
 };
 // 节点模板
 export const NodeTemplates = {
   [OptionTypes.APPROVER]: {
     auditType: OptionTypes.APPROVER,
+    nodeSetting:{}
   },
   [OptionTypes.NOTIFIER]: {
     auditType: OptionTypes.NOTIFIER,
+    nodeSetting:{}
   },
   [OptionTypes.CONDITION]: {
     auditType: OptionTypes.CONDITION,
+    nodeSetting:{}
   },
   [OptionTypes.BRANCH]: {
     auditType: OptionTypes.BRANCH,
+    nodeSetting:{}
   },
 };
 

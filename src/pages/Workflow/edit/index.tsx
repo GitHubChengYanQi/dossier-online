@@ -2,10 +2,16 @@ import React, {useState} from 'react';
 import WorkflowContent from './workflow';
 import {Button, Card, Space} from 'antd';
 import {request} from "@/utils/Request";
+import {useParams, useRequest} from "umi";
 
 const Workflow = () => {
 
+    const {type} = useParams();
+    // console.log(params)
+
     const [value, setValue] = useState('');
+
+
 
 
     return <>
@@ -13,14 +19,14 @@ const Workflow = () => {
             <Space>
                 <Button type='primary' onClick={async () => {
                     console.log(value)
-                    const response = await request("/activiti/update",{
-                        data:value
+                    const response = await request("/activiti/update", {
+                        data: value
                     });
                     console.log(response);
                 }}>保存</Button>
             </Space>
         </div>
-        <Card style={{height: '90vh'}}>
+        <Card style={{height: 'calc(100vh - 165px)'}}>
             <WorkflowContent
                 value={value}
                 onChange={(value: any) => {

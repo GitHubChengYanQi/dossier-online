@@ -87,6 +87,7 @@ const Main = () => {
     const {initialState, setInitialState} = useModel('@@initialState');
     const {run: deptRun} = useModel("dept");
     const {run: areaRun} = useModel("area");
+    const {run: positionRun} = useModel("position");
 
     const location = useLocation();
     const navigate = useNavigate();
@@ -111,6 +112,7 @@ const Main = () => {
              */
             await deptRun();
             await areaRun();
+            await positionRun();
             setInitialState({
                 avatar: `${baseURI}${data.avatar}`,
                 name: `${data.name}`,
@@ -135,9 +137,13 @@ const Main = () => {
     })
     // const route = mapRoutes(newRoutes);
     const [route] = useAccessMarkedRoutes(mapRoutes(newRoutes));
+    /**
+     * 错误页面会用到
+     * TODO
+     */
     const matchedRoute = useMemo(() => matchRoutes(route.children, location.pathname)?.pop?.()?.route, [location.pathname]);
 
-    console.log(matchedRoute)
+    // console.log(matchedRoute)
     /**
      * TODO
      * 留着做Tab模式的开关
