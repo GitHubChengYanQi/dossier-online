@@ -5,31 +5,39 @@ export const OptionTypes = {
   NOTIFIER: 'SEND',
   BRANCH: 'BRANCH',
   CONDITION: 'GATEWAY',
+  CHILDRENPROCESS: 'CHILDRENPROCESS',
 };
 export const NodeTypes = OptionTypes;
 // 节点类型默认标题名
 export const OptionNames = {
+  [OptionTypes.START]: '发起',
   [OptionTypes.APPROVER]: '审批',
   [OptionTypes.NOTIFIER]: '抄送',
   [OptionTypes.CONDITION]: '条件分支',
+  [OptionTypes.BRANCH]: '条件',
+  [OptionTypes.CHILDRENPROCESS]: '子流程',
 };
 // 节点模板
 export const NodeTemplates = {
   [OptionTypes.APPROVER]: {
     auditType: OptionTypes.APPROVER,
-    nodeSetting:{}
+    nodeSetting: {},
   },
   [OptionTypes.NOTIFIER]: {
     auditType: OptionTypes.NOTIFIER,
-    nodeSetting:{}
+    nodeSetting: {},
   },
   [OptionTypes.CONDITION]: {
     auditType: OptionTypes.CONDITION,
-    nodeSetting:{}
+    nodeSetting: {},
+  },
+  [OptionTypes.CHILDRENPROCESS]: {
+    auditType: OptionTypes.CHILDRENPROCESS,
+    nodeSetting: {},
   },
   [OptionTypes.BRANCH]: {
     auditType: OptionTypes.BRANCH,
-    nodeSetting:{}
+    nodeSetting: {},
   },
 };
 

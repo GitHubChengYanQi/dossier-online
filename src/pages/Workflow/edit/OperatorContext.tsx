@@ -7,7 +7,7 @@ type WfcProps = {
     config?: object;
     updateNode?: () => void;
     onAddNode?: (type: string, pRef?: ProcessNodeType, objRef?: ProcessNodeType) => void;
-    onDeleteNode?: (pRef: ProcessNodeType, objRef: ProcessNodeType, type: any, index: number) => void;
+    onDeleteNode?: (pRef: ProcessNodeType, objRef: ProcessNodeType, type?: any, index?: number) => void;
     onSelectNode?: (pRef: ProcessNodeType, objRef: ProcessNodeType) => void;
     auditNodeType?: {
         value: string;

@@ -1,39 +1,35 @@
 import React, {useContext} from 'react';
-import NodeWrap from '../NodeWrap';
-import TitleElement from '../TitleElement';
+import NodeWrap from '../NodeWrap/index';
 import WFC from '../../OperatorContext';
+import { ProcessNodeType } from '@/pages/Workflow/edit/type';
+import { OptionNames } from '@/pages/Workflow/edit/Nodes/Constants';
 
-function NotifierNode(props) {
+type NotifierNodeType = {
+  pRef?: ProcessNodeType;
+  objRef?: ProcessNodeType;
+}
+
+const NotifierNode = (props) => {
   const {onDeleteNode, onSelectNode} = useContext(WFC);
 
   function delNode() {
-    onDeleteNode(props.pRef, props.objRef);
-  }
-
-  function onChange(val) {
-    props.pRef.childNode.nodeName = val;
+    onDeleteNode?.(props.pRef, props.objRef);
   }
 
   function onContentClick() {
-    onSelectNode(props.pRef, props.objRef);
+    onSelectNode?.(props.pRef, props.objRef);
     props.onContentClick && props.onContentClick();
   }
 
-  const TitleEl = <TitleElement
-    delNode={delNode}
-    placeholder={props.nodeName}
-    nodeName={props.nodeName || '抄送'}
-    onTitleChange={onChange}
-  />;
   return (<NodeWrap
+    delNode={delNode}
     titleStyle={{backgroundColor: 'rgb(50, 150, 250)'}}
     onContentClick={onContentClick}
-    title={TitleEl}
+    title={OptionNames.SEND}
     objRef={props.objRef}>
     <div className="text">
       {'请选择抄送人'}
     </div>
-    icon
   </NodeWrap>);
 }
 
