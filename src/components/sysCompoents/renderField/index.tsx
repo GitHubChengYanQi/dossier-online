@@ -2,33 +2,56 @@ import {ColumnsType} from "@/types/common";
 import {BetaSchemaForm} from "@ant-design/pro-components";
 import SelectPosition from "@/components/sysCompoents/selectPosition";
 import SelectDept from "@/components/sysCompoents/selectDept";
-import {ProSchemaValueEnumMap, ProSchemaValueEnumObj} from "@ant-design/pro-utils/es/typing";
+import {
+    ProFieldValueType,
+    ProSchemaValueEnumMap,
+    ProSchemaValueEnumObj
+} from "@ant-design/pro-utils/es/typing";
+import {request} from "@/utils/Request";
 
+type requestType = {
+    url: string;
+
+    method?: "GET" | "POST"
+
+    labelName?: string;
+
+    valueName?: string;
+
+}
 export declare type RenderFieldType = {
 
     title?: string;
 
     name?: string;
 
-    type: string;
+    type: string;//"position" | "dept" |ProFieldValueTypeWithFieldProps;
 
-    enums?: Record<string, ProSchemaValueEnumObj | ProSchemaValueEnumMap>
+    enums?: ProSchemaValueEnumObj | ProSchemaValueEnumMap;
+
+    request?: requestType;
 
 } & Omit<ColumnsType, "request" | "valueType" | "valueEnum">
 
 type RenderFieldProps = {
-    config: RenderFieldType
+    config: RenderFieldType;
+
+    name?: string;
+
+    label?: string;
 }
 const RenderField: React.FC<RenderFieldProps> = (props) => {
 
-    const {config} = props
+    const {config, name} = props
 
     if (!config.type) {
         return null;
     }
 
     const result: ColumnsType = {
-        dataIndex: config.name
+        title: config.title,
+        dataIndex: config.name || config.dataIndex,
+        valueEnum: config.enums
     }
     /**
      * 设置字段类型
@@ -45,7 +68,31 @@ const RenderField: React.FC<RenderFieldProps> = (props) => {
             }
             break;
         default:
-            result.valueType = "text";
+            result.valueType = config.type as ProFieldValueType;
+    }
+
+    /**
+     *设置数据源
+     */
+    if (config.enums) {
+        result.valueEnum = config.enums
+    }
+    if (config.request) {
+        const reqConfig = config.request;
+        result.request = async () => {
+            const response = await request(reqConfig?.url, {
+                method: reqConfig.method
+            })
+            const {data} = response;
+            return data ? data.map((item: Record<string, any>) => {
+                return {
+                    title: reqConfig.labelName ? item[reqConfig.labelName] : "",
+                    label: reqConfig.labelName ? item[reqConfig.labelName] : "",
+                    value: reqConfig.valueName ? item[reqConfig.valueName] : "",
+                    key: reqConfig.valueName ? item[reqConfig.valueName] : "",
+                }
+            }) : [];
+        }
     }
     return (
         <BetaSchemaForm columns={[result]} layoutType={"Embed"}/>
