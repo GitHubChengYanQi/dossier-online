@@ -4,7 +4,7 @@ import { OptionNames, OptionTypes } from '../Constants';
 import styles from './index.module.scss';
 
 type AddNodeType = {
-  onOptionClick: (optionType: string) => {}
+  onOptionClick: (optionType: string) => void
 }
 
 const AddNodeList: React.FC<AddNodeType> = (props) => {

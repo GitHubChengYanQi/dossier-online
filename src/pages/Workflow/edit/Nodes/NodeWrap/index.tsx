@@ -9,8 +9,8 @@ type NodeWrapProps = {
   titleStyle?: object,
   auditType?: string,
   title?: any,
-  onContentClick?: () => {},
-  delNode?: () => {},
+  onContentClick?: () => void,
+  delNode?: () => void,
   children?: any,
   objRef?: ProcessNodeType
 }

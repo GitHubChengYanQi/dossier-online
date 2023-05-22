@@ -4,14 +4,11 @@ import Render from '../Render';
 import { NodeTypes, OptionNames } from '../Constants';
 import WFC from '../../OperatorContext';
 import styles from './index.module.scss';
-
-import {conditionType, NodeSettingType, ProcessNodeType} from "../../type";
-import {DrawerForm, ProFormDependency, ProFormGroup, ProFormList, ProFormSelect} from "@ant-design/pro-components";
-import {FormInstance, Typography} from "antd";
-import RenderField from "@/components/sysCompoents/renderField";
-import Omit from "omit.js";
-import {QuestionCircleOutlined,CloseOutlined} from "@ant-design/icons";
-
+import { conditionType, NodeSettingType, ProcessNodeType } from '../../type';
+import { DrawerForm, ProFormDependency, ProFormGroup, ProFormList, ProFormSelect } from '@ant-design/pro-components';
+import { FormInstance, Typography } from 'antd';
+import RenderField from '@/components/sysCompoents/renderField';
+import { CloseOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 
 
 const CoverLine = ({ first = false, last = false }) => {
@@ -25,8 +22,6 @@ const CoverLine = ({ first = false, last = false }) => {
 };
 
 type BranchNodeType = {
-
-  nodeName?: string;
 
   objRef: ProcessNodeType;
 
@@ -150,26 +145,31 @@ const BranchNode: React.FC<BranchNodeType> = (props) => {
         onOpenChange={(v) => {
           setOpen(v);
         }}
-        onValuesChange={(changedFields) => {
-                }}
-                onFinish={async (values) => {
+        onValuesChange={() => {
+        }}
+        onFinish={async (values) => {
 
-                    props.objRef.nodeSetting = values;
-                    console.log(props.objRef)
-                    // setOpen(false)
-                }}
-            >
-                <Typography.Title level={5}>同时满足一下条件<QuestionCircleOutlined /></Typography.Title>
-                <ProFormList name={"conditions"} style={{width: "100%"}}>
-                    <RenderRow/>
-                </ProFormList>
-            </DrawerForm>
-        </>
-    );
+          props.objRef.nodeSetting = values;
+          console.log(props.objRef);
+          // setOpen(false)
+        }}
+      >
+        <Typography.Title level={5}>同时满足一下条件<QuestionCircleOutlined /></Typography.Title>
+        <ProFormList name={'conditions'} style={{ width: '100%' }}>
+          <RenderRow />
+        </ProFormList>
+      </DrawerForm>
+    </>
+  );
 };
 
 
-function ConditionNode({ conditionNodeList: branches = [], ...restProps }) {
+type ConditionNodeProps = {
+  conditionNodeList: ProcessNodeType[],
+  pRef: ProcessNodeType,
+  objRef: ProcessNodeType
+}
+const ConditionNode: React.FC<ConditionNodeProps> = ({ conditionNodeList: branches, ...restProps }) => {
 
   const { onAddNode, onDeleteNode, onSelectNode } = useContext(WFC);
 
@@ -177,7 +177,7 @@ function ConditionNode({ conditionNodeList: branches = [], ...restProps }) {
     onAddNode?.(NodeTypes.BRANCH, restProps.pRef, restProps.objRef);
   }
 
-  function delBranch(i) {
+  function delBranch(i: number) {
     if (branches.length === 2) {
       onDeleteNode?.(restProps.pRef, restProps.objRef);
       return;
@@ -185,23 +185,24 @@ function ConditionNode({ conditionNodeList: branches = [], ...restProps }) {
     onDeleteNode?.(restProps.pRef, restProps.objRef, NodeTypes.BRANCH, i);
   }
 
-  function onBranchClick(objRef) {
+  function onBranchClick(objRef: ProcessNodeType) {
     onSelectNode?.(restProps.objRef, objRef);
   }
 
+  if (!branches || branches.length === 0) {
+    return (<div></div>);
+  }
+
   return (
-    branches && branches.length > 0 && <div className={styles.branchWrap}>
+    <div className={styles.branchWrap}>
       <div className='branch-box-wrap'>
         <div className='branch-box'>
           <div className='add-branch' onClick={addBranch}>添加条件</div>
           {branches.map((item, index) => {
             return (<div className='col-box' key={index.toString()}>
               <BranchNode
-                {...Omit(item, ['childNode'])}
-                first={index === 0}
                 onBranchClick={onBranchClick}
                 delBranch={() => delBranch(index)}
-                last={index === branches.length - 1}
                 objRef={item}
                 index={index}
               />
@@ -214,6 +215,6 @@ function ConditionNode({ conditionNodeList: branches = [], ...restProps }) {
       </div>
     </div>
   );
-}
+};
 
 export default ConditionNode;
