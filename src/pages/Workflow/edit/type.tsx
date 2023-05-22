@@ -55,7 +55,7 @@ export declare type conditionType = {
 
   request?: requestType;
 
-  repairPosition: string
+  value: string
 }
 
 export declare type actionType = {

@@ -35,6 +35,8 @@ export declare type RenderFieldType = {
 
     request?: requestType;
 
+    dataIndex?: string
+
 } & Omit<ColumnsType, "request" | "valueType" | "valueEnum">
 
 type RenderFieldProps = {
