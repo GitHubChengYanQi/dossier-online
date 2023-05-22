@@ -73,6 +73,7 @@ const ApproverNode: React.FC<ApproverNodeProps> = (props) => {
 
           }
         }}
+        initialValues={props.objRef.nodeSetting}
         onFinish={async (values) => {
           props.objRef.nodeSetting = values;
           setOpen(false);

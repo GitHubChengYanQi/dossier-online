@@ -43,10 +43,10 @@ const Workflow = ({ value, onChange }: {
   onChange?: (value: any) => void
 }) => {
 
-  const { type } = useParams();
+  const { id } = useParams();
 
   const { data } = useRequest(async () => {
-    const response = await request(`/activiti/getDetail/${type}`, {
+    const response = await request(`/activiti/getDetail/${id}`, {
       method: 'GET',
     });
     return response.data;

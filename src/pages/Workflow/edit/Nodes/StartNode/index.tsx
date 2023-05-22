@@ -76,6 +76,7 @@ const StartNode: React.FC<StartNodeType> = (props) => {
 
                     }
                 }}
+                initialValues={props.objRef.nodeSetting}
                 onFinish={async (values) => {
                     props.objRef.nodeSetting = values;
                     setOpen(false)

@@ -153,12 +153,12 @@ const routeList = [
     {
         name: '流程管理',
         path: '/workFlow',
-        component: './Workflow/list',
+        component: './Workflow/activiti/activitiList',
         // layout: false
     },
     {
         name: '流程编辑',
-        path: '/workFlow/:type',
+        path: '/workFlow/:id',
         component: './Workflow/edit',
         // layout: false
     },

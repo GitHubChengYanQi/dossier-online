@@ -6,8 +6,7 @@ import {useParams, useRequest} from "umi";
 
 const Workflow = () => {
 
-    const {type} = useParams();
-    // console.log(params)
+    const { id } = useParams();
 
     const [value, setValue] = useState('');
 
@@ -19,8 +18,8 @@ const Workflow = () => {
             <Space>
                 <Button type='primary' onClick={async () => {
                     console.log(value)
-                    const response = await request("/activiti/update", {
-                        data: value
+                    const response = await request(`/activiti/update/${id}`, {
+                        data: value,
                     });
                     console.log(response);
                 }}>保存</Button>
