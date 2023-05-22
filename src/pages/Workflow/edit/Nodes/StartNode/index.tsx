@@ -1,5 +1,5 @@
 import React, {useContext, useRef, useState} from 'react';
-import NodeWrap from '../NodeWrap';
+import NodeWrap from '../NodeWrap/index';
 import WFC from '@/pages/Workflow/edit/OperatorContext';
 import {Form, FormInstance} from "antd";
 import {
@@ -12,6 +12,7 @@ import SelectUser from "@/components/sysCompoents/selectUser";
 import SelectDept from "@/components/sysCompoents/selectDept";
 import SelectPosition from "@/components/sysCompoents/selectPosition";
 import {NodeSettingType, ProcessNodeType} from "@/pages/Workflow/edit/type";
+import { OptionNames, OptionTypes } from '@/pages/Workflow/edit/Nodes/Constants';
 
 type StartNodeType = {
     pRef: any;
@@ -42,11 +43,11 @@ const StartNode: React.FC<StartNodeType> = (props) => {
                 onContentClick={() => {
                     onContentClick();
                 }}
-                title={<span>{props.nodeName || '发起人'}</span>}>
+                auditType={OptionTypes.START}
+                title={OptionNames.START}>
                 <div>
                     {'请选择发起人'}
                 </div>
-                icon
             </NodeWrap>
 
             <DrawerForm<NodeSettingType>

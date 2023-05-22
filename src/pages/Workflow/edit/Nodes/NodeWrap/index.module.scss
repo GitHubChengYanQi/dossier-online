@@ -28,6 +28,7 @@
           border: 1px solid #3296fa;
           box-shadow: 0 0 6px 0 rgba(50, 150, 250, .3);
         }
+
         .close {
           display: block;
         }
@@ -76,7 +77,7 @@
         line-height: 24px;
         text-align: left;
         background: #576a95;
-        border-radius: 4px  4px 0 0;
+        border-radius: 4px 4px 0 0;
       }
 
       .placeholder {
@@ -124,6 +125,12 @@
     }
 
     .start-node {
+      &:hover {
+        .close {
+          display: none;
+        }
+      }
+
       &:before {
         content: none
       }

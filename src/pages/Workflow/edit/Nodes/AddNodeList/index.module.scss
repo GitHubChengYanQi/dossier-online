@@ -50,20 +50,26 @@
 
     }
 
-    .approver {
+    .USERTASK {
       .item-wrapper {
         color: #ff943e
       }
     }
-    .notifier {
+    .SEND {
       .item-wrapper {
         color: #3296fa
       }
     }
 
-    .condition {
+    .GATEWAY {
       .item-wrapper {
         color: #15bc83
+      }
+    }
+
+    .CHILDRENPROCESS {
+      .item-wrapper {
+        color: #f5ca17
       }
     }
     .auto {

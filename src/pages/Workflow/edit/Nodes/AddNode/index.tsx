@@ -1,11 +1,10 @@
-import React, {useState, useContext} from 'react';
-import {Popover} from 'antd';
+import React, { useState, useContext } from 'react';
+import { Popover } from 'antd';
 import AddNodeList from '../AddNodeList';
 import WFC from '../../OperatorContext';
-// import styles from './index.module.scss';
-import {PlusOutlined} from "@ant-design/icons";
-import {ProcessNodeType} from "@/pages/Workflow/type";
-import {styled} from "umi";
+import { PlusOutlined } from '@ant-design/icons';
+import { ProcessNodeType } from '@/pages/Workflow/type';
+import { styled } from 'umi';
 
 
 const NodeWrapper = styled.div`
@@ -73,37 +72,37 @@ const NodeWrapper = styled.div`
     }
   }`;
 type AddNodeType = {
-    pRef?: ProcessNodeType;
-    objRef?: ProcessNodeType;
+  pRef?: ProcessNodeType;
+  objRef?: ProcessNodeType;
 }
 const AddNode: React.FC<AddNodeType> = (props) => {
 
-    const {onAddNode} = useContext(WFC);
+  const { onAddNode } = useContext(WFC);
 
-    function onOptionClick(type: string) {
-        onAddNode?.(type, props.pRef, props.objRef);
-    }
+  function onOptionClick(type: string) {
+    onAddNode?.(type, props.pRef as any, props.objRef as any);
+  }
 
-    const [visible, setVisible] = useState<boolean>(false);
+  const [visible, setVisible] = useState<boolean>(false);
 
-    return (
-        <NodeWrapper>
-            <div className="add-node-btn">
-                <Popover
-                    open={visible}
-                    onOpenChange={setVisible}
-                    placement="bottom"
-                    content={<AddNodeList onOptionClick={(type: string) => {
-                        setVisible(false);
-                        onOptionClick(type);
-                    }}/>} trigger="click">
-                    <div className="btn">
-                        <PlusOutlined/>
-                    </div>
-                </Popover>
-            </div>
-        </NodeWrapper>
-    );
+  return (
+    <NodeWrapper>
+      <div className='add-node-btn'>
+        <Popover
+          open={visible}
+          onOpenChange={setVisible}
+          placement='bottom'
+          content={<AddNodeList onOptionClick={(type: string) => {
+            setVisible(false);
+            onOptionClick(type);
+          }} />} trigger='click'>
+          <div className='btn'>
+            <PlusOutlined />
+          </div>
+        </Popover>
+      </div>
+    </NodeWrapper>
+  );
 };
 
 export default AddNode;
