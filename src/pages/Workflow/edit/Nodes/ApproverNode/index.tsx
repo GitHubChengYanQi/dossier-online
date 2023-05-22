@@ -6,6 +6,7 @@ import { DrawerForm, ProFormCheckbox, ProFormRadio } from '@ant-design/pro-compo
 import { FormInstance } from 'antd';
 import AuditNode from '@/pages/Workflow/edit/components/AuditNode';
 import { OptionNames } from '@/pages/Workflow/edit/Nodes/Constants';
+import styles from './index.module.scss';
 
 type ApproverNodeProps = {
   pRef: any;
@@ -34,6 +35,10 @@ const ApproverNode: React.FC<ApproverNodeProps> = (props) => {
 
   const radio = auditNodeType ? [...auditNodeType] : [];
   radio.shift();
+
+  const nodeSetting = (props.objRef.nodeSetting || {}) as NodeSettingType;
+  const auditType = nodeSetting?.type || [];
+
   return (
     <>
       <NodeWrap
@@ -43,8 +48,14 @@ const ApproverNode: React.FC<ApproverNodeProps> = (props) => {
         title={OptionNames.USERTASK}
         objRef={props.objRef}>
         <div>
-          {'请选择'}
+          {auditType.length === 0 && '请选择审批人'}
+          {auditType.map(item => {
+            return radio.find(auditItem => auditItem.value === item)?.label || '';
+          }).join('、')}
         </div>
+        {nodeSetting?.andOr && <div className={styles.andOr}>
+          {nodeSetting.andOr === 'OR' && '或签'}{nodeSetting.andOr === 'AND' && '并签'}
+        </div>}
 
       </NodeWrap>
       {props.objRef.nodeSetting?<DrawerForm<NodeSettingType>

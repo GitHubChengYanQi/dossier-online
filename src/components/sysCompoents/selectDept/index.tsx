@@ -10,7 +10,7 @@ type SelectDeptProps = {
 }
 const SelectDept: React.FC<SelectDeptProps> = (props) => {
 
-    const {multiple = true, onChange} = props;
+    const {multiple = true, onChange,value} = props;
 
     const {data: deptData} = useModel("dept");
 
@@ -19,6 +19,7 @@ const SelectDept: React.FC<SelectDeptProps> = (props) => {
             multiple={multiple}
             treeDefaultExpandAll
             treeData={deptData}
+            value={value}
             onChange={(values) => {
                 onChange?.(values);
             }}

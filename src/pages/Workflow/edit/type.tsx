@@ -1,44 +1,50 @@
-import {requestType} from "@/components/sysCompoents/renderField";
+import { requestType } from '@/components/sysCompoents/renderField';
 
 export declare type AuditNodePositionType = {
-    deptId: number;
-    positionId: number
+  deptId: number;
+  positionId: number
 }
 
 export declare type NodeSettingType = {
-    type: string[];
+  type: string[];
 
-    userList?: number[];
+  userList?: number[];
 
-    deptIds?: number[];
+  deptIds?: number[];
 
-    headDeptIds?: number[];
+  headDeptIds?: number[];
 
-    positionIds?: AuditNodePositionType[];
+  positionIds?: AuditNodePositionType[];
 
-    andOr?: "AND" | "OR"
+  andOr?: 'AND' | 'OR',
+
+  conditions?: conditionType[]
 
 }
 
 export declare type ProcessNodeType = {
+
     auditType: string;
 
     remark?: string;
     childNode?: ProcessNodeType | null;  // 下级步骤
     conditionNodeList?: ProcessNodeType[]; // 分支
     nodeSetting?: NodeSettingType;
+
 }
 
 export declare type conditionType = {
-    fieldName: string;
+  fieldName: string;
 
-    fieldTitle: string;
+  fieldTitle: string;
 
-    condition: "eq" | "ne" | "lt" | "gt" | "ge" | "le";
+  condition: 'eq' | 'ne' | 'lt' | 'gt' | 'ge' | 'le';
 
-    type: any;
+  type: any;
 
-    enums?: Record<string, any>;
+  enums?: Record<string, any>;
 
-    request?: requestType;
+  request?: requestType;
+
+  repairPosition: string
 }

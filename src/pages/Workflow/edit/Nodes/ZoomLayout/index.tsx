@@ -38,8 +38,11 @@ const ZoomLayout: React.FC<ZoomLayoutProps> = (props) => {
         <span>{scale}%</span>
         <div className={'zoom-in' + (scale === ZOOM.MAX ? ' disabled' : '')} onClick={() => zoomSize(ZOOM.UP)} />
       </div>
-      <div className={styles.boxScale} id='box-scale'
-           style={{ 'transform': `scale(${scale / 100})`, 'transformOrigin': '50% 0px 0px' }}>
+      <div
+        className={styles.boxScale}
+        id='box-scale'
+        style={{ 'transform': `scale(${scale / 100})`, 'transformOrigin': '50% 0px 0px' }}
+      >
         {props.children}
       </div>
     </React.Fragment>
