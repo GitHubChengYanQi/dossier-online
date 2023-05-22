@@ -5,14 +5,14 @@ import {
     ProForm,
     ModalFormProps,
     DrawerFormProps,
-    ProFormProps, ProCard, PageContainer
+    ProFormProps, PageContainer
 } from "@ant-design/pro-components";
 import omit from "omit.js";
 
 export declare type FormWrapProps<T> = {
     type?: "Form" | "Modal" | "Drawer";
     open?: boolean;
-    onSuccess?: () => void;
+    onSuccess?: (v?:boolean) => void;
     onClose?: () => void;
     children?: React.ReactNode | React.ReactNode[];
     isPage?: boolean;

@@ -273,12 +273,14 @@ const Sf = () => {
                                 idType: "1",
                                 domicile: {
                                     sf: "503",
-                                    city: '565', area: '573',
+                                    city: '565',
+                                    area: '573',
                                     jd: ""
                                 },
                                 residence: {
                                     sf: "503",
-                                    city: '565', area: '573',
+                                    city: '565',
+                                    area: '573',
                                     jd: ""
                                 }
                             }}

@@ -115,6 +115,11 @@ const routeList = [
         component: './BASE_SYSTEM/system/dictType',
     },
     {
+        name: '字典管理',
+        path: '/BASE_SYSTEM/system/dict/:type',
+        component: './BASE_SYSTEM/system/dict/list',
+    },
+    {
         name: '菜单管理',
         path: '/BASE_SYSTEM/system/menu',
         component: './BASE_SYSTEM/system/menu',
@@ -155,6 +160,12 @@ const routeList = [
         name: '流程编辑',
         path: '/workFlow/:type',
         component: './Workflow/edit',
+        // layout: false
+    },
+    {
+        name: '404',
+        path: '*',
+        component: './404',
         // layout: false
     },
 ]

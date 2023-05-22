@@ -1,10 +1,13 @@
-import React from 'react';
-import {PageContainer, ProTable} from "@ant-design/pro-components";
-import {pageRequest, request} from "@/utils/Request";
+import React, {useRef, useState} from 'react';
+import {ActionType, PageContainer, ProTable} from "@ant-design/pro-components";
+import {pageRequest} from "@/utils/Request";
 import {Button} from "antd";
 import EditButton from "@/components/EditButton";
 import {ColumnsType} from "@/types/common";
 import {history} from "umi"
+import useDictTypeField from "@/pages/BASE_SYSTEM/system/dictType/schema";
+import LinkButton from "@/components/LinkButton";
+import DictTypeEdit from "@/pages/BASE_SYSTEM/system/dictType/edit";
 
 const dictTypeList = {
     url: '/rest/dictType/list',
@@ -13,88 +16,89 @@ const dictTypeList = {
 };
 export default function DictTypeList() {
 
-    const columns:ColumnsType[] = [
-        {
-            title: '名称', dataIndex: 'simpleName', width: 200,
-            render: (value, row) => {
-                return (
-                    <Button type="link" onClick={() => {
-                        switch (row.code) {
-                            case 'PURCHASE':
-                                history.push('/BASE_SYSTEM/dictType/purchaseConfig');
-                                break;
-                            default:
-                                history.push(`/BASE_SYSTEM/dictType/${row.dictTypeId}`);
-                                break;
-                        }
-                    }}>{row.name}</Button>
-                );
-            }
-        },
-        {
-            title: '编码', dataIndex: 'code', width: 200
-        },
-        {
-            title: '是否系统', dataIndex: 'sort', width: 100,
-            render:(value, row) => {
-                if (row.systemFlag === 'Y') {
-                    return ('是');
-                }
-                return ('否');
-            }
-        },
-        {
-            title: '描述', dataIndex: 'description', width: 200
-        },
-        {
-            title: '状态', width: 100,
-            render:(value, row) => {
-                if (row.status === 'ENABLE') {
-                    return ('启用');
-                }
-                return ('禁用');
-            }
-        },
+
+    const [dictTypeId, setDictTypeId] = useState(0);
+    const [open, setOpen] = useState(false)
+    const actionRef = useRef<ActionType>();
+    const {
+        simpleName,
+        code,
+        systemFlag,
+        description,
+        status,sort
+    } = useDictTypeField();
+
+    const columns: ColumnsType[] = [
+        simpleName,
+        code,
+        systemFlag,
+        description,
+        status,
+        sort,
         {
             title: '操作',
-            align: 'right',
-            width: 260,
+            width: 120,
             render: (value, record) => {
                 return (
                     <>
                         <EditButton onClick={() => {
                             // ref.current.open(record.deptId);
-                        }}/>
+                            setDictTypeId(record.dictTypeId);
+                            setOpen(true);
+
+                        }}></EditButton>
                     </>
                 );
             }
         },
     ];
 
-  return (
-    <PageContainer
-        header={{
-            title: '用户管理',
-            breadcrumb: {},
-        }}>
-      <ProTable
-          rowKey="dictTypeId"
-          columns={columns}
-          request={async (params, sorter, filter) => {
-              const { data, success } = await pageRequest(dictTypeList.url,{
-                  ...params,
-                  // FIXME: remove @ts-ignore
-                  // @ts-ignore
-                  sorter,
-                  filter,
-              });
-              return {
-                  data: data || [],
-                  success:success,
-              };
-          }}>
-
-      </ProTable>
-    </PageContainer>
-  );
+    return (
+        <PageContainer>
+            <ProTable
+                actionRef={actionRef}
+                rowKey="dictTypeId"
+                columns={columns}
+                request={async (params, sorter, filter) => {
+                    const {data, success} = await pageRequest(dictTypeList.url, {
+                        ...params,
+                        // FIXME: remove @ts-ignore
+                        // @ts-ignore
+                        sorter,
+                        filter,
+                    });
+                    return {
+                        data: data || [],
+                        success: success,
+                    };
+                }}
+                toolBarRender={()=>{
+                    return[
+                        <Button
+                            key="1"
+                            type="primary"
+                            onClick={() => {
+                                setOpen(true);
+                            }}
+                        >
+                            新建
+                        </Button>
+                    ];
+                }}
+            />
+            <DictTypeEdit
+                dictTypeId={dictTypeId}
+                open={open}
+                onClose={() => {
+                    setOpen(false)
+                    setDictTypeId(0);
+                }}
+                onSuccess={(v) => {
+                    setOpen(false);
+                    setDictTypeId(0)
+                    actionRef.current?.reload(v);
+                }}
+            />
+        </PageContainer>
+    );
 }

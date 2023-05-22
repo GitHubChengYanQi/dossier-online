@@ -9,6 +9,7 @@ import {DrawerForm, ProFormDependency, ProFormGroup, ProFormList, ProFormSelect}
 import {FormInstance, Typography} from "antd";
 import RenderField from "@/components/sysCompoents/renderField";
 import Omit from "omit.js";
+import {QuestionCircleOutlined} from "@ant-design/icons";
 
 
 const CoverLine = ({first = false, last = false}) => {
@@ -77,7 +78,8 @@ const RenderRow = () => {
                                         title: node.fieldTitle,
                                         dataIndex: node.fieldName,
                                         type: node.type,
-                                        enums: node.enums
+                                        enums: node.enums,
+                                        request: node.request,
                                     }}/>
                             ];
                         } else {
@@ -149,12 +151,13 @@ const BranchNode: React.FC<BranchNodeType> = (props) => {
 
                 }}
                 onFinish={async (values) => {
-                    console.log(values)
+
                     props.objRef.nodeSetting = values;
+                    console.log(props.objRef)
                     // setOpen(false)
                 }}
             >
-                <Typography.Title level={5}>同时满足一下条件</Typography.Title>
+                <Typography.Title level={5}>同时满足一下条件<QuestionCircleOutlined /></Typography.Title>
                 <ProFormList name={"conditions"} style={{width: "100%"}}>
                     <RenderRow/>
                 </ProFormList>

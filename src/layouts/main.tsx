@@ -16,6 +16,7 @@ import DiyLoading from "@/components/DiyLoading";
 import type { IRoute } from 'umi';
 import { useAccessMarkedRoutes } from '@@/plugin-access';
 import useTabList from "@/components/TabList/useTabList";
+import zhCN from 'antd/locale/zh_CN';
 
 const formatMenus = (data: any, parentUrl?: string): any => {
     if (!Array.isArray(data)) {
@@ -155,7 +156,7 @@ const Main = () => {
         return (<DiyLoading/>);
     }
     return (
-        <ConfigProvider>
+        <ConfigProvider locale={zhCN}>
             <ProLayout
                 route={route}
                 title="信息系统"

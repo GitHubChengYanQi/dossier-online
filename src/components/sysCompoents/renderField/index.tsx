@@ -9,7 +9,7 @@ import {
 } from "@ant-design/pro-utils/es/typing";
 import {request} from "@/utils/Request";
 
-type requestType = {
+export type requestType = {
     url: string;
 
     method?: "GET" | "POST"
@@ -17,6 +17,10 @@ type requestType = {
     labelName?: string;
 
     valueName?: string;
+
+    params?: Record<string, any>;
+
+    data?: Record<string, any>;
 
 }
 export declare type RenderFieldType = {
@@ -79,9 +83,12 @@ const RenderField: React.FC<RenderFieldProps> = (props) => {
     }
     if (config.request) {
         const reqConfig = config.request;
+
         result.request = async () => {
             const response = await request(reqConfig?.url, {
-                method: reqConfig.method
+                method: reqConfig.method,
+                params: reqConfig.params,
+                data: reqConfig.data,
             })
             const {data} = response;
             return data ? data.map((item: Record<string, any>) => {

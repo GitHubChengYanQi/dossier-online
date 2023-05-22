@@ -1,3 +1,5 @@
+import {requestType} from "@/components/sysCompoents/renderField";
+
 export declare type AuditNodePositionType = {
     deptId: number;
     positionId: number
@@ -35,4 +37,6 @@ export declare type conditionType = {
     type: any;
 
     enums?: Record<string, any>;
+
+    request?: requestType;
 }

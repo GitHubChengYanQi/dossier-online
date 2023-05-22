@@ -114,7 +114,7 @@ export const getUserInfo = async (id: number | string) => {
 export const save = async (id: number | string, data: any) => {
     data.position = data.position.join(",");
 
-    if (id !== null && id !== 0) {
+    if (id !== null && id !== 0 && id !== "0") {
         data.userId = id;
 
         return await request(userSave.url, {

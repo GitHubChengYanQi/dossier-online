@@ -19,10 +19,10 @@ const request = async <T = any>(url: string, opts: any = {method: 'POST'}) => {
 
 const pageRequest = async <T = any>(url: string, opts: any = {method: 'POST'}): Promise<RequestData<T>> => {
     if(opts.data){
-        const {pageSize, current, ...otherData} = opts.data;
+        const {pageSize, current,params, ...otherData} = opts.data;
 
         opts.params = {
-            ...opts.params,
+            ...params,
             pageSize,
             current
         }

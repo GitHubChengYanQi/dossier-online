@@ -16,7 +16,7 @@ const Bookbuilding: React.FC = () => {
   };
   const [husbandState, setHusbandState] = useState(false);
   const [messageApi] = message.useMessage();
-  const { run: runAdd } = useRequest(addItem, {
+  const { run: runAdd } = useRequest(addItem.url, {
     manual: true,
     onError: (error:any) => {
       messageApi.error(error.message);

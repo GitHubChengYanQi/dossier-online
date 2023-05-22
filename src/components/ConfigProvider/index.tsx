@@ -2,8 +2,9 @@ import React from "react";
 import {ConfigProvider as AntConfigProvider, App} from "antd";
 import zhCN from 'antd/locale/zh_CN';
 import dayjs from "dayjs";
+import 'dayjs/locale/zh-cn';
 
-dayjs.locale('zh-cn');
+
 
 type alertProps = {
     children?: any
@@ -11,7 +12,7 @@ type alertProps = {
 const ConfigProvider: React.FC<alertProps> = (props) => {
 
     const {children} = props;
-
+    dayjs.locale('zh-cn');
     return (
 
         <AntConfigProvider
