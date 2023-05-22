@@ -43,10 +43,12 @@ type RenderFieldProps = {
     name?: string;
 
     label?: string;
+
+    onChange?: (value: any, allValues: any) => void;
 }
 const RenderField: React.FC<RenderFieldProps> = (props) => {
 
-    const {config, name} = props
+    const {config, onChange, name} = props
 
     if (!config.type) {
         return null;
@@ -55,7 +57,12 @@ const RenderField: React.FC<RenderFieldProps> = (props) => {
     const result: ColumnsType = {
         title: config.title,
         dataIndex: config.name || config.dataIndex,
-        valueEnum: config.enums
+        valueEnum: config.enums,
+        fieldProps: {
+            onChange: (value: any, allValues: any) => {
+                onChange?.(value, allValues);
+            }
+        }
     }
     /**
      * 设置字段类型
