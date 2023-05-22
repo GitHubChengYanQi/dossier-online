@@ -98,6 +98,7 @@ const RenderField: React.FC<RenderFieldProps> = (props) => {
                 data: reqConfig.data,
             })
             const {data} = response;
+
             return data ? data.map((item: Record<string, any>) => {
                 return {
                     title: reqConfig.labelName ? item[reqConfig.labelName] : "",

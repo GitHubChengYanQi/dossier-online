@@ -16,7 +16,7 @@ type ApproverNodeProps = {
 }
 const ApproverNode: React.FC<ApproverNodeProps> = (props) => {
 
-  const { onDeleteNode, onSelectNode, width, auditNodeType } = useContext(WFC);
+  const { onDeleteNode, onSelectNode, width, auditNodeType, action } = useContext(WFC);
   const [open, setOpen] = useState<boolean>(false);
   const [typeValue, setTypeValue] = useState<string>('');
 
@@ -59,7 +59,7 @@ const ApproverNode: React.FC<ApproverNodeProps> = (props) => {
         </div>}
 
       </NodeWrap>
-      {props.objRef.nodeSetting?<DrawerForm<NodeSettingType>
+      {props.objRef.nodeSetting ? <DrawerForm<NodeSettingType>
         drawerProps={{
           destroyOnClose: true,
           maskClosable: false,
@@ -104,7 +104,6 @@ const ApproverNode: React.FC<ApproverNodeProps> = (props) => {
           formItemProps={{
             rules: [
               { required: true, message: '审批方式为必选' },
-
             ],
           }}
           label={'多人审批方式'}
@@ -119,7 +118,17 @@ const ApproverNode: React.FC<ApproverNodeProps> = (props) => {
           }}
         />
 
-      </DrawerForm>:null}
+        <div>审批操作</div>
+        <ProFormCheckbox.Group layout='vertical'
+          fieldProps={{
+            style:{flexWrap: 'wrap' }
+          }}
+
+          name={'action'}
+          options={action?.map(item => ({ label: item.title, value: item.type}))}
+        />
+
+      </DrawerForm> : null}
     </>
   );
 };

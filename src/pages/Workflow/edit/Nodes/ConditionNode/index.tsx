@@ -4,9 +4,9 @@ import Render from '../Render';
 import {NodeTypes, OptionNames} from '../Constants';
 import WFC from '../../OperatorContext';
 import styles from './index.module.scss';
-import {conditionType, NodeSettingType, ProcessNodeType} from '../../type';
-import {DrawerForm, ProFormDependency, ProFormGroup, ProFormList, ProFormSelect} from '@ant-design/pro-components';
-import {FormInstance, Typography} from 'antd';
+import { AuditNodeType, conditionType, NodeSettingType, ProcessNodeType } from '../../type';
+import { DrawerForm, ProFormDependency, ProFormGroup, ProFormList, ProFormSelect } from '@ant-design/pro-components';
+import { FormInstance, Typography } from 'antd';
 import RenderField from '@/components/sysCompoents/renderField';
 import {QuestionCircleOutlined, CloseOutlined} from '@ant-design/icons';
 
@@ -112,9 +112,9 @@ const BranchNode: React.FC<BranchNodeType> = (props) => {
 
     const [open, setOpen] = useState<boolean>(false);
 
-    const nodeSetting = (props.objRef.nodeSetting || {}) as NodeSettingType;
-    const conditions = nodeSetting?.conditions || [];
-
+  const nodeSetting = (props.objRef.nodeSetting || {}) as AuditNodeType;
+  const conditions = nodeSetting.condition || [];
+  console.log(nodeSetting);
   const onClick = () => {
     setOpen(true);
     if (props.objRef) {
@@ -136,33 +136,55 @@ const BranchNode: React.FC<BranchNodeType> = (props) => {
                 <CloseOutlined />
               </div>
             </div>
+            <div className='content'>
+              <div className='text'>
+                {conditions.length === 0 && '无条件'}
+                {
+                  conditions.map((item: conditionType, index: number) => {
+                    return <div key={index}>
+                      {condition?.find(conditionItem => conditionItem.fieldName === item.fieldName)?.fieldTitle}
+                      &nbsp;&nbsp;
+                      {conditionEnum[item.condition]?.text}
+                      &nbsp;&nbsp;
+                      {/*{item.repairPosition}*/}
+                    </div>;
+                  })
+                }
+              </div>
+            </div>
+          </div>
+          <AddNode objRef={props.objRef} />
+        </div>
+      </div>
 
-            <DrawerForm<NodeSettingType>
-                drawerProps={{
-                    destroyOnClose: true,
-                    maskClosable: false,
-                }}
-                layout={'vertical'}
-                formRef={ref}
-                title={'分支条件配置'}
-                width={width}
-                open={open}
-                onOpenChange={(v) => {
-                    setOpen(v);
-                }}
-                initialValues={props.objRef.nodeSetting}
-                onFinish={async (values) => {
-                    props.objRef.nodeSetting = values;
-                    setOpen(false);
-                }}
-            >
-                <Typography.Title level={5}>同时满足以下条件<QuestionCircleOutlined/></Typography.Title>
-                <ProFormList name={'conditions'} style={{width: '100%'}}>
-                    <RenderRow/>
-                </ProFormList>
-            </DrawerForm>
-        </>
-    );
+      <DrawerForm<AuditNodeType>
+        drawerProps={{
+          destroyOnClose: true,
+          maskClosable: false,
+        }}
+        layout={'vertical'}
+        formRef={ref}
+        title={'分支条件配置'}
+        width={width}
+        open={open}
+        onOpenChange={(v) => {
+          setOpen(v);
+        }}
+        initialValues={props.objRef.nodeSetting}
+        // onValuesChange={(changedFields) => {
+        // }}
+        onFinish={async (values) => {
+          props.objRef.nodeSetting = values;
+          setOpen(false);
+        }}
+      >
+        <Typography.Title level={5}>同时满足以下条件<QuestionCircleOutlined /></Typography.Title>
+        <ProFormList name={'condition'} style={{ width: '100%' }}>
+          <RenderRow />
+        </ProFormList>
+      </DrawerForm>
+    </>
+  );
 };
 
 

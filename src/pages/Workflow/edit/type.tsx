@@ -7,7 +7,8 @@ export declare type AuditNodePositionType = {
 
 export declare type AuditNodeType = {
   auditNode?: NodeSettingType;
-  condition?: conditionType[]
+  condition?: conditionType[];
+  actions: []
 }
 
 export declare type NodeSettingType = {
@@ -27,12 +28,15 @@ export declare type NodeSettingType = {
 
 export declare type ProcessNodeType = {
 
-    auditType: string;
+  auditType: string;
 
-    remark?: string;
-    childNode?: ProcessNodeType | null;  // 下级步骤
-    conditionNodeList?: ProcessNodeType[]; // 分支
-    nodeSetting?: NodeSettingType;
+  remark?: string;
+
+  childNode?: ProcessNodeType | null;  // 下级步骤
+
+  conditionNodeList?: ProcessNodeType[]; // 分支
+
+  nodeSetting?: AuditNodeType;
 
 }
 
@@ -50,4 +54,10 @@ export declare type conditionType = {
   request?: requestType;
 
   repairPosition: string
+}
+
+export declare type actionType = {
+  title: string;
+
+  type: any;
 }

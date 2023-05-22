@@ -94,7 +94,8 @@ const StartNode: React.FC<StartNodeType> = (props) => {
         <div>可提交申请的成员</div>
         <ProFormCheckbox.Group
           name={'type'}
-          options={auditNodeType} />
+          options={auditNodeType}
+        />
 
         <ProFormDependency name={['type']}>
           {({ type }) => {

@@ -140,7 +140,6 @@ const Workflow = ({value, onChange}: {
     // }, [value]);
 
     useEffect(() => {
-        console.log(data)
         if(data){
             setConfig(data.config)
         }
@@ -159,6 +158,7 @@ const Workflow = ({value, onChange}: {
                 width: 640,
                 auditNodeType,
                 condition: data ? data.process.condition : [],
+                action: data ? data.process.action : [],
             }}>
                 <section className={styles.dingflowDesign}>
                     <ZoomLayout>

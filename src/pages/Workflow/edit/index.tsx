@@ -18,11 +18,9 @@ const Workflow = () => {
         <div style={{padding: 16, textAlign: 'right',}}>
             <Space>
                 <Button type='primary' onClick={async () => {
-                    console.log(value)
-                    const response = await request(`/activiti/update/${id}`, {
+                    await request(`/activiti/update/${id}`, {
                         data: value,
                     });
-                    console.log(response);
                 }}>保存</Button>
             </Space>
         </div>

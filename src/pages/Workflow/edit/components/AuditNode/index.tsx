@@ -19,8 +19,6 @@ const AuditNode = () => {
     return (
         <ProFormDependency name={["type"]}>
             {({type}) => {
-                console.log(type)
-
                 const items = [];
                 if (findEle(type, "ASSIGNER")) {
                     items.push(
