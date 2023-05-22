@@ -5,7 +5,13 @@ export declare type AuditNodePositionType = {
   positionId: number
 }
 
+export declare type AuditNodeType = {
+  auditNode?: NodeSettingType;
+  condition?: conditionType[]
+}
+
 export declare type NodeSettingType = {
+
   type: string[];
 
   userList?: number[];
@@ -17,9 +23,6 @@ export declare type NodeSettingType = {
   positionIds?: AuditNodePositionType[];
 
   andOr?: 'AND' | 'OR',
-
-  conditions?: conditionType[]
-
 }
 
 export declare type ProcessNodeType = {

@@ -11,7 +11,7 @@ import {
 import SelectUser from '@/components/sysCompoents/selectUser';
 import SelectDept from '@/components/sysCompoents/selectDept';
 import SelectPosition from '@/components/sysCompoents/selectPosition';
-import { NodeSettingType, ProcessNodeType } from '@/pages/Workflow/edit/type';
+import { AuditNodeType, NodeSettingType, ProcessNodeType } from '@/pages/Workflow/edit/type';
 import { OptionNames, OptionTypes } from '@/pages/Workflow/edit/Nodes/Constants';
 
 type StartNodeType = {
@@ -35,8 +35,8 @@ const StartNode: React.FC<StartNodeType> = (props) => {
     props.onContentClick?.();
   }
 
-  const nodeSetting = (props.objRef.nodeSetting || {}) as NodeSettingType;
-  const auditType = nodeSetting?.type || [];
+  const nodeSetting = (props.objRef.nodeSetting || {}) as AuditNodeType;
+  const auditType = nodeSetting?.auditNode?.type || [];
 
   return (
     <>
@@ -81,9 +81,13 @@ const StartNode: React.FC<StartNodeType> = (props) => {
 
           }
         }}
-        initialValues={props.objRef.nodeSetting}
+        initialValues={props.objRef.nodeSetting?.auditNode}
         onFinish={async (values) => {
-          props.objRef.nodeSetting = values;
+          if (props.objRef.nodeSetting) {
+            props.objRef.nodeSetting.auditNode = values;
+          } else {
+            props.objRef.nodeSetting = { auditNode: values };
+          }
           setOpen(false);
         }}
       >

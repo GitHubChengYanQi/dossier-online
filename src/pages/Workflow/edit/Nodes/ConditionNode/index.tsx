@@ -115,46 +115,26 @@ const BranchNode: React.FC<BranchNodeType> = (props) => {
     const nodeSetting = (props.objRef.nodeSetting || {}) as NodeSettingType;
     const conditions = nodeSetting?.conditions || [];
 
-    const onClick = () => {
-        setOpen(true);
-        if (props.objRef) {
-            props.onBranchClick?.(props.objRef);
-        }
-    };
-    console.log(props);
-    return (
-        <>
-            <div className='condition-node'>
-                <div className='condition-node-box'>
-                    <div className='auto-judge' onClick={onClick}>
-                        <div className='title-wrapper'>
-                            <span className='editable-title'>{OptionNames.BRANCH}{props.index + 1}</span>
-                            <div className='close' onClick={(e) => {
-                                props.delBranch();
-                                e.stopPropagation();
-                            }}>
-                                <CloseOutlined/>
-                            </div>
-                        </div>
-                        <div className='content'>
-                            <div className='text'>
-                                {conditions.length === 0 && '无条件'}
-                                {
-                                    conditions.map((item, index) => {
-                                        return <div key={index}>
-                                            {condition?.find(conditionItem => conditionItem.fieldName === item.fieldName)?.fieldTitle}
-                                            &nbsp;&nbsp;
-                                            {conditionEnum[item.condition]?.text}
-                                            &nbsp;&nbsp;
-                                            {/*{item.repairPosition}*/}
-                                        </div>;
-                                    })
-                                }
-                            </div>
-                        </div>
-                    </div>
-                    <AddNode objRef={props.objRef}/>
-                </div>
+  const onClick = () => {
+    setOpen(true);
+    if (props.objRef) {
+      props.onBranchClick?.(props.objRef);
+    }
+  };
+
+  return (
+    <>
+      <div className='condition-node'>
+        <div className='condition-node-box'>
+          <div className='auto-judge' onClick={onClick}>
+            <div className='title-wrapper'>
+              <span className='editable-title'>{OptionNames.BRANCH}{props.index + 1}</span>
+              <div className='close' onClick={(e) => {
+                props.delBranch();
+                e.stopPropagation();
+              }}>
+                <CloseOutlined />
+              </div>
             </div>
 
             <DrawerForm<NodeSettingType>

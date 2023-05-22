@@ -1,7 +1,7 @@
 import React, { useContext, useRef, useState } from 'react';
 import NodeWrap from '../NodeWrap/index';
 import WFC from '../../OperatorContext';
-import { NodeSettingType, ProcessNodeType } from '@/pages/Workflow/edit/type';
+import { AuditNodeType, NodeSettingType, ProcessNodeType } from '@/pages/Workflow/edit/type';
 import { DrawerForm, ProFormCheckbox, ProFormRadio } from '@ant-design/pro-components';
 import { FormInstance } from 'antd';
 import AuditNode from '@/pages/Workflow/edit/components/AuditNode';
@@ -36,8 +36,9 @@ const ApproverNode: React.FC<ApproverNodeProps> = (props) => {
   const radio = auditNodeType ? [...auditNodeType] : [];
   radio.shift();
 
-  const nodeSetting = (props.objRef.nodeSetting || {}) as NodeSettingType;
-  const auditType = nodeSetting?.type || [];
+  const nodeSetting = (props.objRef.nodeSetting || {}) as AuditNodeType;
+  const auditNode = (nodeSetting?.auditNode || {}) as NodeSettingType;
+  const auditType = nodeSetting?.auditNode?.type || [];
 
   return (
     <>
@@ -53,8 +54,8 @@ const ApproverNode: React.FC<ApproverNodeProps> = (props) => {
             return radio.find(auditItem => auditItem.value === item)?.label || '';
           }).join('、')}
         </div>
-        {nodeSetting?.andOr && <div className={styles.andOr}>
-          {nodeSetting.andOr === 'OR' && '或签'}{nodeSetting.andOr === 'AND' && '并签'}
+        {auditNode.andOr && <div className={styles.andOr}>
+          {auditNode.andOr === 'OR' && '或签'}{auditNode.andOr === 'AND' && '并签'}
         </div>}
 
       </NodeWrap>
@@ -84,9 +85,13 @@ const ApproverNode: React.FC<ApproverNodeProps> = (props) => {
 
           }
         }}
-        initialValues={props.objRef.nodeSetting}
+        initialValues={props.objRef.nodeSetting?.auditNode}
         onFinish={async (values) => {
-          props.objRef.nodeSetting = values;
+          if (props.objRef.nodeSetting) {
+            props.objRef.nodeSetting.auditNode = values;
+          } else {
+            props.objRef.nodeSetting = { auditNode: values };
+          }
           setOpen(false);
         }}
       >

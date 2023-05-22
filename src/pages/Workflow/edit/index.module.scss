@@ -8,7 +8,9 @@
   right: 0;
   top: 0;
   z-index: 1;
-  :global{
+  height: calc(100vh - 64px - 35px - 57px);
+
+  :global {
     .editable-title {
       line-height: 15px;
       overflow: hidden;
@@ -24,10 +26,12 @@
         bottom: 0;
         right: 40px
       }
+
       &:hover {
         border-bottom: 1px dashed #fff
       }
     }
+
     .editable-title-input {
       flex: none;
       height: 18px;
@@ -36,6 +40,7 @@
       font-size: 12px;
       line-height: 18px;
       z-index: 1;
+
       &:hover {
         text-decoration: none
       }

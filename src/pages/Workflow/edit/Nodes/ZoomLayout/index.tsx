@@ -32,20 +32,22 @@ const ZoomLayout: React.FC<ZoomLayoutProps> = (props) => {
   }
 
   return (
-    <React.Fragment>
-      <div className={styles.zoom}>
-        <div className={'zoom-out' + (scale === ZOOM.MIN ? ' disabled' : '')} onClick={() => zoomSize(ZOOM.DOWN)} />
-        <span>{scale}%</span>
-        <div className={'zoom-in' + (scale === ZOOM.MAX ? ' disabled' : '')} onClick={() => zoomSize(ZOOM.UP)} />
-      </div>
-      <div
-        className={styles.boxScale}
-        id='box-scale'
-        style={{ 'transform': `scale(${scale / 100})`, 'transformOrigin': '50% 0px 0px' }}
-      >
-        {props.children}
-      </div>
-    </React.Fragment>
+    <section className={styles.dingflowDesign}>
+      <React.Fragment>
+        <div className={styles.zoom}>
+          <div className={'zoom-out' + (scale === ZOOM.MIN ? ' disabled' : '')} onClick={() => zoomSize(ZOOM.DOWN)} />
+          <span>{scale}%</span>
+          <div className={'zoom-in' + (scale === ZOOM.MAX ? ' disabled' : '')} onClick={() => zoomSize(ZOOM.UP)} />
+        </div>
+        <div
+          className={styles.boxScale}
+          id='box-scale'
+          style={{ 'transform': `scale(${scale / 100})`, 'transformOrigin': '50% 0px 0px' }}
+        >
+          {props.children}
+        </div>
+      </React.Fragment>
+    </section>
   );
 };
 
