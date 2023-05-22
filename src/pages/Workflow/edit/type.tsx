@@ -7,8 +7,8 @@ export declare type AuditNodePositionType = {
 
 export declare type AuditNodeType = {
   auditNode?: NodeSettingType;
-  condition?: conditionType[];
-  actions: []
+  conditions?: conditionType[];
+  actions?: actionType[]
 }
 
 export declare type NodeSettingType = {
@@ -24,13 +24,15 @@ export declare type NodeSettingType = {
   positionIds?: AuditNodePositionType[];
 
   andOr?: 'AND' | 'OR',
+
+  action?: string[]
 }
 
 export declare type ProcessNodeType = {
 
   auditType: string;
 
-  remark?: string;
+  remark?: string[];
 
   childNode?: ProcessNodeType | null;  // 下级步骤
 

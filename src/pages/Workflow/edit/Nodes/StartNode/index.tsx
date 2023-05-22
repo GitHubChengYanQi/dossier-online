@@ -23,7 +23,7 @@ type StartNodeType = {
 const StartNode: React.FC<StartNodeType> = (props) => {
 
   const ref = useRef<FormInstance>();
-  const { onSelectNode, width, auditNodeType } = useContext(WFC);
+  const { onSelectNode, width, auditNodeType, updateNode } = useContext(WFC);
 
   const [open, setOpen] = useState<boolean>(false);
 
@@ -88,6 +88,7 @@ const StartNode: React.FC<StartNodeType> = (props) => {
           } else {
             props.objRef.nodeSetting = { auditNode: values };
           }
+          updateNode?.();
           setOpen(false);
         }}
       >
@@ -104,7 +105,7 @@ const StartNode: React.FC<StartNodeType> = (props) => {
               items.push(
                 <Form.Item
                   key={'ASSIGNER'}
-                  name={'assigner'}
+                  name={'userList'}
                   label={'选择人员'}
                   help={'选定的人员可以进行操作'}
                 ><SelectUser />

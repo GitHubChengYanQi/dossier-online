@@ -1,12 +1,13 @@
 import React, { useContext, useRef, useState } from 'react';
 import NodeWrap from '../NodeWrap/index';
 import WFC from '../../OperatorContext';
-import { AuditNodeType, NodeSettingType, ProcessNodeType } from '@/pages/Workflow/edit/type';
+import { actionType, AuditNodeType, NodeSettingType, ProcessNodeType } from '@/pages/Workflow/edit/type';
 import { DrawerForm, ProFormCheckbox, ProFormRadio } from '@ant-design/pro-components';
 import { FormInstance } from 'antd';
 import AuditNode from '@/pages/Workflow/edit/components/AuditNode';
 import { OptionNames } from '@/pages/Workflow/edit/Nodes/Constants';
 import styles from './index.module.scss';
+import Omit from 'omit.js';
 
 type ApproverNodeProps = {
   pRef: any;
@@ -16,7 +17,7 @@ type ApproverNodeProps = {
 }
 const ApproverNode: React.FC<ApproverNodeProps> = (props) => {
 
-  const { onDeleteNode, onSelectNode, width, auditNodeType, action } = useContext(WFC);
+  const { onDeleteNode, onSelectNode, width, auditNodeType, action, updateNode } = useContext(WFC);
   const [open, setOpen] = useState<boolean>(false);
   const [typeValue, setTypeValue] = useState<string>('');
 
@@ -39,6 +40,15 @@ const ApproverNode: React.FC<ApproverNodeProps> = (props) => {
   const nodeSetting = (props.objRef.nodeSetting || {}) as AuditNodeType;
   const auditNode = (nodeSetting?.auditNode || {}) as NodeSettingType;
   const auditType = nodeSetting?.auditNode?.type || [];
+  const actions = nodeSetting?.actions|| [];
+
+  let defaultAction;
+
+  if (Object.keys(actions[0] || {}).length > 0) {
+    defaultAction = actions.map((item: any) => item.type);
+  } else {
+    defaultAction = actions;
+  }
 
   return (
     <>
@@ -57,6 +67,11 @@ const ApproverNode: React.FC<ApproverNodeProps> = (props) => {
         {auditNode.andOr && <div className={styles.andOr}>
           {auditNode.andOr === 'OR' && '或签'}{auditNode.andOr === 'AND' && '并签'}
         </div>}
+        <div className={styles.actions}>
+          {actions.map((item) => {
+            return item.title;
+          }).join('、')}
+        </div>
 
       </NodeWrap>
       {props.objRef.nodeSetting ? <DrawerForm<NodeSettingType>
@@ -82,16 +97,17 @@ const ApproverNode: React.FC<ApproverNodeProps> = (props) => {
             ref.current?.setFieldValue('type', items);
             setTypeValue(items[0] || '');
             // }
-
           }
         }}
-        initialValues={props.objRef.nodeSetting?.auditNode}
-        onFinish={async (values) => {
+        initialValues={{ ...props.objRef.nodeSetting?.auditNode, action: defaultAction }}
+        onFinish={async (values: NodeSettingType) => {
           if (props.objRef.nodeSetting) {
-            props.objRef.nodeSetting.auditNode = values;
+            props.objRef.nodeSetting.actions = action?.filter((actionItem: actionType) => values.action?.find(action => action === actionItem.type)) as actionType[];
+            props.objRef.nodeSetting.auditNode = Omit(values, ['action']) as NodeSettingType;
           } else {
             props.objRef.nodeSetting = { auditNode: values };
           }
+          updateNode?.();
           setOpen(false);
         }}
       >
@@ -119,13 +135,14 @@ const ApproverNode: React.FC<ApproverNodeProps> = (props) => {
         />
 
         <div>审批操作</div>
-        <ProFormCheckbox.Group layout='vertical'
+        <ProFormCheckbox.Group
+          layout='vertical'
           fieldProps={{
-            style:{flexWrap: 'wrap' }
+            style: { flexWrap: 'wrap' },
           }}
 
           name={'action'}
-          options={action?.map(item => ({ label: item.title, value: item.type}))}
+          options={action?.map(item => ({ label: item.title, value: item.type }))}
         />
 
       </DrawerForm> : null}

@@ -15,10 +15,10 @@ const SelectPosition: React.FC<SelectPositionProps> = (props) => {
 
   return (
     <Select
-      value={value}
+      value={`${value}`}
       options={positionData}
       onChange={(values) => {
-        onChange?.(values);
+        onChange?.(values as any);
       }}
     />
   );
