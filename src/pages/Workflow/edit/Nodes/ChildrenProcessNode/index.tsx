@@ -2,10 +2,9 @@ import React, { useContext, useRef, useState } from 'react';
 import NodeWrap from '../NodeWrap';
 import WFC from '../../OperatorContext';
 import { NodeSettingType, ProcessNodeType } from '@/pages/Workflow/edit/type';
-import { DrawerForm, ProFormCheckbox, ProFormRadio } from '@ant-design/pro-components';
+import { DrawerForm,  } from '@ant-design/pro-components';
 import { FormInstance } from 'antd';
-import AuditNode from '@/pages/Workflow/edit/components/AuditNode';
-import { OptionNames, OptionTypes } from '@/pages/Workflow/edit/Nodes/Constants';
+import { OptionNames } from '@/pages/Workflow/edit/Nodes/Constants';
 
 type ChildrenProcessNodeProps = {
   pRef: any;

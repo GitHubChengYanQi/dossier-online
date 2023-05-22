@@ -4,7 +4,6 @@ import Render from '../Render';
 import {NodeTypes, OptionNames} from '../Constants';
 import WFC from '../../OperatorContext';
 import styles from './index.module.scss';
-
 import {conditionType, NodeSettingType, ProcessNodeType} from "../../type";
 import {DrawerForm, ProFormDependency, ProFormGroup, ProFormList, ProFormSelect} from "@ant-design/pro-components";
 import {FormInstance, Typography} from "antd";
@@ -28,6 +27,7 @@ type BranchNodeType = {
     nodeName?: string;
 
     objRef: ProcessNodeType;
+
 
     onBranchClick?: (params: ProcessNodeType) => void;
 
@@ -137,6 +137,7 @@ const BranchNode: React.FC<BranchNodeType> = (props) => {
                     <AddNode objRef={props.objRef}/>
                 </div>
             </div>
+
             <DrawerForm<NodeSettingType>
                 drawerProps={{
                     destroyOnClose: true,
@@ -167,55 +168,54 @@ const BranchNode: React.FC<BranchNodeType> = (props) => {
             </DrawerForm>
         </>
     );
-}
-    ;
+};
 
 
-    function ConditionNode({conditionNodeList: branches = [], ...restProps}) {
+function ConditionNode({conditionNodeList: branches = [], ...restProps}) {
 
-        const {onAddNode, onDeleteNode, onSelectNode} = useContext(WFC);
+    const {onAddNode, onDeleteNode, onSelectNode} = useContext(WFC);
 
-        function addBranch() {
-            onAddNode?.(NodeTypes.BRANCH, restProps.pRef, restProps.objRef);
-        }
-
-        function delBranch(i) {
-            if (branches.length === 2) {
-                onDeleteNode?.(restProps.pRef, restProps.objRef);
-                return;
-            }
-            onDeleteNode?.(restProps.pRef, restProps.objRef, NodeTypes.BRANCH, i);
-        }
-
-        function onBranchClick(objRef) {
-            onSelectNode?.(restProps.objRef, objRef);
-        }
-
-        return (
-            branches && branches.length > 0 && <div className={styles.branchWrap}>
-                <div className='branch-box-wrap'>
-                    <div className='branch-box'>
-                        <div className='add-branch' onClick={addBranch}>添加条件</div>
-                        {branches.map((item, index) => {
-                            return (<div className='col-box' key={index.toString()}>
-                                <BranchNode
-                                    {...Omit(item, ['childNode'])}
-                                    first={index === 0}
-                                    onBranchClick={onBranchClick}
-                                    delBranch={() => delBranch(index)}
-                                    last={index === branches.length - 1}
-                                    objRef={item}
-                                    index={index}
-                                />
-                                {item.childNode && <Render pRef={item} config={item.childNode}/>}
-                                <CoverLine first={index === 0} last={index === branches.length - 1}/>
-                            </div>);
-                        })}
-                    </div>
-                    <AddNode objRef={restProps.objRef}/>
-                </div>
-            </div>
-        );
+    function addBranch() {
+        onAddNode?.(NodeTypes.BRANCH, restProps.pRef, restProps.objRef);
     }
 
-    export default ConditionNode;
+    function delBranch(i) {
+        if (branches.length === 2) {
+            onDeleteNode?.(restProps.pRef, restProps.objRef);
+            return;
+        }
+        onDeleteNode?.(restProps.pRef, restProps.objRef, NodeTypes.BRANCH, i);
+    }
+
+    function onBranchClick(objRef) {
+        onSelectNode?.(restProps.objRef, objRef);
+    }
+
+    return (
+        branches && branches.length > 0 && <div className={styles.branchWrap}>
+            <div className='branch-box-wrap'>
+                <div className='branch-box'>
+                    <div className='add-branch' onClick={addBranch}>添加条件</div>
+                    {branches.map((item, index) => {
+                        return (<div className='col-box' key={index.toString()}>
+                            <BranchNode
+                                {...Omit(item, ['childNode'])}
+                                first={index === 0}
+                                onBranchClick={onBranchClick}
+                                delBranch={() => delBranch(index)}
+                                last={index === branches.length - 1}
+                                objRef={item}
+                                index={index}
+                            />
+                            {item.childNode && <Render pRef={item} config={item.childNode}/>}
+                            <CoverLine first={index === 0} last={index === branches.length - 1}/>
+                        </div>);
+                    })}
+                </div>
+                <AddNode objRef={restProps.objRef}/>
+            </div>
+        </div>
+    );
+}
+
+export default ConditionNode;

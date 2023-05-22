@@ -3,7 +3,7 @@ import { Popover } from 'antd';
 import AddNodeList from '../AddNodeList';
 import WFC from '../../OperatorContext';
 import { PlusOutlined } from '@ant-design/icons';
-import { ProcessNodeType } from '@/pages/Workflow/type';
+import { ProcessNodeType } from '@/pages/Workflow/edit/type';
 import { styled } from 'umi';
 
 

@@ -54,7 +54,7 @@ const Workflow = ({ value, onChange }: {
 
 
   const [config, setConfig] = useState(value || defaultConfig);
-  const [currentNode, setCurrentNode] = useState<any>();
+  const [, setCurrentNode] = useState<any>();
 
   const updateNode = () => {
     onChange?.({ ...config });

@@ -13,7 +13,7 @@ const AddNodeOption: React.FC<AddNodeOptionProps> = (props) => {
     <div className='item-wrapper'>
       {props.auditType === OptionTypes.APPROVER && <AuditOutlined />}
       {props.auditType === OptionTypes.CONDITION && <ApartmentOutlined />}
-      {props.auditType === OptionTypes.NOTIFIER && <SendOutlined />}
+      {props.auditType === OptionTypes.NOTIFIER && <SendOutlined style={{ transform: 'rotate(310deg)' }} />}
       {props.auditType === OptionTypes.CHILDRENPROCESS && <RetweetOutlined />}
     </div>
     <p>{props.name}</p>

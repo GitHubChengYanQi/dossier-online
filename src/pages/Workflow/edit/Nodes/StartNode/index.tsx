@@ -38,7 +38,6 @@ const StartNode: React.FC<StartNodeType> = (props) => {
     return (
         <>
             <NodeWrap
-                type={0}
                 objRef={props.objRef}
                 onContentClick={() => {
                     onContentClick();

@@ -2,9 +2,10 @@ import React, {useState} from 'react';
 import WorkflowContent from './workflow';
 import {Button, Card, Space} from 'antd';
 import {request} from "@/utils/Request";
-import {useParams, useRequest} from "umi";
+import {useParams} from "umi";
 
 const Workflow = () => {
+
 
     const { id } = useParams();
 
