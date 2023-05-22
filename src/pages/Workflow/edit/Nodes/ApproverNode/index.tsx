@@ -47,7 +47,7 @@ const ApproverNode: React.FC<ApproverNodeProps> = (props) => {
         </div>
 
       </NodeWrap>
-      <DrawerForm<NodeSettingType>
+      {props.objRef.nodeSetting?<DrawerForm<NodeSettingType>
         drawerProps={{
           destroyOnClose: true,
           maskClosable: false,
@@ -103,7 +103,7 @@ const ApproverNode: React.FC<ApproverNodeProps> = (props) => {
           }}
         />
 
-      </DrawerForm>
+      </DrawerForm>:null}
     </>
   );
 };

@@ -22,6 +22,8 @@ export declare type NodeSettingType = {
 
 export declare type ProcessNodeType = {
     auditType: string;
+
+    remark?: string;
     childNode?: ProcessNodeType | null;  // 下级步骤
     conditionNodeList?: ProcessNodeType[]; // 分支
     nodeSetting?: NodeSettingType;

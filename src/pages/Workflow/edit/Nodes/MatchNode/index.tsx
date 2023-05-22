@@ -17,7 +17,7 @@ const NodeMaps = {
   [OptionTypes.CHILDRENPROCESS]: ChildrenProcessNode,
 };
 
-const MatchNode = (props: { config: ProcessNodeType, pRef: any }) => {
+const MatchNode = (props: { config: ProcessNodeType, pRef: ProcessNodeType }) => {
   const Node = NodeMaps[props.config.auditType] || null;
   return Node && <Node {...props.config} objRef={props.config} pRef={props.pRef} />;
 };
