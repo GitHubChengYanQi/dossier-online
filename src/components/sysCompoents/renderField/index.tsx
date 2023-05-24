@@ -35,7 +35,10 @@ export declare type RenderFieldType = {
 
     request?: requestType;
 
-    dataIndex?: string
+    dataIndex?: string;
+
+
+    params?: Record<string, any>;
 
 } & Omit<ColumnsType, "request" | "valueType" | "valueEnum">
 
@@ -50,7 +53,7 @@ type RenderFieldProps = {
 }
 const RenderField: React.FC<RenderFieldProps> = (props) => {
 
-    const {config, onChange, name} = props
+    const {config, onChange} = props
 
     if (!config.type) {
         return null;
@@ -80,6 +83,8 @@ const RenderField: React.FC<RenderFieldProps> = (props) => {
                 return <SelectDept/>
             }
             break;
+        case "dict":
+            return <SelectDept />
         default:
             result.valueType = config.type as ProFieldValueType;
     }

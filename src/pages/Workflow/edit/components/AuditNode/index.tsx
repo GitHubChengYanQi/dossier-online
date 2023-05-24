@@ -39,7 +39,16 @@ const AuditNode = () => {
                             label={"选择部门"}
                             help={"选定的部门人员都可以进行操作"}
                         >
-                            <SelectDept/>
+                            <SelectDept preData={[
+                                {
+                                    title: "发起的部门",
+                                    key: "-1",
+                                    value: "-1",
+                                    index: 0,
+                                    count: 0
+                                }
+                            ]}
+                            />
                         </Form.Item>
                     );
                 }
@@ -51,7 +60,16 @@ const AuditNode = () => {
                             label={"部门负责人"}
                             help={"选定部门中的负责人可以进行操作"}
                         >
-                            <SelectDept/>
+                            <SelectDept preData={[
+                                {
+                                    title: "发起的部门",
+                                    key: "-1",
+                                    value: "-1",
+                                    index: 0,
+                                    count: 0
+                                }
+                            ]}
+                            />
                         </Form.Item>
                     );
                 }
@@ -70,7 +88,18 @@ const AuditNode = () => {
                                             help: "选定的部门后指定职位"
                                         },
                                         renderFormItem: () => {
-                                            return <SelectDept multiple={false}/>
+                                            return <SelectDept
+                                                multiple={false}
+                                                preData={[
+                                                    {
+                                                        title: "发起的部门",
+                                                        key: "-1",
+                                                        value: "-1",
+                                                        index: 0,
+                                                        count: 0
+                                                    }
+                                                ]}
+                                            />
                                         }
                                     }
                                 ]}/>
@@ -96,4 +125,4 @@ const AuditNode = () => {
         </ProFormDependency>
     );
 }
-export default AuditNode;
+    export default AuditNode;

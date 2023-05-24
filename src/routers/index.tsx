@@ -163,6 +163,11 @@ const routeList = [
         // layout: false
     },
     {
+        name: '物业保修',
+        path: '/repair',
+        component: './repairOrder/repairOrderList',
+    },
+    {
         name: '404',
         path: '*',
         component: './404',

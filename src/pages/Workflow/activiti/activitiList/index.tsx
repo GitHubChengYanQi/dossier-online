@@ -88,6 +88,7 @@ const ActivitiList = () => {
                                 notification.success({
                                     message: "部署成功"
                                 });
+                                actionRef.current?.reload();
                             }}
                         >部署流程</LinkButton>
                     </Space>

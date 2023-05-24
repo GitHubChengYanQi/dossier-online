@@ -54,14 +54,14 @@ const DictEdit: React.FC<DictEditProps<any>> = (props) => {
                         dictTypeId: dictType
                     },
                     request: async (params) => {
-                        if (!params.dictTypeId) {
-                            return [
-                                {
-                                    label: "无上级",
-                                    value: 0,
-                                }
-                            ]
-                        }
+                        // if (!params.dictTypeId) {
+                        //     return [
+                        //         {
+                        //             label: "无上级",
+                        //             value: 0,
+                        //         }
+                        //     ]
+                        // }
                         const {data} = await request("/rest/dict/listDicts", {
                             params
                         })
@@ -102,6 +102,7 @@ const DictEdit: React.FC<DictEditProps<any>> = (props) => {
                     }
                 } else {
                     const {data} = await request("/rest/dict/detail", {
+                        method:"GET",
                         params: {
                             dictId
                         }
