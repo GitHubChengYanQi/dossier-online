@@ -73,34 +73,39 @@ const Workflow = ({ value, onChange }: {
 
     const o = objRef.childNode;
 
-    if (type === OptionTypes.APPROVER) {
-      objRef.childNode = { ...NodeTemplates[OptionTypes.APPROVER], childNode: o };
-    }
-    if (type === OptionTypes.NOTIFIER) {
-      objRef.childNode = {
-        ...NodeTemplates[OptionTypes.NOTIFIER],
-        childNode: o,
-      };
-    }
-    if (type === OptionTypes.CHILDRENPROCESS) {
-      objRef.childNode = {
-        ...NodeTemplates[OptionTypes.CHILDRENPROCESS],
-        childNode: o,
-      };
-    }
-    if (type === OptionTypes.CONDITION) {
-      objRef.childNode = {
-        ...NodeTemplates[OptionTypes.CONDITION], conditionNodeList: [
-          {
-            ...NodeTemplates[OptionTypes.BRANCH],
-            childNode: o,
-          },
-          { ...NodeTemplates[OptionTypes.BRANCH] },
-        ],
-      };
-    }
-    if (type === OptionTypes.BRANCH) {
-      objRef.conditionNodeList.push({ ...NodeTemplates[NodeTypes.BRANCH] });
+    switch (type) {
+      case OptionTypes.APPROVER:
+      case OptionTypes.NOTIFIER:
+      case OptionTypes.CHILDRENPROCESS:
+        objRef.childNode = {
+          auditType: type,
+          nodeSetting: {},
+          childNode: o,
+        };
+        break;
+      case OptionTypes.CONDITION:
+        objRef.childNode = {
+          auditType: type,
+          nodeSetting: {},
+          conditionNodeList: [
+            {
+              auditType: OptionTypes.BRANCH,
+              nodeSetting: {},
+              childNode: o,
+            },
+            {
+              auditType: OptionTypes.BRANCH,
+              nodeSetting: {},
+            },
+          ],
+        };
+        break;
+      case OptionTypes.BRANCH:
+        objRef.conditionNodeList.push({
+          auditType: type,
+          nodeSetting: {},
+        });
+        break;
     }
     updateNode();
   };
