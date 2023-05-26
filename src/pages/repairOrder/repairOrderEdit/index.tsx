@@ -8,7 +8,7 @@
 import React from 'react';
 import {BetaSchemaForm} from "@ant-design/pro-components";
 import useRepairOrderField from "../schema";
-import { getRepairOrderInfo} from "../service";
+import {getRepairOrderInfo} from "../service";
 import useAlert from "@/components/useAlert";
 import FormWrap, {FormWrapProps} from "@/components/FormWrap";
 import {request} from "@/utils/Request";
@@ -46,12 +46,13 @@ const RepairOrderEdit = <T extends Record<string, any>>(props: RepairOrderEditPr
         UpdateUser,
         Display,
     } = useRepairOrderField();
-    const columns:ColumnsType[] = [
+    const columns: ColumnsType[] = [
         RepairPosition,
         {
             valueType: "dependency",
             name: ["repairPosition"],
             columns: ({repairPosition}) => {
+                const isOut = `${repairPosition}`==="1659939497497997314"
                 return [
                     getSelectDictSchema({
                         title: "报修类型",
@@ -59,31 +60,41 @@ const RepairOrderEdit = <T extends Record<string, any>>(props: RepairOrderEditPr
                         hideInTable: true,
                         params: {
                             dictTypeId: "1661295042926710786",
-                            parentId:repairPosition
+                            parentId: repairPosition
                         },
-                        formItemProps:{
-                            rules:[
+                        formItemProps: {
+                            rules: [
                                 {
-                                    required:true,message:"报修类型为必选"
+                                    required: true, message: "报修类型为必选"
                                 }
                             ]
                         },
-                    })
+                    }),
+                    {
+                        title: isOut?"指定区域":"选择房屋",
+                        dataIndex: "selectAddress",
+                        renderFormItem: () => {
+                            return <BuildSelect
+                                selectBuild={!
+                                    isOut}
+                                cityData={{
+                                    province: "503",
+                                    city: "600"
+                                }}
+                            />
+                        },
+                        formItemProps: {
+                            rules: [
+                                {
+                                    required: true, message: "报修类型为必选"
+                                }
+                            ]
+                        },
+                        hideInTable: true,
+                        hideInSearch: true,
+                    }
                 ]
             }
-        },
-        {
-            title:"选择房屋",
-            dataIndex:"selectAddress",
-            renderFormItem:()=>{
-                return <BuildSelect
-                    cityData={{
-                    province:"503",
-                    city:"600"}}
-                />
-            },
-            hideInTable:true,
-            hideInSearch:true,
         },
 
         Content,
@@ -115,14 +126,12 @@ const RepairOrderEdit = <T extends Record<string, any>>(props: RepairOrderEditPr
             type={type}
             onClose={onClose}
             width={width}
-            onValuesChange={()=>{
+            onValuesChange={() => {
             }}
             request={async () => {
-                if(repairId===0){
+                if (repairId === 0) {
                     return {
-                        selectAddress:{
-
-                        }
+                        selectAddress: {}
                     }
                 }
                 return getRepairOrderInfo(repairId);
