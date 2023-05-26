@@ -1,5 +1,6 @@
 import { Select } from 'antd';
 import { useModel } from 'umi';
+import React from 'react';
 
 type SelectPositionProps = {
 
@@ -15,7 +16,7 @@ const SelectPosition: React.FC<SelectPositionProps> = (props) => {
 
   return (
     <Select
-      value={value&&`${value}`}
+      value={value && `${value}`}
       options={positionData}
       onChange={(values) => {
         onChange?.(values as any);
