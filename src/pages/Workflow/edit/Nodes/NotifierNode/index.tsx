@@ -2,19 +2,16 @@ import React, { useContext, useRef, useState } from 'react';
 import NodeWrap from '../NodeWrap/index';
 import WFC from '../../OperatorContext';
 import { AuditNodeType, NodeSettingType, ProcessNodeType } from '@/pages/Workflow/edit/type';
-import { OptionNames, OptionTypes } from '@/pages/Workflow/edit/Nodes/Constants';
-import { Form, FormInstance } from 'antd';
+import { OptionNames } from '@/pages/Workflow/edit/Nodes/Constants';
+import { FormInstance } from 'antd';
 import {
-  BetaSchemaForm,
   DrawerForm,
   ProFormCheckbox,
-  ProFormDependency,
-  ProFormGroup,
-  ProFormList,
 } from '@ant-design/pro-components';
-import SelectUser from '@/components/sysCompoents/selectUser';
-import SelectDept from '@/components/sysCompoents/selectDept';
-import SelectPosition from '@/components/sysCompoents/selectPosition';
+import AuditNode from '@/pages/Workflow/edit/components/AuditNode';
+import { RestUserResult } from '@/pages/BASE_SYSTEM/system/mgr/types';
+import { remakeFormat } from '@/pages/Workflow/edit/Nodes/ApproverNode';
+import { useModel } from '@@/exports';
 
 type NotifierNodeType = {
   pRef: ProcessNodeType;
@@ -29,20 +26,31 @@ const NotifierNode: React.FC<NotifierNodeType> = (props) => {
 
   const [open, setOpen] = useState<boolean>(false);
 
-  const [typeValue, setTypeValue] = useState<string[]>([]);
+  const [typeValue, setTypeValue] = useState<string>('');
 
-  function onContentClick() {
-    onSelectNode?.(props?.pRef, props.objRef);
-    setOpen(true);
-    props.onContentClick?.();
-  }
+  const [userRenders, setUserRenders] = useState<RestUserResult[]>([]);
+
+  const { data: deptData } = useModel('dept');
+  const { data: positionData } = useModel('position');
+
 
   function delNode() {
     onDeleteNode?.(props?.pRef as any, props?.objRef as any);
   }
 
+  const radio = auditNodeType ? [...auditNodeType] : [];
+  radio.shift();
+
   const nodeSetting = (props.objRef.nodeSetting || {}) as AuditNodeType;
   const auditType = nodeSetting?.auditNode?.type || [];
+  const remarks = props.objRef.remark || [];
+
+  function onContentClick() {
+    onSelectNode?.(props?.pRef, props.objRef);
+    setTypeValue(auditType[0]);
+    setOpen(true);
+    props.onContentClick?.();
+  }
 
   return (
     <>
@@ -54,10 +62,15 @@ const NotifierNode: React.FC<NotifierNodeType> = (props) => {
         objRef={props.objRef}>
         <div>
           {auditType.length === 0 && '请选择抄送人'}
-          {auditType.map(item => {
-            return (auditNodeType || []).find(auditItem => auditItem.value === item)?.label || '';
-          }).join('、')}
+          <span style={{ fontWeight: 'bold' }}>
+            {auditType.map(item => {
+              return radio.find(auditItem => auditItem.value === item)?.label || '';
+            }).join('、')}
+          </span>
         </div>
+        {remarks.map((item: string, index: number) => {
+          return <div key={index}>{item}</div>;
+        })}
       </NodeWrap>
 
       <DrawerForm<NodeSettingType>
@@ -66,7 +79,7 @@ const NotifierNode: React.FC<NotifierNodeType> = (props) => {
           maskClosable: false,
         }}
         formRef={ref}
-        title={'发起流程配置'}
+        title={'抄送节点配置'}
         width={width}
         open={open}
         onOpenChange={(v) => {
@@ -75,21 +88,21 @@ const NotifierNode: React.FC<NotifierNodeType> = (props) => {
         onValuesChange={(changedFields) => {
           const { type } = changedFields;
           if (type) {
-            const is = typeValue.findIndex((i: string) => i === 'EVERYONE');
-            const index = type.findIndex((i: string) => i === 'EVERYONE');
+            // const is = type === typeValue;
+            // const index = type.findIndex((i: string) => i === typeValue)
 
-            const items = type.filter((i: string) => i !== 'EVERYONE');
-            if (index !== -1) {
-              ref.current?.setFieldValue('type', is !== -1 ? items : ['EVERYONE']);
-              setTypeValue(is !== -1 ? items : ['EVERYONE']);
-            }
-
+            const items = type.filter((i: string) => i !== typeValue);
+            // if (index !== -1) {
+            ref.current?.setFieldValue('type', items);
+            setTypeValue(items[0] || '');
+            // }
           }
         }}
         initialValues={props.objRef.nodeSetting?.auditNode}
         onFinish={async (values) => {
+          props.objRef.remark = remakeFormat({ values, userRenders, deptData, positionData }) as string[];
           if (props.objRef.nodeSetting) {
-            props.objRef.nodeSetting.auditNode = values;
+            props.objRef.nodeSetting.auditNode = values as NodeSettingType;
           } else {
             props.objRef.nodeSetting = { auditNode: values };
           }
@@ -97,90 +110,11 @@ const NotifierNode: React.FC<NotifierNodeType> = (props) => {
           setOpen(false);
         }}
       >
-        <div>抄送的成员</div>
         <ProFormCheckbox.Group
           name={'type'}
-          options={auditNodeType}
+          options={radio}
         />
-
-        <ProFormDependency name={['type']}>
-          {({ type }) => {
-            const items = [];
-            if (type && -1 !== type.findIndex((i: string) => i === 'ASSIGNER')) {
-              items.push(
-                <Form.Item
-                  key={'ASSIGNER'}
-                  name={'userList'}
-                  label={'选择人员'}
-                  help={'选定的人员可以进行操作'}
-                ><SelectUser />
-                </Form.Item>,
-              );
-            }
-            if (type && -1 !== type.findIndex((i: string) => i === 'DEPTID')) {
-              items.push(
-                <Form.Item
-                  key={'DEPTID'}
-                  name={'deptIds'}
-                  label={'选择部门'}
-                  help={'选定的部门人员都可以进行操作'}
-                >
-                  <SelectDept />
-                </Form.Item>,
-              );
-            }
-            if (type && -1 !== type.findIndex((i: string) => i === 'DEPTHEAD')) {
-              items.push(
-                <Form.Item
-                  key={'DEPTHEAD'}
-                  name={'headDeptIds'}
-                  label={'部门负责人'}
-                  help={'选定部门中的负责人可以进行操作'}
-                >
-                  <SelectDept />
-                </Form.Item>,
-              );
-            }
-            if (type && -1 !== type.findIndex((i: string) => i === 'POSITION')) {
-              items.push(
-                <ProFormList
-                  key={'POSITION'}
-                  label={'指定职位'}
-                  name={'positionIds'}>
-                  <ProFormGroup>
-                    <BetaSchemaForm layoutType={'Embed'} columns={[
-                      {
-                        title: '部门',
-                        dataIndex: 'deptId',
-                        formItemProps: {
-                          help: '选定的部门后指定职位',
-                        },
-                        renderFormItem: () => {
-                          return <SelectDept multiple={false} />;
-                        },
-                      },
-                    ]} />
-                    <BetaSchemaForm layoutType={'Embed'} columns={[
-                      {
-                        title: '职位',
-                        dataIndex: 'positionId',
-                        formItemProps: {
-                          help: '选定的职位可以进行操作',
-                        },
-                        renderFormItem: () => {
-                          return <SelectPosition />;
-                        },
-                      },
-                    ]} />
-                  </ProFormGroup>
-
-                </ProFormList>,
-              );
-            }
-            return items;
-          }}
-        </ProFormDependency>
-
+        <AuditNode onUserRender={setUserRenders} />
       </DrawerForm>
     </>
   );

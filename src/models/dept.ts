@@ -8,7 +8,6 @@ export declare type DeptTreeType = {
     value?: string,
     index: number,
     count: number
-
     children?: DeptTreeType[]
 } & DataNode;
 

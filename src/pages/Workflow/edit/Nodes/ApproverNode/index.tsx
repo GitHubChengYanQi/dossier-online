@@ -18,6 +18,70 @@ import { RestUserResult } from '@/pages/BASE_SYSTEM/system/mgr/types';
 import { useModel } from '@@/exports';
 import { DeptTreeType } from '@/models/dept';
 
+type RemakeFormatProps = {
+  values: NodeSettingType,
+  userRenders?: RestUserResult[],
+  deptData?: DeptTreeType[],
+  positionData?: any[]
+}
+
+export const remakeFormat = (props: RemakeFormatProps) => {
+
+  const { values, userRenders, deptData, positionData } = props;
+
+  const treeRender = (ids: any[], data: any[]) => {
+    if (!Array.isArray(data) || data.length === 0) {
+      return [];
+    }
+    if (!Array.isArray(ids) || ids.length === 0) {
+      return [];
+    }
+    let render: string[] = [];
+    data.forEach((item: DeptTreeType) => {
+      if (ids.find(id => `${id}` === `${item.key}`)) {
+        render.push(item.title);
+      }
+      const childrenRender = treeRender(ids, item.children as DeptTreeType[]);
+      render = render.concat(childrenRender);
+    });
+    return render;
+  };
+
+  let auditData = [];
+  const types = values.type;
+  if (types.find(type => type === 'ASSIGNER')) {
+    auditData.push(userRenders?.map(item => item.name).join('、'));
+  }
+
+  if (types.find(type => type === 'DEPTID')) {
+    if (values.deptIds?.findIndex(deptId => `${deptId}` === '-1') !== -1) {
+      auditData.push(['发起的部门', ...treeRender(values.deptIds as any, deptData || [])].join('、'));
+    } else if (values.deptIds) {
+      auditData.push(treeRender(values.deptIds as any, deptData || []).join('、'));
+    }
+  }
+
+  if (types.find(type => type === 'DEPTHEAD')) {
+    if (values.headDeptIds?.findIndex(deptId => `${deptId}` === '-1') !== -1) {
+      auditData.push(['发起的部门', ...treeRender(values.deptIds as any, deptData || [])].join('、'));
+    } else if (values.headDeptIds) {
+      auditData.push(treeRender(values.headDeptIds as any, deptData || []).join('、'));
+    }
+  }
+
+  if (types.find(type => type === 'POSITION')) {
+    auditData = values.positionIds?.filter((item, index) => index < 2).map((item: AuditNodePositionType) => {
+      const deptName = `${item.deptId}` === '-1' ? '发起的部门' : treeRender([item.deptId], deptData || [])[0] || '';
+      const positionName = positionData?.find((position: any) => `${position.value}` === `${item.positionId}`)?.label || '';
+      return deptName + '-' + positionName;
+    }) || [];
+    if ((values.positionIds?.length || 0) > 2) {
+      auditData.push('...');
+    }
+  }
+  return auditData;
+};
+
 type ApproverNodeProps = {
   pRef: any;
   objRef: ProcessNodeType;
@@ -40,11 +104,6 @@ const ApproverNode: React.FC<ApproverNodeProps> = (props) => {
     onDeleteNode?.(props.pRef, props.objRef, '', 0);
   }
 
-  function onContentClick() {
-    setOpen(true);
-    onSelectNode?.(props.pRef, props.objRef);
-    props.onContentClick?.();
-  }
 
 
   const radio = auditNodeType ? [...auditNodeType] : [];
@@ -56,6 +115,13 @@ const ApproverNode: React.FC<ApproverNodeProps> = (props) => {
   const actions = nodeSetting?.actions || [];
   const remarks = props.objRef.remark || [];
 
+  function onContentClick() {
+    setOpen(true);
+    setTypeValue(auditType[0]);
+    onSelectNode?.(props.pRef, props.objRef);
+    props.onContentClick?.();
+  }
+
   let defaultAction;
 
   if (Object.keys(actions[0] || {}).length > 0) {
@@ -63,57 +129,6 @@ const ApproverNode: React.FC<ApproverNodeProps> = (props) => {
   } else {
     defaultAction = actions;
   }
-
-  const treeRender = (ids: any[], data: DeptTreeType[]) => {
-    if (!Array.isArray(data) || data.length === 0) {
-      return [];
-    }
-    let render: string[] = [];
-    data.forEach((item: DeptTreeType) => {
-      if (ids.find(id => `${id}` === `${item.key}`)) {
-        render.push(item.title);
-      }
-      const childrenRender = treeRender(ids, item.children as DeptTreeType[]);
-      render = render.concat(childrenRender);
-    });
-    return render;
-  };
-
-  const remakeFormat = (values: NodeSettingType) => {
-    let auditData = [];
-    const types = values.type;
-    if (types.find(type => type === 'ASSIGNER')) {
-      auditData.push(userRenders.map(item => item.name).join('、'));
-    }
-
-    if (types.find(type => type === 'DEPTID')) {
-      if (values.deptIds?.findIndex(deptId => `${deptId}` === '-1') !== -1) {
-        auditData.push(['发起的部门', ...treeRender(values.deptIds as any, deptData)].join('、'));
-      } else if (values.deptIds) {
-        auditData.push(treeRender(values.deptIds as any, deptData).join('、'));
-      }
-    }
-
-    if (types.find(type => type === 'DEPTHEAD')) {
-      if (values.headDeptIds?.findIndex(deptId => `${deptId}` === '-1') !== -1) {
-        auditData.push(['发起的部门', ...treeRender(values.deptIds as any, deptData)].join('、'));
-      } else if (values.headDeptIds) {
-        auditData.push(treeRender(values.headDeptIds as any, deptData).join('、'));
-      }
-    }
-
-    if (types.find(type => type === 'POSITION')) {
-      auditData = values.positionIds?.filter((item, index) => index < 2).map((item: AuditNodePositionType) => {
-        const deptName = `${item.deptId}` === '-1' ? '发起的部门' : treeRender([item.deptId], deptData)[0] || '';
-        const positionName = positionData.find((position: any) => `${position.value}` === `${item.positionId}`)?.label || '';
-        return deptName + '-' + positionName;
-      }) || [];
-      if ((values.positionIds?.length || 0) > 2) {
-        auditData.push('...');
-      }
-    }
-    return auditData;
-  };
 
   return (
     <>
@@ -171,7 +186,7 @@ const ApproverNode: React.FC<ApproverNodeProps> = (props) => {
         }}
         initialValues={{ ...props.objRef.nodeSetting?.auditNode, action: defaultAction }}
         onFinish={async (values: NodeSettingType) => {
-          props.objRef.remark = remakeFormat(values);
+          props.objRef.remark = remakeFormat({ values, userRenders, deptData, positionData }) as string[];
           if (props.objRef.nodeSetting) {
             props.objRef.nodeSetting.actions = action?.filter((actionItem: actionType) => values.action?.find(action => action === actionItem.type)) as actionType[];
             props.objRef.nodeSetting.auditNode = Omit(values, ['action']) as NodeSettingType;
