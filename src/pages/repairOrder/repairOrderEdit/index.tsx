@@ -14,6 +14,8 @@ import FormWrap, {FormWrapProps} from "@/components/FormWrap";
 import {request} from "@/utils/Request";
 import {getSelectDictSchema} from "@/components/sysCompoents/selectDict";
 import {ColumnsType} from "@/types/common";
+import CitySelect from "@/components/CitySelect";
+import BuildSelect from "@/pages/Estate/build/components/buildSelect/BuildSelect";
 
 type RepairOrderEditProps<T> = {
     repairId: number
@@ -22,11 +24,7 @@ type RepairOrderEditProps<T> = {
 const RepairOrderEdit = <T extends Record<string, any>>(props: RepairOrderEditProps<T>) => {
     const {repairId, type, open, onSuccess, onClose, width} = props;
     const {
-        RepairId,
-        RepairNo,
-        ServiceType,
-        AppealType,
-        MethodType,
+
         RepairPosition,
         Content,
         Remarks,
@@ -49,11 +47,6 @@ const RepairOrderEdit = <T extends Record<string, any>>(props: RepairOrderEditPr
         Display,
     } = useRepairOrderField();
     const columns:ColumnsType[] = [
-        RepairId,
-        RepairNo,
-        ServiceType,
-        AppealType,
-        MethodType,
         RepairPosition,
         {
             valueType: "dependency",
@@ -67,11 +60,32 @@ const RepairOrderEdit = <T extends Record<string, any>>(props: RepairOrderEditPr
                         params: {
                             dictTypeId: "1661295042926710786",
                             parentId:repairPosition
-                        }
+                        },
+                        formItemProps:{
+                            rules:[
+                                {
+                                    required:true,message:"报修类型为必选"
+                                }
+                            ]
+                        },
                     })
                 ]
             }
         },
+        {
+            title:"选择房屋",
+            dataIndex:"selectAddress",
+            renderFormItem:()=>{
+                return <BuildSelect
+                    cityData={{
+                    province:"503",
+                    city:"600"}}
+                />
+            },
+            hideInTable:true,
+            hideInSearch:true,
+        },
+
         Content,
         Remarks,
         Time,
@@ -101,7 +115,16 @@ const RepairOrderEdit = <T extends Record<string, any>>(props: RepairOrderEditPr
             type={type}
             onClose={onClose}
             width={width}
+            onValuesChange={()=>{
+            }}
             request={async () => {
+                if(repairId===0){
+                    return {
+                        selectAddress:{
+
+                        }
+                    }
+                }
                 return getRepairOrderInfo(repairId);
             }}
             onFinish={async (values) => {

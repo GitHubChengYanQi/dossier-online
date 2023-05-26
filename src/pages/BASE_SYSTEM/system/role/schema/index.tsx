@@ -23,13 +23,13 @@ interface MenuNode {
 const TreeField: React.FC<TreeFieldProps> = (props) => {
     const {value, onChange, options} = props;
 
-    const defaultValue = value ? value.map((item: any) => {
+    const defaultValue = value&&Array.isArray(value) ? value.map((item: any) => {
         return `${item}`;
     }) : [];
     const [targetKeys, setTargetKeys] = useState<string[]>(defaultValue);
 
     const targetKeysFunc = (menus: MenuNode[] | undefined, keys: string[], delFlag: boolean = false): string[] => {
-        let selectKeys: string[] = [...keys];
+        let selectKeys: string[] = keys?[...keys]:[];
         if (!menus) return [];
         menus.forEach((item: MenuNode) => {
             if (delFlag) {
@@ -59,7 +59,7 @@ const TreeField: React.FC<TreeFieldProps> = (props) => {
      * @param delFlag
      */
     const filterKeysFunc = (menus: MenuNode[] | undefined, keys: string[], delFlag: boolean = false): string[] => {
-        let selectKeys: string[] = [...keys];
+        let selectKeys: string[] = keys?[...keys]:[];
         if (!menus) return [];
         menus.forEach((item: MenuNode) => {
 
@@ -139,7 +139,10 @@ const TreeField: React.FC<TreeFieldProps> = (props) => {
             {(p) => {
                 const {direction, onItemSelect,selectedKeys} = p;
                 if (direction === 'left') {
+                    console.log(selectedKeys)
+                    console.log(targetKeys)
                     const checkedKeys = targetKeysFunc(options, [...selectedKeys, ...targetKeys]);
+                    console.log(checkedKeys)
                     return options && <Tree
                         blockNode
                         // checkStrictly

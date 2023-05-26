@@ -1,7 +1,6 @@
 import React, {useEffect} from 'react';
 import {Card, Cascader, Form, Input} from 'antd';
 import {useModel} from "umi";
-import {ProFormText} from "@ant-design/pro-components";
 
 interface Option {
     id: string | number | null;
@@ -41,7 +40,6 @@ const AddressSelect: React.FC<AddressProps> = (props) => {
 
 
     const onChange = (values: any) => {
-        console.log(value)
         propsChange?.(
             {
                 ...value,
@@ -57,6 +55,17 @@ const AddressSelect: React.FC<AddressProps> = (props) => {
         //     ...value,
         // });
     }, [value]);
+    const tmpValue = [];
+    if (value?.sf){
+        tmpValue.push(value.sf);
+        if (value?.city){
+            tmpValue.push(value.city);
+            if (value?.area){
+                tmpValue.push(value.area);
+            }
+        }
+
+    }
 
     return (
         <Card>
@@ -69,7 +78,7 @@ const AddressSelect: React.FC<AddressProps> = (props) => {
                     placeholder='请选择城市/地区'
                     options={data}
                     onChange={(values: any) => {
-                        if (values.length === 3) {
+                        if (values && values.length === 3) {
                             onChange?.({
                                 sf: values[0],
                                 city: values[1],
@@ -77,7 +86,7 @@ const AddressSelect: React.FC<AddressProps> = (props) => {
                             });
                         }
                     }}
-                    // value={value?.sf?[value?.sf]:undefined}
+                    value={tmpValue}
                 />
             </Form.Item>
             <Form.Item
@@ -118,8 +127,6 @@ const AddressSelect: React.FC<AddressProps> = (props) => {
                 labelCol={{span: 3}}
                 wrapperCol={{span: 7}}
                 label='组/门牌号'
-
-
             >
                 <Input
                     placeholder='请输入组/门牌号'

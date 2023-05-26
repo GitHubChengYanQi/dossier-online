@@ -10,7 +10,6 @@ const getSelectDictSchema = (params?: ColumnsType):ColumnsType=>{
         title: "字典",
         dataIndex: "dictId",
         request: async (params?: Record<string, any>) => {
-            console.log(params)
             const {data} = await request("/rest/dict/listDicts", {
                 params
             })

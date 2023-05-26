@@ -33,6 +33,7 @@ const SetPermission: React.FC<SetPermissionProps> = (props) => {
             }}
             request={async ()=>{
                 const response = await getRoleInfo(editId);
+                console.log(response)
                 return {checked:response.menuIds.map((item:number)=>{
                     return item;
                     })};

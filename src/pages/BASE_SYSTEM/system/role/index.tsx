@@ -62,8 +62,6 @@ export default function RoleList() {
     return (
         <PageContainer
             header={{
-                title: '用户管理',
-                breadcrumb: {},
             }}>
             <ProTable<RestRoleResult>
                 actionRef={actionRef}

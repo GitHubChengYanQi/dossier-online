@@ -5,12 +5,12 @@
  * @Date 2023-05-19 11:41:59
  */
 
-import React, {useRef,useState} from 'react';
+import React, {useRef, useState} from 'react';
 import useRepairOrderField from "../schema";
-import {delRepairOrderInfo,getRepairOrderList} from "../service";
+import {delRepairOrderInfo, getRepairOrderList} from "../service";
 import RepairOrderEdit from "../repairOrderEdit";
 import EditButton from "@/components/EditButton";
-import {PageContainer, ProTable,ActionType} from "@ant-design/pro-components";
+import {PageContainer, ProTable, ActionType} from "@ant-design/pro-components";
 import {Button, Space, Divider} from "antd";
 import {ColumnsType} from "@/types/common";
 import DelButton from "@/components/DelButton";
@@ -18,8 +18,8 @@ import useAlert from "@/components/useAlert";
 
 const RepairOrderList = () => {
 
-    const [editId,setEditId] = useState<number>(0);
-    const [open,setOpen] = useState<boolean>(false);
+    const [editId, setEditId] = useState<number>(0);
+    const [open, setOpen] = useState<boolean>(false);
 
     const {error, notification} = useAlert();
 
@@ -54,7 +54,7 @@ const RepairOrderList = () => {
         Display,
     } = useRepairOrderField();
 
-    const columns:ColumnsType[] = [
+    const columns: ColumnsType[] = [
         {
             dataIndex: 'index',
             valueType: 'indexBorder',
@@ -88,14 +88,15 @@ const RepairOrderList = () => {
         Display,
         {
             title: "操作",
-            hideInSearch:true,
-            render:(value: any, record: any)=>{
-                return(
+            hideInSearch: true,
+            width: 120,
+            render: (value: any, record: any) => {
+                return (
                     <Space size={0} split={<Divider type="vertical"/>}>
-                        <EditButton onClick={()=>{
+                        <EditButton onClick={() => {
                             setEditId(record.repairId);
                             setOpen(true)
-                        }} />
+                        }}/>
                         <DelButton request={async () => {
                             const response = await delRepairOrderInfo(record.repairId);
                             if (response.errCode !== 0) {
@@ -109,7 +110,7 @@ const RepairOrderList = () => {
                 )
             }
         }
-        ];
+    ];
 
     return (
         <PageContainer>
@@ -134,12 +135,19 @@ const RepairOrderList = () => {
                                 setOpen(true);
                             }}
                         >
-                        新建
+                            新建
                         </Button>
                     </>,
                 ]}
             />
-            <RepairOrderEdit  onClose={()=>{ setEditId(0);setOpen(false)}} onSuccess={()=>{setEditId(0);actionRef?.current?.reload();setOpen(false)}} repairId={editId} open={open} />
+            <RepairOrderEdit onClose={() => {
+                setEditId(0);
+                setOpen(false)
+            }} onSuccess={() => {
+                setEditId(0);
+                actionRef?.current?.reload();
+                setOpen(false)
+            }} repairId={editId} open={open}/>
         </PageContainer>
     );
 };

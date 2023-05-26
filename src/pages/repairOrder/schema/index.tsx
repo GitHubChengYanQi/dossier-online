@@ -18,7 +18,7 @@ const useRepairOrder = () => {
         hideInSearch: true,
     }
     const RepairNo: ColumnsType = {
-        title: "",
+        title: "工单号",
         dataIndex: "repairNo",
         hideInForm: true,
     }
@@ -26,19 +26,33 @@ const useRepairOrder = () => {
         title: "",
         dataIndex: "serviceType",
         hideInForm: true,
+        hideInTable:true,
+        hideInSearch: true,
     }
     const AppealType: ColumnsType = {
         title: "",
         dataIndex: "appealType",
         hideInForm: true,
+        hideInTable:true,
+        hideInSearch: true,
     }
     const MethodType: ColumnsType = {
         title: "",
         dataIndex: "methodType",
         hideInForm: true,
+        hideInTable:true,
+        hideInSearch: true,
     }
     const RepairPosition: ColumnsType = getSelectDictSchema({
         dataIndex: "repairPosition",
+        title:"报修位置",
+        formItemProps:{
+            rules:[
+                {
+                    required:true,message:"报修位置为必选"
+                }
+            ]
+        },
         params: {
             dictTypeId: "1659939293147312129"
         }
@@ -47,66 +61,65 @@ const useRepairOrder = () => {
         title: "报修类型",
         dataIndex: "repairTypeId",
         hideInTable: true,
+
     }
     const Content: ColumnsType = {
-        title: "保修内容",
+        title: "报修内容",
         dataIndex: "content",
         valueType: "textarea",
-        hideInTable: true,
+        hideInSearch: true,
 
     }
     const Remarks: ColumnsType = {
-        title: "",
+        title: "备注说明",
         dataIndex: "remarks",
         hideInForm: true,
         hideInTable: true,
         hideInSearch: true,
     }
     const Time: ColumnsType = {
-        title: "",
+        title: "预约时间",
         dataIndex: "time",
         hideInForm: true,
         hideInTable: true,
         hideInSearch: true,
     }
     const TimeSpanId: ColumnsType = {
-        title: "",
+        title: "预约时段",
         dataIndex: "timeSpanId",
         hideInForm: true,
         hideInTable: true,
         hideInSearch: true,
     }
     const From: ColumnsType = {
-        title: "",
+        title: "来源",
         dataIndex: "from",
         hideInForm: true,
         hideInTable: true,
         hideInSearch: true,
     }
     const Uuid: ColumnsType = {
-        title: "",
+        title: "用户",
         dataIndex: "uuid",
         hideInForm: true,
         hideInTable: true,
         hideInSearch: true,
     }
     const Name: ColumnsType = {
-        title: "",
+        title: "联系人",
         dataIndex: "name",
-        hideInForm: true,
     }
     const Phone: ColumnsType = {
-        title: "",
+        title: "联系电话",
         dataIndex: "phone",
-        hideInForm: true,
     }
     const ProjectId: ColumnsType = {
-        title: "",
+        title: "所属部门",
         dataIndex: "projectId",
         hideInForm: true,
     }
     const Status: ColumnsType = {
-        title: "",
+        title: "状态",
         dataIndex: "status",
         hideInForm: true,
         hideInSearch: true,
