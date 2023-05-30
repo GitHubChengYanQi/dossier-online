@@ -9,9 +9,8 @@ import React, {useRef, useState} from 'react';
 import useMedicalGroupField from "../schema";
 import {delMedicalGroupInfo, getMedicalGroupList} from "../service";
 import EditButton from "@/components/EditButton";
-import TableOptionsWrap from "@/components/TableOptionsWrap";
 import {PageContainer, ProTable, ActionType} from "@ant-design/pro-components";
-import {Button} from "antd";
+import {Button, Space} from "antd";
 import {ColumnsType} from "@/types/common";
 import MedicalGroupEdit from "@/pages/Work/Medical/medicalGroup/medicalGroupEdit";
 import DelButton from "@/components/DelButton";
@@ -27,35 +26,22 @@ const MedicalGroupList = () => {
     const actionRef = useRef<ActionType>();
 
     const {
-        MedicalGroupId,
         Name,
         Code,
         CreateTime,
-        CreateUser,
-        UpdateTime,
-        UpdateUser,
-        Display,
     } = useMedicalGroupField();
 
     const columns: ColumnsType[] = [
-        {
-            dataIndex: 'index',
-            valueType: 'indexBorder',
-            width: 48,
-        },
+
         Name,
         Code,
         CreateTime,
-        CreateUser,
-        UpdateTime,
-        UpdateUser,
-        Display,
         {
             title: "操作",
-            align: "right",
+            hideInSearch: true,
             render: (value: any, record: any) => {
                 return (
-                    <TableOptionsWrap>
+                    <Space>
                         <EditButton onClick={() => {
                             setEditId(record.medicalGroupId);
                             setOpen(true)
@@ -69,12 +55,11 @@ const MedicalGroupList = () => {
                                 notification.success({message: '操作成功'});
                             }
                         }}/>
-                    </TableOptionsWrap>
+                    </Space>
                 )
             }
         }
     ];
-
 
 
     return (
@@ -86,8 +71,10 @@ const MedicalGroupList = () => {
                 columns={columns}
                 request={async (params, sorter, filter) => {
                     const {data, success} = await getMedicalGroupList(params, sorter, filter);
+                    console.log(data)
+                    // return data;
                     return {
-                        data: data || [],
+                        data,
                         success
                     };
                 }}

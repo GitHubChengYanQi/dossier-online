@@ -70,10 +70,6 @@ const ActivitiList = () => {
             render: (value: any, record: any) => {
                 return (
                     <Space size={0} split={<Divider type="vertical"/>}>
-                        <EditButton onClick={() => {
-                            setEditId(record.activitiId);
-                            setOpen(true)
-                        }}/>
                         <LinkButton
                             onClick={() => {
                                 navigate(`/workFlow/${record.activitiId}`);
@@ -82,7 +78,7 @@ const ActivitiList = () => {
                         <LinkButton
                             onClick={async () => {
                                 // navigate(`/workFlow/${record.activitiId}`);
-                                const response = await request(`/activiti/build/${record.activitiId}`,{
+                                await request(`/activiti/build/${record.activitiId}`,{
                                     method:"GET"
                                 });
                                 notification.success({

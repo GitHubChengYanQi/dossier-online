@@ -13,11 +13,11 @@ import useAlert from "@/components/useAlert";
 import FormWrap,{FormWrapProps} from "@/components/FormWrap";
 
 type BuildEditProps<T> = {
-    id:number
+    buildId:number
 } & FormWrapProps<T>
 
 const BuildEdit = <T extends Record<string, any>>(props: BuildEditProps<T>) => {
-    const { id, type, open , onSuccess, onClose, width } = props;
+    const { buildId, type, open , onSuccess, onClose, width } = props;
     const {
           Id,
           EstateId,
@@ -108,10 +108,10 @@ const BuildEdit = <T extends Record<string, any>>(props: BuildEditProps<T>) => {
             onClose={onClose}
             width={width}
             request={async () => {
-                return getBuildInfo(id);
+                return getBuildInfo(buildId);
             }}
             onFinish={async (values) => {
-                const response = await saveBuild(id, values);
+                const response = await saveBuild(buildId, values);
                 if (response.errCode !== 0) {
                     error(response.message);
                 } else {

@@ -12,7 +12,7 @@ import {login, loginProps} from "@/services/BASE_SYSTEM/user";
 import {ResponseData} from "@/types/common";
 import useAlert from "@/components/useAlert";
 import cookie from "js-cookie";
-import {useModel,useNavigate, history} from "umi";
+import {useModel,useNavigate} from "umi";
 import qs from "qs";
 
 const iconStyles = {
@@ -86,7 +86,7 @@ const Login = () => {
                             size: 'large',
                             prefix: <LockOutlined className={'prefixIcon'}/>,
                         }}
-                        placeholder={'密码: ant.design'}
+                        placeholder={'密码'}
                         rules={[
                             {
                                 required: true,

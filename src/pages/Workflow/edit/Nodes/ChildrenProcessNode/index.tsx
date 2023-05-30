@@ -1,7 +1,7 @@
 import React, { useContext, useRef, useState } from 'react';
 import NodeWrap from '../NodeWrap';
 import WFC from '../../OperatorContext';
-import { NodeSettingType, ProcessNodeType } from '@/pages/Workflow/edit/type';
+import {AuditNodeType, NodeSettingType, ProcessNodeType} from '@/pages/Workflow/edit/type';
 import { DrawerForm,  } from '@ant-design/pro-components';
 import { FormInstance } from 'antd';
 import { OptionNames } from '@/pages/Workflow/edit/Nodes/Constants';
@@ -68,7 +68,7 @@ const ChildrenProcessNode: React.FC<ChildrenProcessNodeProps> = (props) => {
 
           }
         }}
-        onFinish={async (values) => {
+        onFinish={async (values:AuditNodeType) => {
           props.objRef.nodeSetting = values;
           setOpen(false);
         }}

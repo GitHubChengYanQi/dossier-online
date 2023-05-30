@@ -52,14 +52,14 @@ const RepairOrderEdit = <T extends Record<string, any>>(props: RepairOrderEditPr
             valueType: "dependency",
             name: ["repairPosition"],
             columns: ({repairPosition}) => {
-                const isOut = `${repairPosition}`==="1659939497497997314"
+                const isOut = `${repairPosition}`==="outdoor"
                 return [
                     getSelectDictSchema({
                         title: "报修类型",
                         dataIndex: "repairTypeId",
                         hideInTable: true,
                         params: {
-                            dictTypeId: "1661295042926710786",
+                            dictTypeCode: "repairTypeId",
                             parentId: repairPosition
                         },
                         formItemProps: {
@@ -69,6 +69,9 @@ const RepairOrderEdit = <T extends Record<string, any>>(props: RepairOrderEditPr
                                 }
                             ]
                         },
+                        keyConfig:{
+                            valueName:"code"
+                        }
                     }),
                     {
                         title: isOut?"指定区域":"选择房屋",

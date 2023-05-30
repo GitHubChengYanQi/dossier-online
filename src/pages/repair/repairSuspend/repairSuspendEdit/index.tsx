@@ -1,50 +1,44 @@
 /**
- * 房屋管理-小区表编辑页
+ * 工单挂起类型编辑页
  *
  * @author Sing
- * @Date 2023-05-26 10:05:29
+ * @Date 2023-05-30 15:15:48
  */
 
 import React from 'react';
 import {BetaSchemaForm} from "@ant-design/pro-components";
-import useBuildAreaField from "../schema";
-import { saveBuildArea,getBuildAreaInfo } from "../service";
+import useRepairSuspendField from "../schema";
+import { saveRepairSuspend,getRepairSuspendInfo } from "../service";
 import useAlert from "@/components/useAlert";
 import FormWrap,{FormWrapProps} from "@/components/FormWrap";
 
-type BuildAreaEditProps<T> = {
-    areaId:number
+type RepairSuspendEditProps<T> = {
+    suspendId:number
 } & FormWrapProps<T>
 
-const BuildAreaEdit = <T extends Record<string, any>>(props: BuildAreaEditProps<T>) => {
-    const { areaId, type, open , onSuccess, onClose, width } = props;
+const RepairSuspendEdit = <T extends Record<string, any>>(props: RepairSuspendEditProps<T>) => {
+    const { suspendId, type, open , onSuccess, onClose, width } = props;
     const {
-          Id,
-          Name,
-          Inputtime,
-          Updatetime,
-          Province,
+          SuspendId,
+          RepairSuspend,
+          Day,
+          Sort,
+          CreateTime,
+          CreateUser,
+          UpdateTime,
+          UpdateUser,
           Display,
-          GasType,
-          City,
-          County,
-          Identifying,
-          No,
-          Customerservice,
-        } = useBuildAreaField();
+        } = useRepairSuspendField();
     const columns = [
-        Id,
-        Name,
-        Inputtime,
-        Updatetime,
-        Province,
+        SuspendId,
+        RepairSuspend,
+        Day,
+        Sort,
+        CreateTime,
+        CreateUser,
+        UpdateTime,
+        UpdateUser,
         Display,
-        GasType,
-        City,
-        County,
-        Identifying,
-        No,
-        Customerservice,
         ];
 
     const {error,notification} = useAlert();
@@ -56,10 +50,10 @@ const BuildAreaEdit = <T extends Record<string, any>>(props: BuildAreaEditProps<
             onClose={onClose}
             width={width}
             request={async () => {
-                return getBuildAreaInfo(areaId);
+                return getRepairSuspendInfo(suspendId);
             }}
             onFinish={async (values) => {
-                const response = await saveBuildArea(areaId, values);
+                const response = await saveRepairSuspend(suspendId, values);
                 if (response.errCode !== 0) {
                     error(response.message);
                 } else {
@@ -73,4 +67,4 @@ const BuildAreaEdit = <T extends Record<string, any>>(props: BuildAreaEditProps<
     );
 };
 
-export default BuildAreaEdit;
+export default RepairSuspendEdit;

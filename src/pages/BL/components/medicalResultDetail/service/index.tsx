@@ -37,23 +37,7 @@ export const medicalResultDetailList = {
   rowKey:'resultDetailId'
 };
 
-export const getMedicalResultDetailList = async (
-    params: T & {
-        pageSize?: number;
-        current?: number;
-        keyword?: string;
-    }, sort: Record<string, SortOrder>, filter: Record<string, (string | number)[] | null>
-) => {
-    return await pageRequest(medicalResultDetailList.url, {
-        data: {
-            ...params
-        },
-        params:{
-            sorter,
-            filter
-        }
-    });
-}
+
 export const getMedicalResultDetailInfo = async (id: number) => {
     if(id===0){
         return {};

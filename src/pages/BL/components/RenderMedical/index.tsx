@@ -6,18 +6,65 @@ import React, {useRef, useState} from "react";
 import {Affix, Button, Col, Result, Row, Space} from "antd";
 import useAlert from "@/components/useAlert";
 import PatientInfo from "@/pages/BL/components/patientInfo";
+import RenderField from "@/components/sysCompoents/renderField";
+
+const getValueEnum = (config: any[]) => {
+    const result: Record<string, any> = {};
+    for (let i = 0; i < config.length; i++) {
+        result[`${config[i].value}`] = {
+            text: `${config[i].label}`
+        }
+    }
+    return result;
+}
+const RenderCard = (data: []) => {
+    return data.map((i: any) => {
+            return (
+                <ProCard
+                    key={i.medicalGroupId}
+                    split={"vertical"}
+                >
+                    <ProCard
+                        colSpan={"150px"}
+                    >{i.name}</ProCard>
+                    <ProCard
+                        split={"horizontal"}
+                    >
+                        {i.medicalItems && i.medicalItems.length > 0 && <ProCard
+                        ><Row key={i.medicalGroupId} gutter={16}>
+                            {
+                                i.medicalItems.map((j: any) => {
+                                    if (j.config) {
+                                        j.enums = getValueEnum(j.config);
+                                    }
+                                    console.log(j.enums)
+                                    return (<RenderField span={{span:j.enums&&Object.keys(j.enums).length>2?24:8}} key={j.medicalItemId} config={j}/>);
+                                })
+                            }</Row>
+                        </ProCard>}
+                        {i.children && i.children.length > 0 && <ProCard
+                            split={"horizontal"}
+                        >
+                            {RenderCard(i.children)}
+                        </ProCard>}
+                    </ProCard>
+                </ProCard>
+            )
+        }
+    );
+}
 
 type RenderMedicalProps = {
     patientId?: string | number;
     medicalId: string | number | undefined;
-    inspectId?:number;
+    inspectId?: number;
 
     onSuccess?: (resultId: number | string) => void;
 }
 
 const RenderMedical: React.FC<RenderMedicalProps> = (props) => {
 
-    const {patientId, medicalId, inspectId,onSuccess} = props;
+    const {patientId, medicalId, inspectId, onSuccess} = props;
 
     const [result, setResult] = useState<boolean>(false);
 
@@ -90,14 +137,14 @@ const RenderMedical: React.FC<RenderMedicalProps> = (props) => {
 
     return (
         <>
-            <PatientInfo patientId={patientId} />
+            <PatientInfo patientId={patientId}/>
 
             <FormWrap
                 isPage={false}
                 type={"Form"}
-                layout={"horizontal"}
-                labelCol={{span: 6}}
-                wrapperCol={{span: 12}}
+                layout={"vertical"}
+                // labelCol={{flex: "120px"}}
+                // wrapperCol={{span: 12}}
                 submitter={{
                     render: (props, doms) => {
                         return (
@@ -130,28 +177,33 @@ const RenderMedical: React.FC<RenderMedicalProps> = (props) => {
                         notification.success({message: '操作成功'});
                     }
                 }}
+                grid
+
             >
                 <ProCard
-                    gutter={[0, 24]}
-                    // split={"horizontal"}
+                    // gutter={[0, 16]}
+                    split={"horizontal"}
                     direction="column"
-                    ghost
+                    bordered
                 >
+                    {
+                        data && RenderCard(data.medicalGroupId)
+                    }
 
-                    {data && data.medicalGroupId.map((item: any) => {
-                        return (
-                            <ProCard
-                                colSpan={24}
-                                type="inner"
-                                headerBordered
-                                bordered
-                                title={item.medicalGroupName}
-                                key={item.medicalGroupId}
-                            >
-                                {getColumns(item.medicalItems)}
-                            </ProCard>
-                        );
-                    })}
+                    {/*{data && data.medicalGroupId.map((item: any) => {*/}
+                    {/*    return (*/}
+                    {/*        <ProCard*/}
+                    {/*            colSpan={24}*/}
+                    {/*            // type="inner"*/}
+                    {/*            headerBordered*/}
+                    {/*            // bordered*/}
+                    {/*            title={item.name}*/}
+                    {/*            key={item.medicalGroupId}*/}
+                    {/*        >*/}
+                    {/*            {getColumns(item.medicalItems)}*/}
+                    {/*        </ProCard>*/}
+                    {/*    );*/}
+                    {/*})}*/}
                 </ProCard>
             </FormWrap>
         </>

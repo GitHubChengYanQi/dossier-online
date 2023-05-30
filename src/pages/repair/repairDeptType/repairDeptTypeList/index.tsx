@@ -1,14 +1,14 @@
 /**
- * 房屋管理-分区表列表页
+ * 列表页
  *
  * @author Sing
- * @Date 2023-05-26 10:05:29
+ * @Date 2023-05-29 09:49:34
  */
 
 import React, {useRef,useState} from 'react';
-import useBuildPartitionField from "../schema";
-import {delBuildPartitionInfo,getBuildPartitionList} from "../service";
-import BuildPartitionEdit from "../buildPartitionEdit";
+import useRepairDeptTypeField from "../schema";
+import {delRepairDeptTypeInfo,getRepairDeptTypeList} from "../service";
+import RepairDeptTypeEdit from "../repairDeptTypeEdit";
 import EditButton from "@/components/EditButton";
 import {PageContainer, ProTable,ActionType} from "@ant-design/pro-components";
 import {Button, Space, Divider} from "antd";
@@ -16,7 +16,7 @@ import {ColumnsType} from "@/types/common";
 import DelButton from "@/components/DelButton";
 import useAlert from "@/components/useAlert";
 
-const BuildPartitionList = () => {
+const RepairDeptTypeList = () => {
 
     const [editId,setEditId] = useState<number>(0);
     const [open,setOpen] = useState<boolean>(false);
@@ -26,16 +26,14 @@ const BuildPartitionList = () => {
     const actionRef = useRef<ActionType>();
 
     const {
-        Id,
-        Name,
-        Display,
-        Inputtime,
-        Updatetime,
-        BuildAreaId,
-        GasMonthSet,
-        GasMonthSetValue,
-        No,
-    } = useBuildPartitionField();
+        RepairDeptTypeId,
+        DeptId,
+        DictCode,
+        CreateTime,
+        UpdateTime,
+        CreateUser,
+        UpdateUser,
+    } = useRepairDeptTypeField();
 
     const columns:ColumnsType[] = [
         {
@@ -43,15 +41,13 @@ const BuildPartitionList = () => {
             valueType: 'indexBorder',
             width: 48,
         },
-        Id,
-        Name,
-        Display,
-        Inputtime,
-        Updatetime,
-        BuildAreaId,
-        GasMonthSet,
-        GasMonthSetValue,
-        No,
+        RepairDeptTypeId,
+        DeptId,
+        DictCode,
+        CreateTime,
+        UpdateTime,
+        CreateUser,
+        UpdateUser,
         {
             title: "操作",
             hideInSearch:true,
@@ -59,11 +55,11 @@ const BuildPartitionList = () => {
                 return(
                     <Space size={0} split={<Divider type="vertical"/>}>
                         <EditButton onClick={()=>{
-                            setEditId(record.id);
+                            setEditId(record.repairDeptTypeId);
                             setOpen(true)
                         }} />
                         <DelButton request={async () => {
-                            const response = await delBuildPartitionInfo(record.id);
+                            const response = await delRepairDeptTypeInfo(record.repairDeptTypeId);
                             if (response.errCode !== 0) {
                                 error(response.message);
                             } else {
@@ -82,10 +78,10 @@ const BuildPartitionList = () => {
             <ProTable
                 scroll={{x: "max-content"}}
                 actionRef={actionRef}
-                rowKey="id"
+                rowKey="repairDeptTypeId"
                 columns={columns}
                 request={async (params, sorter, filter) => {
-                    const {data, success} = await getBuildPartitionList(params, sorter, filter);
+                    const {data, success} = await getRepairDeptTypeList(params, sorter, filter);
                     return {
                         data: data || [],
                         success
@@ -105,9 +101,9 @@ const BuildPartitionList = () => {
                     </>,
                 ]}
             />
-            <BuildPartitionEdit  onClose={()=>{ setEditId(0);setOpen(false)}} onSuccess={()=>{setEditId(0);actionRef?.current?.reload();setOpen(false)}} partitionId={editId} open={open} />
+            <RepairDeptTypeEdit  onClose={()=>{ setEditId(0);setOpen(false)}} onSuccess={()=>{setEditId(0);actionRef?.current?.reload();setOpen(false)}} repairDeptTypeId={editId} open={open} />
         </PageContainer>
     );
 };
 
-export default BuildPartitionList;
+export default RepairDeptTypeList;

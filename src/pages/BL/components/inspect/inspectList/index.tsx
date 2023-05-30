@@ -148,7 +148,7 @@ const InspectList: React.FC<InspectListProps> = (props) => {
                     </>,
                 ]}
             />
-            <Drawer open={resultOpen} width={680} onClose={() => {
+            <Drawer open={resultOpen} width={1200} onClose={() => {
                 setResultOpen(false);
             }}>
                 <RenderMedical patientId={patientId} medicalId={createMedicalId} inspectId={inspectId}

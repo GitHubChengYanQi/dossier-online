@@ -19,6 +19,7 @@ const MedicalGroupEdit = <T extends Record<string, any>>(props: MedicalGroupEdit
     const {medicalGroupId, type, open, onSuccess,onClose,width} = props;
     const {
         MedicalGroupId,
+        ParentId,
         Name,
         Code,
         CreateTime,
@@ -29,6 +30,7 @@ const MedicalGroupEdit = <T extends Record<string, any>>(props: MedicalGroupEdit
     } = useMedicalGroupField();
     const columns = [
         MedicalGroupId,
+        ParentId,
         Name,
         Code,
         CreateTime,

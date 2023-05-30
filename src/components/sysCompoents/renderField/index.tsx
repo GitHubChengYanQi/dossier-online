@@ -8,6 +8,7 @@ import {
     ProSchemaValueEnumObj
 } from "@ant-design/pro-utils/es/typing";
 import {request} from "@/utils/Request";
+import {ColProps} from "antd";
 
 export type requestType = {
     url: string;
@@ -49,11 +50,13 @@ type RenderFieldProps = {
 
     label?: string;
 
+    span?:ColProps;
+
     onChange?: (value: any, allValues: any) => void;
 }
 const RenderField: React.FC<RenderFieldProps> = (props) => {
 
-    const {config, onChange} = props
+    const {config, span,onChange} = props
 
     if (!config.type) {
         return null;
@@ -63,6 +66,7 @@ const RenderField: React.FC<RenderFieldProps> = (props) => {
         title: config.title,
         dataIndex: config.name || config.dataIndex,
         valueEnum: config.enums,
+        colProps: span,
         fieldProps: {
             onChange: (value: any, allValues: any) => {
                 onChange?.(value, allValues);
@@ -84,7 +88,7 @@ const RenderField: React.FC<RenderFieldProps> = (props) => {
             }
             break;
         case "dict":
-            return <SelectDept />
+            return <SelectDept/>
         default:
             result.valueType = config.type as ProFieldValueType;
     }

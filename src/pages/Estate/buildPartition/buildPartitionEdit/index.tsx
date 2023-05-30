@@ -8,27 +8,27 @@
 import React from 'react';
 import {BetaSchemaForm} from "@ant-design/pro-components";
 import useBuildPartitionField from "../schema";
-import { saveBuildPartition,getBuildPartitionInfo } from "../service";
+import {saveBuildPartition, getBuildPartitionInfo} from "../service";
 import useAlert from "@/components/useAlert";
-import FormWrap,{FormWrapProps} from "@/components/FormWrap";
+import FormWrap, {FormWrapProps} from "@/components/FormWrap";
 
 type BuildPartitionEditProps<T> = {
-    id:number
+    partitionId: number
 } & FormWrapProps<T>
 
 const BuildPartitionEdit = <T extends Record<string, any>>(props: BuildPartitionEditProps<T>) => {
-    const { id, type, open , onSuccess, onClose, width } = props;
+    const {partitionId, type, open, onSuccess, onClose, width} = props;
     const {
-          Id,
-          Name,
-          Display,
-          Inputtime,
-          Updatetime,
-          BuildAreaId,
-          GasMonthSet,
-          GasMonthSetValue,
-          No,
-        } = useBuildPartitionField();
+        Id,
+        Name,
+        Display,
+        Inputtime,
+        Updatetime,
+        BuildAreaId,
+        GasMonthSet,
+        GasMonthSetValue,
+        No,
+    } = useBuildPartitionField();
     const columns = [
         Id,
         Name,
@@ -39,9 +39,9 @@ const BuildPartitionEdit = <T extends Record<string, any>>(props: BuildPartition
         GasMonthSet,
         GasMonthSetValue,
         No,
-        ];
+    ];
 
-    const {error,notification} = useAlert();
+    const {error, notification} = useAlert();
 
     return (
         <FormWrap
@@ -50,10 +50,10 @@ const BuildPartitionEdit = <T extends Record<string, any>>(props: BuildPartition
             onClose={onClose}
             width={width}
             request={async () => {
-                return getBuildPartitionInfo(id);
+                return getBuildPartitionInfo(partitionId);
             }}
             onFinish={async (values) => {
-                const response = await saveBuildPartition(id, values);
+                const response = await saveBuildPartition(partitionId, values);
                 if (response.errCode !== 0) {
                     error(response.message);
                 } else {

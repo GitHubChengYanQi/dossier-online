@@ -54,7 +54,10 @@ const useRepairOrder = () => {
             ]
         },
         params: {
-            dictTypeId: "1659939293147312129"
+            dictTypeCode: "repairPosition"
+        },
+        keyConfig:{
+            valueName:"code"
         }
     });
     const RepairTypeId: ColumnsType = {

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Modal } from 'antd';
 import EndNode from './Nodes/EndNode';
 import Render from './Nodes/Render';
-import { OptionTypes, NodeTemplates, NodeTypes } from './Nodes/Constants';
+import { OptionTypes,  NodeTypes } from './Nodes/Constants';
 import WFC from './OperatorContext';
 import ZoomLayout from './Nodes/ZoomLayout';
 import styles from './index.module.scss';
@@ -28,6 +28,10 @@ const auditNodeType = [
   }, {
     label: '指定职位',
     value: 'POSITION',
+  },
+  {
+    label: '扩展配置',
+    value: 'EXTEND',
   },
 ];
 
@@ -135,12 +139,6 @@ const Workflow = ({ value, onChange }: {
       prev: pRef,
     });
   };
-
-  // useEffect(() => {
-  //   if (value) {
-  //     setConfig({ ...value });
-  //   }
-  // }, [value]);
 
   useEffect(() => {
     if (data) {

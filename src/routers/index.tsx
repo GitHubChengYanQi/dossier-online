@@ -163,9 +163,29 @@ const routeList = [
         // layout: false
     },
     {
-        name: '物业保修',
+        name: '报修',
         path: '/repair',
-        component: './repairOrder/repairOrderList',
+        component: './repair/repairOrder/repairOrderList',
+    },
+    {
+        name: '部门负责区域设置',
+        path: '/repair/dept',
+        component: './repair/repairDeptManage/setting',
+    },
+    {
+        name: '区域负责人员设置',
+        path: '/repair/user',
+        component: './repair/repairHousekeepManage/setting',
+    },
+    {
+        name: '部门负责工单类型',
+        path: '/repair/type',
+        component: './repair/repairDeptType/setting',
+    },
+    {
+        name: '挂起类型设置',
+        path: '/repair/suspend',
+        component: './repair/repairSuspend/repairSuspendList',
     },
     {
         name: '404',

@@ -163,7 +163,7 @@ const BuildList = () => {
                     </>,
                 ]}
             />
-            <BuildEdit  onClose={()=>{ setEditId(0);setOpen(false)}} onSuccess={()=>{setEditId(0);actionRef?.current?.reload();setOpen(false)}} id={editId} open={open} />
+            <BuildEdit  onClose={()=>{ setEditId(0);setOpen(false)}} onSuccess={()=>{setEditId(0);actionRef?.current?.reload();setOpen(false)}} buildId={editId} open={open} />
         </PageContainer>
     );
 };
