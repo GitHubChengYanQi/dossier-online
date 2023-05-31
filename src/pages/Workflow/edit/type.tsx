@@ -1,65 +1,67 @@
-import { requestType } from '@/components/sysCompoents/renderField';
+import {requestType} from '@/components/sysCompoents/renderField';
 
 export declare type AuditNodePositionType = {
-  deptId: number;
-  positionId: number
+    deptId: number;
+    positionId: number
 }
 
 export declare type AuditNodeType = {
-  auditNode?: NodeSettingType;
-  conditions?: conditionType[];
-  actions?: actionType[]
+    auditNode?: NodeSettingType;
+    conditions?: conditionType[];
+    actions?: actionType[]
 }
 
 export declare type NodeSettingType = {
 
-  type: string[];
+    type: string[];
 
-  userList?: number[];
+    userList?: number[];
 
-  deptIds?: number[];
+    deptIds?: number[];
 
-  headDeptIds?: number[];
+    headDeptIds?: number[];
 
-  positionIds?: AuditNodePositionType[];
+    positionIds?: AuditNodePositionType[];
 
-  andOr?: 'AND' | 'OR',
+    andOr?: 'AND' | 'OR',
 
-  action?: string[]
+    action?: string[]
+
+    extend?: string
 }
 
 export declare type ProcessNodeType = {
 
-  auditType: string;
+    auditType: string;
 
-  remark?: string[];
+    remark?: string[];
 
-  childNode?: ProcessNodeType | null;  // 下级步骤
+    childNode?: ProcessNodeType | null;  // 下级步骤
 
-  conditionNodeList?: ProcessNodeType[]; // 分支
+    conditionNodeList?: ProcessNodeType[]; // 分支
 
-  nodeSetting?: AuditNodeType;
+    nodeSetting?: AuditNodeType;
 
 }
 
 export declare type conditionType = {
-  fieldName: string;
+    fieldName: string;
 
-  fieldTitle: string;
+    fieldTitle: string;
 
-  condition: 'eq' | 'ne' | 'lt' | 'gt' | 'ge' | 'le';
+    condition: 'eq' | 'ne' | 'lt' | 'gt' | 'ge' | 'le';
 
-  type: any;
+    type: any;
 
-  enums?: Record<string, any>;
+    enums?: Record<string, any>;
 
-  request?: requestType;
+    request?: requestType;
 
-  value: string
+    value: string
 }
 
 export declare type actionType = {
-  title: string;
+    title: string;
 
-  type: any;
+    type: any;
 }

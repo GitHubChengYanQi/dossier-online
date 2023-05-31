@@ -17,20 +17,20 @@ import Omit from 'omit.js';
 import {RestUserResult} from '@/pages/BASE_SYSTEM/system/mgr/types';
 import {useModel} from '@@/exports';
 import {DeptTreeType} from '@/models/dept';
+import {RenderFieldType} from "@/components/sysCompoents/renderField";
 
 type RemakeFormatProps = {
     values: NodeSettingType,
     userRenders?: RestUserResult[],
     deptData?: DeptTreeType[],
     extendData?: Record<string, any>;
-    positionData?: any[]
+    positionData?: any[],
+    auditExtend?: RenderFieldType
 }
 
 export const remakeFormat = (props: RemakeFormatProps) => {
 
-    const {values, userRenders, deptData, positionData} = props;
-
-    console.log(values)
+    const {values, userRenders, deptData, positionData, auditExtend} = props;
 
     const treeRender = (ids: any[], data: any[]) => {
         if (!Array.isArray(data) || data.length === 0) {
@@ -82,6 +82,11 @@ export const remakeFormat = (props: RemakeFormatProps) => {
             auditData.push('...');
         }
     }
+
+    if (types.find(type => type === 'EXTEND')) {
+        const enums: any = auditExtend?.enums || {}
+        auditData.push(`${auditExtend?.title || ''}：${enums[values.extend || '']?.text || ''}`)
+    }
     return auditData;
 };
 
@@ -93,7 +98,7 @@ type ApproverNodeProps = {
 }
 const ApproverNode: React.FC<ApproverNodeProps> = (props) => {
 
-    const {onDeleteNode, onSelectNode, width, auditNodeType, action, updateNode} = useContext(WFC);
+    const {onDeleteNode, onSelectNode, width, auditNodeType, action, updateNode, auditExtend} = useContext(WFC);
     const [open, setOpen] = useState<boolean>(false);
     const [typeValue, setTypeValue] = useState<string>('');
     const [userRenders, setUserRenders] = useState<RestUserResult[]>([]);
@@ -188,7 +193,13 @@ const ApproverNode: React.FC<ApproverNodeProps> = (props) => {
                 }}
                 initialValues={{...props.objRef.nodeSetting?.auditNode, action: defaultAction}}
                 onFinish={async (values: NodeSettingType) => {
-                    props.objRef.remark = remakeFormat({values, userRenders, deptData, positionData}) as string[];
+                    props.objRef.remark = remakeFormat({
+                        values,
+                        userRenders,
+                        deptData,
+                        positionData,
+                        auditExtend
+                    }) as string[];
                     if (props.objRef.nodeSetting) {
                         props.objRef.nodeSetting.actions = action?.filter((actionItem: actionType) => values.action?.find(action => action === actionItem.type)) as actionType[];
                         props.objRef.nodeSetting.auditNode = Omit(values, ['action']) as NodeSettingType;
