@@ -153,7 +153,7 @@ const useRepairOrder = () => {
         hideInSearch: true,
     }
     const CreateTime: ColumnsType = {
-        title: "",
+        title: "报修时间",
         dataIndex: "createTime",
         valueType: "dateTime",
         hideInForm: true,

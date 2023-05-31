@@ -30,7 +30,7 @@ export declare type RenderFieldType = {
 
     name?: string;
 
-    type: string;//"position" | "dept" |ProFieldValueTypeWithFieldProps;
+    type?: string;//"position" | "dept" |ProFieldValueTypeWithFieldProps;
 
     enums?: ProSchemaValueEnumObj | ProSchemaValueEnumMap;
 
@@ -44,21 +44,21 @@ export declare type RenderFieldType = {
 } & Omit<ColumnsType, "request" | "valueType" | "valueEnum">
 
 type RenderFieldProps = {
-    config: RenderFieldType;
+    config?: RenderFieldType;
 
     name?: string;
 
     label?: string;
 
-    span?:ColProps;
+    span?: ColProps;
 
     onChange?: (value: any, allValues: any) => void;
 }
 const RenderField: React.FC<RenderFieldProps> = (props) => {
 
-    const {config, span,onChange} = props
+    const {config, span, onChange} = props
 
-    if (!config.type) {
+    if (!config?.type) {
         return null;
     }
 

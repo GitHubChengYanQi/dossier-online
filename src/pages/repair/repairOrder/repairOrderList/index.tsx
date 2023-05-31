@@ -15,6 +15,7 @@ import {Button, Space, Divider} from "antd";
 import {ColumnsType} from "@/types/common";
 import DelButton from "@/components/DelButton";
 import useAlert from "@/components/useAlert";
+import LinkButton from "@/components/LinkButton";
 
 const RepairOrderList = () => {
 
@@ -93,10 +94,7 @@ const RepairOrderList = () => {
             render: (value: any, record: any) => {
                 return (
                     <Space size={0} split={<Divider type="vertical"/>}>
-                        <EditButton onClick={() => {
-                            setEditId(record.repairId);
-                            setOpen(true)
-                        }}/>
+                        <LinkButton>查看</LinkButton>
                         <DelButton request={async () => {
                             const response = await delRepairOrderInfo(record.repairId);
                             if (response.errCode !== 0) {

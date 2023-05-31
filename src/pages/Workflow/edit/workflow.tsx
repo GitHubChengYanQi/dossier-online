@@ -161,6 +161,7 @@ const Workflow = ({ value, onChange }: {
         auditNodeType,
         condition: data ? data.process.condition : [],
         action: data ? data.process.action : [],
+        auditExtend: data ? data.process.auditExtend : null,
       }}>
         <section className={styles.dingflowDesign}>
           <ZoomLayout>
